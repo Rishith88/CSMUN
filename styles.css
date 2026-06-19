@@ -845,48 +845,7 @@ img {
     position: relative;
     overflow: hidden;
 }
-.committee-card::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: linear-gradient(135deg, rgba(250, 204, 21, 0.05) 0%, transparent 50%);
-    opacity: 0;
-    transition: opacity var(--transition-normal);
-    border-radius: 1.5rem;
-}
-.committee-card::after {
-    content: '';
-    position: absolute;
-    inset: -1px;
-    border-radius: 1.5rem;
-    background: linear-gradient(135deg, transparent, rgba(250, 204, 21, 0.1), transparent);
-    z-index: -1;
-    opacity: 0;
-    transition: opacity var(--transition-normal);
-}
-.committee-card:hover::before {
-    opacity: 1;
-}
-.committee-card:hover::after {
-    opacity: 1;
-}
-.committee-card:hover {
-    border-color: rgba(250, 204, 21, 0.3);
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4), 0 0 40px rgba(250, 204, 21, 0.1);
-}
-
-.committee-card h3 {
-    color: var(--gold);
-    font-size: 2rem;
-    margin-bottom: 0.5rem;
-    transition: text-shadow var(--transition-normal);
-}
-.committee-card:hover h3 {
-    text-shadow: 0 0 20px rgba(250, 204, 21, 0.3);
-}
+/* Removed old holographic pseudo-elements - cards use clean 3D lift effect only */
 
 .committee-card h4 {
     color: var(--gray-300);
