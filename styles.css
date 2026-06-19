@@ -431,7 +431,6 @@ h1, h2, h3, h4 {
     justify-content: center;
     background: var(--black);
     padding-top: 80px;
-    overflow: hidden;
 }
 .hero::before {
     content: '';
@@ -1964,17 +1963,16 @@ footer p {
 /* ==================== 3D ORBIT TEXT ==================== */
 .hero-3d-orbit {
     position: relative;
-    width: 220px;
-    height: 220px;
-    margin: 0 auto 2rem;
+    width: 200px;
+    height: 200px;
+    margin: 0 auto 1.5rem;
     display: flex;
     align-items: center;
     justify-content: center;
-    perspective: 1200px;
 }
 .hero-3d-orbit .hero-logo {
-    width: 120px;
-    height: 120px;
+    width: 110px;
+    height: 110px;
     border-radius: 50%;
     border: 3px solid rgba(250, 204, 21, 0.3);
     object-fit: cover;
@@ -1982,7 +1980,6 @@ footer p {
     filter: drop-shadow(0 0 30px rgba(250, 204, 21, 0.3));
     position: relative;
     z-index: 2;
-    margin: 0;
 }
 
 .orbit-ring {
@@ -1993,13 +1990,13 @@ footer p {
     pointer-events: none;
 }
 .orbit-ring-1 {
-    width: 200px;
-    height: 200px;
+    width: 180px;
+    height: 180px;
     animation-duration: 12s;
 }
 .orbit-ring-2 {
-    width: 180px;
-    height: 180px;
+    width: 160px;
+    height: 160px;
     animation-duration: 8s;
     animation-direction: reverse;
     border-color: rgba(250, 204, 21, 0.08);
@@ -2011,68 +2008,58 @@ footer p {
 
 .orbit-text {
     position: absolute;
+    top: 50%;
+    left: 50%;
     font-family: var(--font-heading);
-    font-size: 0.8rem;
+    font-size: 0.75rem;
     font-weight: 700;
-    letter-spacing: 0.15em;
+    letter-spacing: 0.12em;
     text-transform: uppercase;
     text-shadow: 0 0 20px rgba(250, 204, 21, 0.5);
     pointer-events: none;
     z-index: 3;
-    animation: orbitTextSpin 8s linear infinite;
-    transform-origin: center;
     backface-visibility: hidden;
+    animation: orbitTextSpin 9s linear infinite;
+    animation-delay: calc(var(--i, 0) * -3s);
+    transform-origin: 0 0;
+    white-space: nowrap;
 }
-.orbit-text-1 {
-    color: var(--gold);
-    animation-duration: 8s;
-    transform: rotate(0deg) translateX(100px) rotate(0deg);
-}
-.orbit-text-2 {
-    color: var(--gold-light);
-    animation-duration: 8s;
-    transform: rotate(120deg) translateX(100px) rotate(-120deg);
-}
-.orbit-text-3 {
-    color: var(--white);
-    animation-duration: 8s;
-    transform: rotate(240deg) translateX(100px) rotate(-240deg);
-}
+.orbit-text-1 { color: var(--gold); --i: 0; }
+.orbit-text-2 { color: var(--gold-light); --i: 1; }
+.orbit-text-3 { color: var(--white); --i: 2; }
 
 @keyframes orbitTextSpin {
-    0% { transform: rotate(0deg) translateX(100px) rotate(0deg); }
-    100% { transform: rotate(360deg) translateX(100px) rotate(-360deg); }
+    0% { transform: rotate(0deg) translateX(90px) rotate(0deg); }
+    100% { transform: rotate(360deg) translateX(90px) rotate(-360deg); }
+}
+@keyframes orbitTextSpinSm {
+    0% { transform: rotate(0deg) translateX(65px) rotate(0deg); }
+    100% { transform: rotate(360deg) translateX(65px) rotate(-360deg); }
 }
 
 @media (max-width: 768px) {
     .hero-3d-orbit {
-        width: 160px;
-        height: 160px;
-    }
-    .hero-3d-orbit .hero-logo {
-        width: 90px;
-        height: 90px;
-    }
-    .orbit-ring-1 {
         width: 150px;
         height: 150px;
     }
-    .orbit-ring-2 {
+    .hero-3d-orbit .hero-logo {
+        width: 80px;
+        height: 80px;
+    }
+    .orbit-ring-1 {
         width: 130px;
         height: 130px;
     }
+    .orbit-ring-2 {
+        width: 110px;
+        height: 110px;
+    }
     .orbit-text {
-        font-size: 0.6rem;
+        font-size: 0.55rem;
+        animation: orbitTextSpinSm 9s linear infinite;
+        animation-delay: calc(var(--i, 0) * -3s);
     }
-    .orbit-text-1,
-    .orbit-text-2,
-    .orbit-text-3 {
-        transform: rotate(0deg) translateX(75px) rotate(0deg);
-    }
-    @keyframes orbitTextSpin {
-        0% { transform: rotate(0deg) translateX(75px) rotate(0deg); }
-        100% { transform: rotate(360deg) translateX(75px) rotate(-360deg); }
-    }
+
     .intro-word {
         font-size: 3rem;
     }
