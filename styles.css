@@ -2011,16 +2011,16 @@ footer p {
     top: 50%;
     left: 50%;
     font-family: var(--font-heading);
-    font-size: 0.75rem;
-    font-weight: 700;
-    letter-spacing: 0.12em;
+    font-size: 1rem;
+    font-weight: 800;
+    letter-spacing: 0.15em;
     text-transform: uppercase;
-    text-shadow: 0 0 20px rgba(250, 204, 21, 0.5);
+    text-shadow: 0 0 30px rgba(250, 204, 21, 0.6), 0 0 60px rgba(250, 204, 21, 0.2);
     pointer-events: none;
     z-index: 3;
     backface-visibility: hidden;
-    animation: orbitTextSpin 9s linear infinite;
-    animation-delay: calc(var(--i, 0) * -3s);
+    animation: orbitTextSpin 10s linear infinite;
+    animation-delay: calc(var(--i, 0) * -3.333s);
     transform-origin: 0 0;
     white-space: nowrap;
 }
@@ -2029,12 +2029,12 @@ footer p {
 .orbit-text-3 { color: var(--white); --i: 2; }
 
 @keyframes orbitTextSpin {
-    0% { transform: rotate(0deg) translateX(90px) rotate(0deg); }
-    100% { transform: rotate(360deg) translateX(90px) rotate(-360deg); }
+    0% { transform: rotate(0deg) translateX(95px) rotate(0deg); }
+    100% { transform: rotate(360deg) translateX(95px) rotate(-360deg); }
 }
 @keyframes orbitTextSpinSm {
-    0% { transform: rotate(0deg) translateX(65px) rotate(0deg); }
-    100% { transform: rotate(360deg) translateX(65px) rotate(-360deg); }
+    0% { transform: rotate(0deg) translateX(70px) rotate(0deg); }
+    100% { transform: rotate(360deg) translateX(70px) rotate(-360deg); }
 }
 
 @media (max-width: 768px) {
@@ -2055,9 +2055,9 @@ footer p {
         height: 110px;
     }
     .orbit-text {
-        font-size: 0.55rem;
-        animation: orbitTextSpinSm 9s linear infinite;
-        animation-delay: calc(var(--i, 0) * -3s);
+        font-size: 0.7rem;
+        animation: orbitTextSpinSm 10s linear infinite;
+        animation-delay: calc(var(--i, 0) * -3.333s);
     }
 
     .intro-word {
