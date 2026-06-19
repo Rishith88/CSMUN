@@ -251,6 +251,23 @@ window.addEventListener('load', () => {
     }
 });
 
+// ---- Voice Narration (Web Speech API) ----
+function speak(text, delay = 0) {
+    setTimeout(() => {
+        if (!window.speechSynthesis) return;
+        window.speechSynthesis.cancel();
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.rate = 0.75;
+        utterance.pitch = 0.5;
+        utterance.volume = 1;
+        utterance.lang = 'en-US';
+        const voices = window.speechSynthesis.getVoices();
+        const deep = voices.find(v => v.name.includes('Male') || v.name.includes('Daniel') || v.name.includes('James') || v.name.includes('Google UK'));
+        if (deep) utterance.voice = deep;
+        window.speechSynthesis.speak(utterance);
+    }, delay);
+}
+
 // ---- Dramatic Intro Sequence ----
 function startIntro() {
     const overlay = document.getElementById('introOverlay');
@@ -259,6 +276,9 @@ function startIntro() {
         overlay.style.display = 'none';
         return;
     }
+    
+    // Pre-load voices
+    if (window.speechSynthesis) window.speechSynthesis.getVoices();
     
     overlay.classList.add('active');
     document.body.style.overflow = 'hidden';
@@ -284,11 +304,13 @@ function startIntro() {
     // Phase 1: Line draws
     setTimeout(() => { if (line) line.classList.add('expand'); }, 400);
     
-    // Phase 2: Words appear one by one with 3D flip
+    // Phase 2: Words appear one by one with 3D flip + voice
     words.forEach((word, i) => {
         setTimeout(() => {
             word.classList.add('revealed');
-                // Particle burst effect
+            // Speak the Latin word
+            speak(word.textContent, 100);
+            // Particle burst effect
             for (let j = 0; j < 8; j++) {
                 const burst = document.createElement('div');
                 const bx = (Math.random() - 0.5) * 80;
@@ -308,14 +330,20 @@ function startIntro() {
         }, 1000 + i * 800);
     });
     
-    // Phase 3: Divider and welcome message
+    // Phase 3: Divider and welcome message + voice
     setTimeout(() => {
         if (divider) divider.classList.add('expand');
     }, 3400);
     
     setTimeout(() => {
         if (welcome) welcome.classList.add('show');
+        speak("Welcome to CSMUN 2026. Where passion meets diplomacy. Where voices shape tomorrow.", 500);
     }, 3800);
+    
+    // Speak the motto
+    setTimeout(() => {
+        speak("Deliberate. Decide. Deliver.", 300);
+    }, 5500);
     
     // Phase 4: Enter prompt
     setTimeout(() => {
@@ -324,6 +352,7 @@ function startIntro() {
     
     // Click/tap to dismiss
     const dismiss = () => {
+        if (window.speechSynthesis) window.speechSynthesis.cancel();
         overlay.classList.add('fade-out');
         document.body.style.overflow = '';
         setTimeout(() => {
@@ -333,10 +362,10 @@ function startIntro() {
     };
     
     overlay.addEventListener('click', dismiss);
-    enter.addEventListener('click', (e) => { e.stopPropagation(); dismiss(); });
+    if (enter) enter.addEventListener('click', (e) => { e.stopPropagation(); dismiss(); });
     
-    // Auto-dismiss after 7 seconds
-    setTimeout(dismiss, 7000);
+    // Auto-dismiss after 8 seconds
+    setTimeout(dismiss, 8000);
 }
 
 // Inject intro burst keyframe
