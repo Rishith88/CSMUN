@@ -2021,19 +2021,19 @@ footer p {
     z-index: 3;
     white-space: nowrap;
     animation: orbitTextSpin 10s linear infinite;
-    transform-origin: 0 0;
+    transform-origin: center center;
 }
 .orbit-text-1 { color: var(--gold); animation-delay: 0s; }
 .orbit-text-2 { color: var(--gold-light); animation-delay: -3.333s; }
 .orbit-text-3 { color: var(--white); animation-delay: -6.667s; }
 
 @keyframes orbitTextSpin {
-    0% { transform: rotate(0deg) translateX(95px) rotate(0deg); }
-    100% { transform: rotate(360deg) translateX(95px) rotate(-360deg); }
+    0% { transform: rotate(0deg) translateX(95px) rotate(0deg) translate(-50%, -50%); }
+    100% { transform: rotate(360deg) translateX(95px) rotate(-360deg) translate(-50%, -50%); }
 }
 @keyframes orbitTextSpinSm {
-    0% { transform: rotate(0deg) translateX(70px) rotate(0deg); }
-    100% { transform: rotate(360deg) translateX(70px) rotate(-360deg); }
+    0% { transform: rotate(0deg) translateX(70px) rotate(0deg) translate(-50%, -50%); }
+    100% { transform: rotate(360deg) translateX(70px) rotate(-360deg) translate(-50%, -50%); }
 }
 
 @media (max-width: 768px) {
