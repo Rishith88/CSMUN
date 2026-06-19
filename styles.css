@@ -2012,22 +2012,20 @@ footer p {
     top: 50%;
     left: 50%;
     font-family: var(--font-heading);
-    font-size: 1rem;
+    font-size: 0.9rem;
     font-weight: 800;
     letter-spacing: 0.15em;
     text-transform: uppercase;
     text-shadow: 0 0 30px rgba(250, 204, 21, 0.6), 0 0 60px rgba(250, 204, 21, 0.2);
     pointer-events: none;
     z-index: 3;
-    backface-visibility: hidden;
-    animation: orbitTextSpin 10s linear infinite;
-    animation-delay: calc(var(--i, 0) * -3.333s);
-    transform-origin: 0 0;
     white-space: nowrap;
+    animation: orbitTextSpin 10s linear infinite;
+    transform-origin: 0 0;
 }
-.orbit-text-1 { color: var(--gold); --i: 0; }
-.orbit-text-2 { color: var(--gold-light); --i: 1; }
-.orbit-text-3 { color: var(--white); --i: 2; }
+.orbit-text-1 { color: var(--gold); animation-delay: 0s; }
+.orbit-text-2 { color: var(--gold-light); animation-delay: -3.333s; }
+.orbit-text-3 { color: var(--white); animation-delay: -6.667s; }
 
 @keyframes orbitTextSpin {
     0% { transform: rotate(0deg) translateX(95px) rotate(0deg); }
