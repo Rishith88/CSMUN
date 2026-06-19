@@ -35,7 +35,7 @@ function playCinematicIntro() {
         const ctx = getAudioCtx();
         const t = ctx.currentTime;
 
-        // Low orchestral pad — multiple detuned sawtooth oscillators
+        // Low orchestral pad
         const padGain = ctx.createGain();
         padGain.gain.setValueAtTime(0, t);
         padGain.gain.linearRampToValueAtTime(0.06, t + 1.5);
@@ -61,7 +61,7 @@ function playCinematicIntro() {
             musicNodes.push(osc);
         });
 
-        // Cinematic rise — frequency sweep
+        // Cinematic rise
         const riseOsc = ctx.createOscillator();
         const riseGain = ctx.createGain();
         riseOsc.type = 'sine';
@@ -76,7 +76,7 @@ function playCinematicIntro() {
         riseOsc.stop(t + 4);
         musicNodes.push(riseOsc);
 
-        // Deep timpani hit at the climax
+        // Deep timpani hit
         const timpOsc = ctx.createOscillator();
         const timpGain = ctx.createGain();
         timpOsc.type = 'triangle';
@@ -92,36 +92,44 @@ function playCinematicIntro() {
     } catch (_) {}
 }
 
-// Play voice via ElevenLabs API
-function speakEleven(text, delay = 0) {
-    setTimeout(async () => {
-        if (!ELEVEN_LABS_API_KEY) {
-            console.warn('ElevenLabs: no API key set. Voice skipped.');
-            return;
-        }
-        try {
-            const res = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${ELEVEN_VOICE_ID}`, {
-                method: 'POST',
-                headers: {
-                    'xi-api-key': ELEVEN_LABS_API_KEY,
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    text,
-                    voice_settings: { stability: 0.4, similarity_boost: 0.85 }
-                })
-            });
-            if (!res.ok) throw new Error(`ElevenLabs API error: ${res.status}`);
-            const blob = await res.blob();
+// Pre-fetch ElevenLabs audio early so it's ready when needed
+let prefetchedVoice = null;
+function prefetchVoice(text) {
+    return new Promise(resolve => {
+        if (!ELEVEN_LABS_API_KEY) { resolve(null); return; }
+        fetch(`https://api.elevenlabs.io/v1/text-to-speech/${ELEVEN_VOICE_ID}`, {
+            method: 'POST',
+            headers: {
+                'xi-api-key': ELEVEN_LABS_API_KEY,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                text,
+                voice_settings: { stability: 0.4, similarity_boost: 0.85 }
+            })
+        })
+        .then(res => { if (!res.ok) throw new Error(`API error: ${res.status}`); return res.blob(); })
+        .then(blob => {
             const url = URL.createObjectURL(blob);
             const audio = new Audio(url);
             audio.addEventListener('ended', () => URL.revokeObjectURL(url));
-            audio.play();
-        } catch (e) {
-            console.warn('ElevenLabs failed, falling back to Web Speech:', e);
-            fallbackSpeak(text);
-        }
-    }, delay);
+            prefetchedVoice = audio;
+            resolve(audio);
+        })
+        .catch(e => {
+            console.warn('ElevenLabs prefetch failed:', e);
+            prefetchedVoice = null;
+            resolve(null);
+        });
+    });
+}
+
+function playPrefetchedVoice() {
+    if (prefetchedVoice) {
+        prefetchedVoice.play();
+    } else {
+        fallbackSpeak("Welcome to CSMUN. Here we debate with passion, confidence and utmost diplomacy. We believe in Deliberare, Decernere, Perficere which translates to Deliberate, Decide, Deliver.");
+    }
 }
 
 // Fallback: Web Speech API
@@ -390,8 +398,9 @@ function startIntro() {
     overlay.classList.add('active');
     document.body.style.overflow = 'hidden';
     
-    // Start cinematic music
+    // Start cinematic music and pre-fetch voice
     playCinematicIntro();
+    prefetchVoice("Welcome to CSMUN. Here we debate with passion, confidence and utmost diplomacy. We believe in Deliberare, Decernere, Perficere which translates to Deliberate, Decide, Deliver.");
     
     // Create particles
     const pc = overlay.querySelector('.intro-particles');
@@ -441,7 +450,7 @@ function startIntro() {
     
     setTimeout(() => {
         if (welcome) welcome.classList.add('show');
-        speakEleven("Welcome to CSMUN. Here we debate with passion, confidence and utmost diplomacy. We believe in Deliberare, Decernere, Perficere which translates to Deliberate, Decide, Deliver.", 500);
+        playPrefetchedVoice();
     }, 3800);
     
     // Phase 4: Enter prompt
@@ -452,6 +461,7 @@ function startIntro() {
     // Click/tap to dismiss
     const dismiss = () => {
         stopCinematicMusic();
+        if (prefetchedVoice) { prefetchedVoice.pause(); prefetchedVoice = null; }
         if (window.speechSynthesis) window.speechSynthesis.cancel();
         overlay.classList.add('fade-out');
         document.body.style.overflow = '';
