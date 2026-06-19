@@ -460,9 +460,16 @@ h1, h2, h3, h4 {
     object-fit: cover;
     border: 4px solid rgba(250, 204, 21, 0.4);
     box-shadow: 0 0 40px rgba(250, 204, 21, 0.3), 0 0 80px rgba(250, 204, 21, 0.1);
-    z-index: 2;
+    z-index: 10;
     position: relative;
+    /* Logo is STATIC - never rotates */
     animation: heroLogoFloat 3s ease-in-out infinite;
+    transform: none !important;
+}
+
+.hero-logo:hover {
+    transform: scale(1.05) !important;
+    transition: transform 0.3s ease;
 }
 
 @keyframes heroLogoFloat {
@@ -474,23 +481,23 @@ h1, h2, h3, h4 {
     position: absolute;
     border: 1.5px solid rgba(250, 204, 21, 0.15);
     border-radius: 50%;
-    animation: orbitSpin 20s linear infinite;
     pointer-events: none;
 }
 
 .orbit-ring-1 {
     width: 340px;
     height: 340px;
+    animation: orbitSpin 25s linear infinite;
 }
 
 .orbit-ring-2 {
     width: 280px;
     height: 280px;
-    animation-direction: reverse;
-    animation-duration: 15s;
     border-style: dashed;
+    animation: orbitSpinReverse 20s linear infinite;
 }
 
+/* The 3 words orbit around the static logo, staying upright */
 .orbit-text {
     position: absolute;
     font-family: var(--font-heading);
@@ -500,44 +507,74 @@ h1, h2, h3, h4 {
     letter-spacing: 0.15em;
     color: var(--gold);
     text-shadow: 0 0 20px rgba(250, 204, 21, 0.4);
-    z-index: 3;
-    animation: orbitSpin 20s linear infinite;
-    transform-origin: center;
-    /* Each word starts at a different angle offset */
+    z-index: 5;
+    white-space: nowrap;
 }
 
 .orbit-text-1 {
-    /* Start at top (0deg) */
-    animation: orbitTextPath1 20s linear infinite;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    animation: wordOrbit1 25s linear infinite;
 }
 
 .orbit-text-2 {
-    /* Start at 120deg */
-    animation: orbitTextPath2 20s linear infinite;
+    top: 50%;
+    right: 0;
+    transform: translate(50%, -50%);
+    animation: wordOrbit2 25s linear infinite;
 }
 
 .orbit-text-3 {
-    /* Start at 240deg */
-    animation: orbitTextPath3 20s linear infinite;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    animation: wordOrbit3 25s linear infinite;
 }
 
-@keyframes orbitTextPath1 {
-    0%   { transform: rotate(0deg) translateY(-150px) rotate(0deg); }
-    100% { transform: rotate(360deg) translateY(-150px) rotate(-360deg); }
+/* Orbit container spins, words counter-rotate to stay upright */
+.hero-3d-orbit {
+    position: relative;
+    width: 340px;
+    height: 340px;
+    margin: 0 auto 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: fadeInUp 0.8s ease both;
+    animation: containerOrbit 25s linear infinite;
 }
 
-@keyframes orbitTextPath2 {
-    0%   { transform: rotate(120deg) translateY(-150px) rotate(-120deg); }
-    100% { transform: rotate(480deg) translateY(-150px) rotate(-480deg); }
+/* Container rotates 360deg */
+@keyframes containerOrbit {
+    from { transform: translate(-50%, -50%) rotate(0deg); }
+    to { transform: translate(-50%, -50%) rotate(360deg); }
 }
 
-@keyframes orbitTextPath3 {
-    0%   { transform: rotate(240deg) translateY(-150px) rotate(-240deg); }
-    100% { transform: rotate(600deg) translateY(-150px) rotate(-600deg); }
+/* Words counter-rotate -360deg to stay upright while orbiting */
+@keyframes wordOrbit1 {
+    from { transform: translateX(-50%) rotate(0deg); }
+    to { transform: translateX(-50%) rotate(-360deg); }
+}
+
+@keyframes wordOrbit2 {
+    from { transform: translate(50%, -50%) rotate(90deg); }
+    to { transform: translate(50%, -50%) rotate(-270deg); }
+}
+
+@keyframes wordOrbit3 {
+    from { transform: translateX(-50%) rotate(180deg); }
+    to { transform: translateX(-50%) rotate(-180deg); }
 }
 
 @keyframes orbitSpin {
+    from { transform: rotate(0deg); }
     to { transform: rotate(360deg); }
+}
+
+@keyframes orbitSpinReverse {
+    from { transform: rotate(360deg); }
+    to { transform: rotate(0deg); }
 }
 
 .divider {
@@ -1519,17 +1556,11 @@ footer p {
         width: 230px;
         height: 230px;
     }
-    @keyframes orbitTextPath1 {
-        0%   { transform: rotate(0deg) translateY(-125px) rotate(0deg); }
-        100% { transform: rotate(360deg) translateY(-125px) rotate(-360deg); }
+    .hero-3d-orbit {
+        animation: containerOrbit 30s linear infinite;
     }
-    @keyframes orbitTextPath2 {
-        0%   { transform: rotate(120deg) translateY(-125px) rotate(-120deg); }
-        100% { transform: rotate(480deg) translateY(-125px) rotate(-480deg); }
-    }
-    @keyframes orbitTextPath3 {
-        0%   { transform: rotate(240deg) translateY(-125px) rotate(-240deg); }
-        100% { transform: rotate(600deg) translateY(-125px) rotate(-600deg); }
+    .orbit-text {
+        font-size: 0.9rem;
     }
 }
 
