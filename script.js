@@ -265,8 +265,8 @@ function speak(text, delay = 0) {
         if (!window.speechSynthesis) return;
         window.speechSynthesis.cancel();
         const utterance = new SpeechSynthesisUtterance(text);
-        utterance.rate = 0.75;
-        utterance.pitch = 0.5;
+        utterance.rate = 0.85;
+        utterance.pitch = 0.9;
         utterance.volume = 1;
         utterance.lang = 'en-US';
         const voices = window.speechSynthesis.getVoices();
@@ -325,29 +325,10 @@ function startIntro() {
     // Phase 1: Line draws
     setTimeout(() => { if (line) line.classList.add('expand'); }, 400);
     
-    // Phase 2: Words appear one by one with 3D flip + voice
+    // Phase 2: Words appear one by one
     words.forEach((word, i) => {
         setTimeout(() => {
             word.classList.add('revealed');
-            // Speak the Latin word
-            speak(word.textContent, 100);
-            // Particle burst effect
-            for (let j = 0; j < 8; j++) {
-                const burst = document.createElement('div');
-                const bx = (Math.random() - 0.5) * 80;
-                const by = (Math.random() - 0.5) * 80;
-                burst.style.cssText = `
-                    position: absolute; width: 4px; height: 4px;
-                    background: var(--gold); border-radius: 50%;
-                    pointer-events: none; z-index: 10;
-                    --bx: ${bx}px; --by: ${by}px;
-                    left: ${50 + (Math.random() - 0.5) * 20}%;
-                    top: ${50 + (Math.random() - 0.5) * 20}%;
-                    animation: introParticleBurst 0.8s ease forwards;
-                `;
-                overlay.querySelector('.intro-content').appendChild(burst);
-                setTimeout(() => burst.remove(), 800);
-            }
         }, 1000 + i * 800);
     });
     
@@ -358,18 +339,13 @@ function startIntro() {
     
     setTimeout(() => {
         if (welcome) welcome.classList.add('show');
-        speak("Welcome to CSMUN 2026. Where passion meets diplomacy. Where voices shape tomorrow.", 500);
+        speak("Welcome to CSMUN. Here we debate with passion, confidence and utmost diplomacy. We believe in Deliberare, Decernere, Perficere which translates to Deliberate, Decide, Deliver.", 500);
     }, 3800);
-    
-    // Speak the motto
-    setTimeout(() => {
-        speak("Deliberate. Decide. Deliver.", 300);
-    }, 5500);
     
     // Phase 4: Enter prompt
     setTimeout(() => {
         if (enter) enter.classList.add('show');
-    }, 5000);
+    }, 7000);
     
     // Click/tap to dismiss
     const dismiss = () => {
@@ -385,21 +361,8 @@ function startIntro() {
     overlay.addEventListener('click', dismiss);
     if (enter) enter.addEventListener('click', (e) => { e.stopPropagation(); dismiss(); });
     
-    // Auto-dismiss after 8 seconds
-    setTimeout(dismiss, 8000);
-}
-
-// Inject intro burst keyframe
-if (!document.getElementById('burstStyle')) {
-    const s = document.createElement('style');
-    s.id = 'burstStyle';
-    s.textContent = `
-        @keyframes introParticleBurst {
-            0% { transform: translate(0, 0) scale(1); opacity: 1; }
-            100% { transform: translate(var(--bx, 50px), var(--by, -50px)) scale(0); opacity: 0; }
-        }
-    `;
-    document.head.appendChild(s);
+    // Auto-dismiss
+    setTimeout(dismiss, 14000);
 }
 
 // ---- Parallax Scroll Background (delegate photos crossfade) ----
