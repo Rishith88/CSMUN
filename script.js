@@ -12,7 +12,7 @@ console.log('%c🐛 Found something broken? Congrats — you\'re now QA. Fix it 
 
 // ---- ElevenLabs Configuration ----
 // Get your free API key at https://elevenlabs.io
-const ELEVEN_LABS_API_KEY = ''; // <-- Paste your API key here
+const ELEVEN_LABS_API_KEY = '5a4f2fcc23f20b3299558feff81c6d0537c784fb2bba7e95a23dc8f8d34cfc35'; // <-- Paste your API key here
 const ELEVEN_VOICE_ID = 'ODq5zmih8GrVes37Dizd'; // Patrick — deep, cinematic male voice
 
 // ---- Cinematic Music + Voice (ElevenLabs) ----
