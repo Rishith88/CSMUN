@@ -441,7 +441,104 @@ h1, h2, h3, h4 {
     perspective: 1000px;
 }
 
+/* ==================== HERO 3D ORBIT ==================== */
+.hero-3d-orbit {
+    position: relative;
+    width: 340px;
+    height: 340px;
+    margin: 0 auto 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: fadeInUp 0.8s ease both;
+}
 
+.hero-logo {
+    width: 160px;
+    height: 160px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid rgba(250, 204, 21, 0.4);
+    box-shadow: 0 0 40px rgba(250, 204, 21, 0.3), 0 0 80px rgba(250, 204, 21, 0.1);
+    z-index: 2;
+    position: relative;
+    animation: heroLogoFloat 3s ease-in-out infinite;
+}
+
+@keyframes heroLogoFloat {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+}
+
+.orbit-ring {
+    position: absolute;
+    border: 1.5px solid rgba(250, 204, 21, 0.15);
+    border-radius: 50%;
+    animation: orbitSpin 20s linear infinite;
+    pointer-events: none;
+}
+
+.orbit-ring-1 {
+    width: 340px;
+    height: 340px;
+}
+
+.orbit-ring-2 {
+    width: 280px;
+    height: 280px;
+    animation-direction: reverse;
+    animation-duration: 15s;
+    border-style: dashed;
+}
+
+.orbit-text {
+    position: absolute;
+    font-family: var(--font-heading);
+    font-size: 1.1rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--gold);
+    text-shadow: 0 0 20px rgba(250, 204, 21, 0.4);
+    z-index: 3;
+    animation: orbitSpin 20s linear infinite;
+    transform-origin: center;
+    /* Each word starts at a different angle offset */
+}
+
+.orbit-text-1 {
+    /* Start at top (0deg) */
+    animation: orbitTextPath1 20s linear infinite;
+}
+
+.orbit-text-2 {
+    /* Start at 120deg */
+    animation: orbitTextPath2 20s linear infinite;
+}
+
+.orbit-text-3 {
+    /* Start at 240deg */
+    animation: orbitTextPath3 20s linear infinite;
+}
+
+@keyframes orbitTextPath1 {
+    0%   { transform: rotate(0deg) translateY(-150px) rotate(0deg); }
+    100% { transform: rotate(360deg) translateY(-150px) rotate(-360deg); }
+}
+
+@keyframes orbitTextPath2 {
+    0%   { transform: rotate(120deg) translateY(-150px) rotate(-120deg); }
+    100% { transform: rotate(480deg) translateY(-150px) rotate(-480deg); }
+}
+
+@keyframes orbitTextPath3 {
+    0%   { transform: rotate(240deg) translateY(-150px) rotate(-240deg); }
+    100% { transform: rotate(600deg) translateY(-150px) rotate(-600deg); }
+}
+
+@keyframes orbitSpin {
+    to { transform: rotate(360deg); }
+}
 
 .divider {
     width: 12rem;
@@ -1388,6 +1485,35 @@ footer p {
     .about-text h2 {
         font-size: 2.5rem;
     }
+    
+    .hero-3d-orbit {
+        width: 280px;
+        height: 280px;
+    }
+    .hero-logo {
+        width: 130px;
+        height: 130px;
+    }
+    .orbit-ring-1 {
+        width: 280px;
+        height: 280px;
+    }
+    .orbit-ring-2 {
+        width: 230px;
+        height: 230px;
+    }
+    @keyframes orbitTextPath1 {
+        0%   { transform: rotate(0deg) translateY(-125px) rotate(0deg); }
+        100% { transform: rotate(360deg) translateY(-125px) rotate(-360deg); }
+    }
+    @keyframes orbitTextPath2 {
+        0%   { transform: rotate(120deg) translateY(-125px) rotate(-120deg); }
+        100% { transform: rotate(480deg) translateY(-125px) rotate(-480deg); }
+    }
+    @keyframes orbitTextPath3 {
+        0%   { transform: rotate(240deg) translateY(-125px) rotate(-240deg); }
+        100% { transform: rotate(600deg) translateY(-125px) rotate(-600deg); }
+    }
 }
 
 @media (max-width: 768px) {
@@ -1468,6 +1594,37 @@ footer p {
         height: 44px;
     }
 
+    .hero-3d-orbit {
+        width: 220px;
+        height: 220px;
+    }
+    .hero-logo {
+        width: 100px;
+        height: 100px;
+    }
+    .orbit-ring-1 {
+        width: 220px;
+        height: 220px;
+    }
+    .orbit-ring-2 {
+        width: 180px;
+        height: 180px;
+    }
+    .orbit-text {
+        font-size: 0.85rem;
+    }
+    @keyframes orbitTextPath1 {
+        0%   { transform: rotate(0deg) translateY(-100px) rotate(0deg); }
+        100% { transform: rotate(360deg) translateY(-100px) rotate(-360deg); }
+    }
+    @keyframes orbitTextPath2 {
+        0%   { transform: rotate(120deg) translateY(-100px) rotate(-120deg); }
+        100% { transform: rotate(480deg) translateY(-100px) rotate(-480deg); }
+    }
+    @keyframes orbitTextPath3 {
+        0%   { transform: rotate(240deg) translateY(-100px) rotate(-240deg); }
+        100% { transform: rotate(600deg) translateY(-100px) rotate(-600deg); }
+    }
 }
 
 /* ==================== PRELOADER ==================== */
@@ -1933,10 +2090,6 @@ footer p {
     20% { opacity: 0.6; }
     80% { opacity: 0.6; }
     100% { transform: translateY(-10vh) scale(1); opacity: 0; }
-}
-
-@keyframes orbitSpin {
-    to { transform: rotate(360deg); }
 }
 
 @media (max-width: 768px) {
