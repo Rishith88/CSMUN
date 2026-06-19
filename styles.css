@@ -238,7 +238,7 @@ h1, h2, h3, h4 {
     transition: transform var(--transition-normal);
 }
 .logo-img:hover {
-    transform: rotateY(180deg) scale(1.1);
+    transform: scale(1.1);
 }
 
 .logo-text h1 {
@@ -1995,27 +1995,68 @@ footer p {
     width: 200px;
 }
 .intro-words {
-    display: flex;
-    flex-direction: row;
-    gap: 2rem;
-    justify-content: center;
-    margin-bottom: 2rem;
-    flex-wrap: wrap;
+    position: absolute;
+    width: 400px;
+    height: 400px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 2;
+    animation: introWordsOrbit 20s linear infinite;
 }
 .intro-word {
     font-family: var(--font-heading);
-    font-size: clamp(2rem, 6vw, 4rem);
+    font-size: clamp(1.5rem, 4vw, 2.5rem);
     font-weight: 900;
     color: var(--gold);
     letter-spacing: 0.08em;
     opacity: 0;
-    transform: translateY(20px);
-    transition: all 0.9s ease;
-    display: block;
+    transition: opacity 0.9s ease;
+    position: absolute;
+    width: 150px;
+    margin-left: -75px;
+    text-align: center;
+    white-space: nowrap;
+    animation: introWordCounterRotate 20s linear infinite;
+}
+.intro-word:nth-child(1) {
+    top: 0;
+    left: 50%;
+}
+.intro-word:nth-child(2) {
+    top: 50%;
+    right: 0;
+    transform: translate(50%, -50%) rotate(90deg);
+    animation: introWordCounterRotate2 20s linear infinite;
+}
+.intro-word:nth-child(3) {
+    bottom: 0;
+    left: 50%;
+    transform: translate(-50%, 50%) rotate(180deg);
+    animation: introWordCounterRotate3 20s linear infinite;
 }
 .intro-word.revealed {
     opacity: 1;
-    transform: translateY(0);
+}
+
+@keyframes introWordsOrbit {
+    from { transform: translate(-50%, -50%) rotate(0deg); }
+    to { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+@keyframes introWordCounterRotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(-360deg); }
+}
+
+@keyframes introWordCounterRotate2 {
+    from { transform: translate(50%, -50%) rotate(90deg); }
+    to { transform: translate(50%, -50%) rotate(-270deg); }
+}
+
+@keyframes introWordCounterRotate3 {
+    from { transform: translate(-50%, 50%) rotate(180deg); }
+    to { transform: translate(-50%, 50%) rotate(-180deg); }
 }
 .intro-divider {
     width: 0;
@@ -2119,10 +2160,13 @@ footer p {
 
 @media (max-width: 768px) {
     .intro-words {
-        gap: 1rem;
+        width: 280px;
+        height: 280px;
     }
     .intro-word {
-        font-size: 2.5rem;
+        font-size: 1.8rem;
+        width: 120px;
+        margin-left: -60px;
     }
     .intro-welcome-title {
         font-size: 1.5rem;
@@ -2184,103 +2228,135 @@ footer p {
     opacity: 0.8;
 }
 
-/* 3D Holographic Committee Cards - TRUE 3D CSS */
+/* 3D Clean Committee Cards - Smooth 3D Lift Effect */
 .committee-card {
     transform-style: preserve-3d;
     perspective: 1000px;
-    transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+    transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
 .committee-card:hover {
-    transform: rotateY(15deg) rotateX(5deg) translateZ(50px) scale(1.05);
+    transform: translateY(-20px) translateZ(30px) scale(1.03);
     box-shadow: 
-        -30px 30px 60px rgba(0, 0, 0, 0.5),
-        0 0 80px rgba(250, 204, 21, 0.2),
-        inset 0 0 30px rgba(250, 204, 21, 0.1);
+        0 35px 70px rgba(0, 0, 0, 0.5),
+        0 0 50px rgba(250, 204, 21, 0.15);
+    border-color: rgba(250, 204, 21, 0.4);
 }
 
-.committee-card::before {
-    content: '';
-    position: absolute;
-    inset: -2px;
-    background: linear-gradient(45deg, 
-        #facc15, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4, #facc15);
-    background-size: 400% 400%;
-    animation: holographic-shift 3s ease infinite;
-    filter: blur(10px);
-    opacity: 0;
-    transition: opacity 0.4s ease;
-    z-index: -1;
-    border-radius: inherit;
-}
-
-.committee-card:hover::before {
-    opacity: 0.7;
-}
-
-@keyframes holographic-shift {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
-}
-
-/* 3D CSS Globe - Pure CSS 3D Earth Sphere */
+/* MUN Themed Committee Orbit - UN Headquarters inspired */
 .globe-container {
     width: 400px;
     height: 400px;
     position: relative;
-    transform-style: preserve-3d;
-    animation: globe-spin 60s linear infinite;
     margin: 4rem auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
+/* Central UN Emblem Circle */
 #webgl-globe {
-    width: 100%;
-    height: 100%;
+    width: 140px;
+    height: 140px;
     border-radius: 50%;
-    background: 
-        radial-gradient(circle at 30% 30%, rgba(69, 183, 209, 0.8), transparent 50%),
-        radial-gradient(circle at 70% 70%, rgba(78, 205, 196, 0.6), transparent 50%),
-        linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+    background: radial-gradient(circle, #1a365d 0%, #0f172a 100%);
+    border: 3px solid var(--gold);
     box-shadow: 
-        inset -50px -50px 100px rgba(0,0,0,0.8),
-        inset 20px 20px 60px rgba(255,255,255,0.1),
-        0 0 100px rgba(69, 183, 209, 0.4),
-        0 0 200px rgba(78, 205, 196, 0.2);
-    transform-style: preserve-3d;
+        0 0 40px rgba(250, 204, 21, 0.3),
+        0 0 80px rgba(250, 204, 21, 0.1);
+    position: relative;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    content: "🇺🇳";
 }
 
-.globe-gridline {
+#webgl-globe::after {
+    content: "🇺🇳";
+}
+
+/* Orbit rings around central UN emblem */
+.globe-container::before,
+.globe-container::after {
+    content: '';
     position: absolute;
-    border: 1px solid rgba(250, 204, 21, 0.15);
+    border: 1.5px solid rgba(250, 204, 21, 0.2);
     border-radius: 50%;
-    transform-style: preserve-3d;
+    pointer-events: none;
 }
 
-/* 3D Globe Location Markers */
+.globe-container::before {
+    width: 340px;
+    height: 340px;
+    animation: orbit-spin 30s linear infinite;
+}
+
+.globe-container::after {
+    width: 260px;
+    height: 260px;
+    border-style: dashed;
+    animation: orbit-spin 25s linear infinite reverse;
+}
+
+/* Committee location markers - MUN themed */
 .globe-marker {
     position: absolute;
-    width: 20px;
-    height: 20px;
-    background: var(--gold);
-    border-radius: 50%;
-    transform-style: preserve-3d;
-    animation: marker-pulse 2s ease-in-out infinite;
-    box-shadow: 0 0 30px var(--gold), 0 0 60px rgba(250, 204, 21, 0.5);
+    padding: 0.5rem 1rem;
+    background: rgba(15, 23, 42, 0.9);
+    border: 1px solid var(--gold);
+    border-radius: 20px;
+    color: var(--gold);
+    font-weight: 600;
+    font-size: 0.9rem;
+    white-space: nowrap;
+    animation: marker-float 4s ease-in-out infinite;
+    box-shadow: 0 0 20px rgba(250, 204, 21, 0.3);
 }
 
-.globe-marker[data-location="newyork"] { top: 35%; left: 25%; }
-.globe-marker[data-location="geneva"] { top: 30%; left: 45%; }
-.globe-marker[data-location="newdelhi"] { top: 40%; left: 75%; }
-
-@keyframes marker-pulse {
-    0%, 100% { transform: translateZ(200px) scale(1); opacity: 1; }
-    50% { transform: translateZ(220px) scale(1.5); opacity: 0.7; }
+.globe-marker[data-location="newyork"] { 
+    top: 10%; 
+    left: 50%;
+    transform: translateX(-50%);
+    animation-delay: 0s;
+}
+.globe-marker[data-location="geneva"] { 
+    top: 50%; 
+    right: 5%;
+    transform: translateY(-50%);
+    animation-delay: 1.3s;
+}
+.globe-marker[data-location="newdelhi"] { 
+    bottom: 10%; 
+    left: 50%;
+    transform: translateX(-50%);
+    animation-delay: 2.6s;
 }
 
-@keyframes globe-spin {
-    from { transform: rotateY(0deg) rotateX(15deg); }
-    to { transform: rotateY(360deg) rotateX(15deg); }
+@keyframes marker-float {
+    0%, 100% { transform: translateX(-50%) translateY(0); }
+    50% { transform: translateX(-50%) translateY(-10px); }
+}
+
+.globe-marker[data-location="geneva"] {
+    transform: translateY(-50%);
+}
+.globe-marker[data-location="geneva"]:hover {
+    transform: translateY(-50%) scale(1.1);
+}
+.globe-marker[data-location="geneva"]:nth-child(odd) {
+    animation: marker-float-2 4s ease-in-out infinite;
+}
+
+@keyframes marker-float-2 {
+    0%, 100% { transform: translateY(-50%) translateX(0); }
+    50% { transform: translateY(-50%) translateX(10px); }
+}
+
+@keyframes orbit-spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
 }
 
 /* 3D Mouse-tracking Parallax System */
@@ -2389,12 +2465,33 @@ footer p {
 /* Responsive 3D adjustments */
 @media (max-width: 768px) {
     .globe-container {
+        width: 320px;
+        height: 320px;
+    }
+    
+    .globe-container::before {
         width: 280px;
         height: 280px;
     }
     
+    .globe-container::after {
+        width: 220px;
+        height: 220px;
+    }
+    
+    #webgl-globe {
+        width: 100px;
+        height: 100px;
+        font-size: 1.5rem;
+    }
+    
+    .globe-marker {
+        font-size: 0.8rem;
+        padding: 0.4rem 0.8rem;
+    }
+    
     .committee-card:hover {
-        transform: rotateY(5deg) rotateX(2deg) translateZ(20px) scale(1.02);
+        transform: translateY(-15px) translateZ(20px) scale(1.02);
     }
     
     .scene-3d {
@@ -2651,15 +2748,25 @@ section {
     
     /* Adjust globe size and disable complex animations on mobile */
     .globe-container {
-        width: 260px !important;
-        height: 260px !important;
+        width: 280px !important;
+        height: 280px !important;
         margin: 2rem auto !important;
-        animation: globe-spin-simple 45s linear infinite !important;
     }
     
-    @keyframes globe-spin-simple {
-        from { transform: rotateY(0deg) rotateX(10deg); }
-        to { transform: rotateY(360deg) rotateX(10deg); }
+    .globe-container::before {
+        width: 240px !important;
+        height: 240px !important;
+    }
+    
+    .globe-container::after {
+        width: 180px !important;
+        height: 180px !important;
+    }
+    
+    #webgl-globe {
+        width: 80px !important;
+        height: 80px !important;
+        font-size: 1.2rem !important;
     }
     
     /* Simplify committee card 3D effects for touchscreens */

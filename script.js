@@ -527,15 +527,15 @@ if (eggTitle) {
     document.addEventListener('mousemove', e => {
         mouseX = e.clientX;
         mouseY = e.clientY;
-        dot.style.left = mouseX + 'px';
-        dot.style.top = mouseY + 'px';
+        dot.style.left = mouseX + window.scrollX + 'px';
+        dot.style.top = mouseY + window.scrollY + 'px';
     });
 
     function smoothRing() {
         ringX += (mouseX - ringX) * 0.15;
         ringY += (mouseY - ringY) * 0.15;
-        ring.style.left = ringX + 'px';
-        ring.style.top = ringY + 'px';
+        ring.style.left = ringX + window.scrollX + 'px';
+        ring.style.top = ringY + window.scrollY + 'px';
         requestAnimationFrame(smoothRing);
     }
     smoothRing();
