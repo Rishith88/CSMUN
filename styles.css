@@ -1515,6 +1515,7 @@ footer p {
 .preloader-inner {
     text-align: center;
     perspective: 800px;
+    position: relative;
 }
 .preloader-logo {
     width: 120px;
@@ -1529,21 +1530,21 @@ footer p {
     50% { transform: scale(1.05); box-shadow: 0 0 40px rgba(250, 204, 21, 0.6); }
 }
 .preloader-ring {
-    width: 160px;
-    height: 160px;
+    width: 130px;
+    height: 130px;
     border-radius: 50%;
-    border: 3px solid transparent;
+    border: 3px solid rgba(250, 204, 21, 0.15);
     border-top-color: var(--gold);
     border-bottom-color: var(--gold-light);
     position: absolute;
-    top: 50%;
+    top: 0;
     left: 50%;
-    transform: translate(-50%, -50%);
+    margin-left: -65px;
     animation: preloaderSpin 1s linear infinite;
-    will-change: transform;
+    pointer-events: none;
 }
 @keyframes preloaderSpin {
-    to { transform: translate(-50%, -50%) rotate(360deg); }
+    to { transform: rotate(360deg); }
 }
 .preloader-text {
     font-family: var(--font-heading);
