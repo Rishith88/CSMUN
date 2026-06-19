@@ -288,6 +288,48 @@ function updateCountdown() {
 updateCountdown();
 setInterval(updateCountdown, 1000);
 
+// ---- Typewriter Effect for Hero Tagline ----
+let typewriterRunning = false;
+function initTypewriter() {
+    if (typewriterRunning) return;
+    typewriterRunning = true;
+    const lines = document.querySelectorAll('.typewriter-line');
+    const cursor = document.querySelector('.typewriter-cursor');
+    if (!lines.length) return;
+    
+    let lineIndex = 0;
+    let charIndex = 0;
+    let isTyping = false;
+    
+    function typeLine() {
+        if (lineIndex >= lines.length) {
+            if (cursor) cursor.classList.add('idle');
+            return;
+        }
+        
+        const line = lines[lineIndex];
+        const text = line.getAttribute('data-text');
+        
+        if (!isTyping) {
+            isTyping = true;
+            line.classList.add('visible');
+        }
+        
+        if (charIndex < text.length) {
+            line.textContent = text.substring(0, charIndex + 1);
+            charIndex++;
+            setTimeout(typeLine, 40 + Math.random() * 30);
+        } else {
+            isTyping = false;
+            charIndex = 0;
+            lineIndex++;
+            setTimeout(typeLine, 500);
+        }
+    }
+    
+    setTimeout(typeLine, 1600);
+}
+
 // ---- Scroll Reveal Animations (Intersection Observer) ----
 const revealElements = document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-scale');
 const revealObserver = new IntersectionObserver((entries) => {
@@ -399,6 +441,7 @@ function startIntro() {
     if (!overlay) return;
     if (sessionStorage.getItem('csmunIntroShown')) {
         overlay.style.display = 'none';
+        initTypewriter();
         return;
     }
     
@@ -481,11 +524,14 @@ function startIntro() {
         sessionStorage.setItem('csmunIntroShown', 'true');
     };
     
-    overlay.addEventListener('click', dismiss);
-    if (enter) enter.addEventListener('click', (e) => { e.stopPropagation(); dismiss(); });
+    overlay.addEventListener('click', () => { dismiss(); initTypewriter(); });
+    if (enter) enter.addEventListener('click', (e) => { e.stopPropagation(); dismiss(); setTimeout(initTypewriter, 600); });
     
     // Auto-dismiss
-    setTimeout(dismiss, 14000);
+    setTimeout(() => {
+        dismiss();
+        initTypewriter();
+    }, 14000);
 }
 
 // ---- Easter egg: click "Guide to MUN" title 3 times ----

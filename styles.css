@@ -598,16 +598,39 @@ h1, h2, h3, h4 {
     margin-top: 2rem;
     font-size: clamp(1.25rem, 3vw + 0.5rem, 2rem);
     color: var(--white);
+    min-height: 5rem;
 }
-.hero-tagline p {
-    margin: 0.5rem 0;
+
+.typewriter {
+    display: inline-block;
+    text-align: center;
+    position: relative;
+}
+
+.typewriter-line {
+    display: inline;
+    opacity: 0;
+    transition: opacity 0.1s ease;
+}
+.typewriter-line.visible {
     opacity: 0.9;
 }
-.hero-tagline p:first-child {
-    animation: fadeInUp 0.8s ease 0.3s both;
+
+.typewriter-cursor {
+    display: inline-block;
+    color: var(--gold);
+    font-weight: 300;
+    margin-left: 2px;
+    animation: cursorBlink 0.7s step-end infinite;
 }
-.hero-tagline p:last-child {
-    animation: fadeInUp 0.8s ease 0.6s both;
+.typewriter-cursor.idle {
+    animation: none;
+    opacity: 0;
+}
+
+@keyframes cursorBlink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
 }
 
 .hero-subtitle-bottom {
