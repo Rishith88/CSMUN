@@ -557,3 +557,359 @@ const placeholderSvg = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/
         imgs.forEach(img => { img.src = placeholderSvg; });
     }
 })();
+
+// ===========================================
+// 3D IMMERSIVE EXPERIENCE ENHANCEMENTS
+// Works with your existing AudioContext!
+// ===========================================
+
+// 3D Spatial Audio Panner - enhances your existing audio system with true 3D positioning
+let spatializer = null;
+
+function initSpatialAudio() {
+    const ctx = getAudioCtx();
+    if (ctx && !spatializer) {
+        spatializer = ctx.createPanner();
+        spatializer.panningModel = 'HRTF'; // High-quality 3D spatial audio
+        spatializer.distanceModel = 'inverse';
+        spatializer.connect(ctx.destination);
+    }
+}
+
+// Play 3D positional sound at specific coordinates
+function play3DSound(x, y, z, frequency = 440, duration = 0.3) {
+    const ctx = getAudioCtx();
+    if (!ctx || !spatializer) return;
+    
+    const oscillator = ctx.createOscillator();
+    const gainNode = ctx.createGain();
+    
+    oscillator.connect(gainNode);
+    gainNode.connect(spatializer);
+    
+    spatializer.setPosition(x, y, z);
+    oscillator.frequency.value = frequency;
+    oscillator.type = 'sine';
+    
+    gainNode.gain.setValueAtTime(0.2, ctx.currentTime);
+    gainNode.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + duration);
+    
+    oscillator.start(ctx.currentTime);
+    oscillator.stop(ctx.currentTime + duration);
+}
+
+// Mouse-tracking 3D Parallax (integrates with your existing mouse tracking)
+let currentMouseX = 0, currentMouseY = 0;
+
+// Update 3D layers based on mouse position - mobile optimized
+function update3DParallax() {
+    if (isMobile) return; // Disable complex parallax on mobile for better performance
+    
+    const normalizedX = (currentMouseX / window.innerWidth - 0.5) * 2;
+    const normalizedY = (currentMouseY / window.innerHeight - 0.5) * 2;
+    
+    // Update spatial audio position with mouse
+    if (spatializer) {
+        spatializer.setPosition(normalizedX * 10, -normalizedY * 10, 5);
+    }
+    
+    // Animate skyline layers with depth
+    const skylineLayers = document.querySelectorAll('.skyline-layer');
+    skylineLayers.forEach((layer, index) => {
+        const depth = index === 0 ? -50 : index === 1 ? -20 : 0;
+        const rotateY = normalizedX * (depth / 5);
+        const rotateX = -normalizedY * (depth / 5);
+        layer.style.transform = `translateZ(${depth}px) rotateY(${rotateY}deg) rotateX(${rotateX}deg)`;
+    });
+    
+    // Animate all depth layers
+    const depthLayers = document.querySelectorAll('.depth-layer');
+    depthLayers.forEach(layer => {
+        if (layer.classList.contains('layer-near')) {
+            layer.style.transform = `translateX(${normalizedX * 30}px) translateY(${normalizedY * 30}px) translateZ(100px)`;
+        } else if (layer.classList.contains('layer-mid')) {
+            layer.style.transform = `translateX(${normalizedX * 15}px) translateY(${normalizedY * 15}px)`;
+        } else if (layer.classList.contains('layer-far')) {
+            layer.style.transform = `translateX(${normalizedX * 7}px) translateY(${normalizedY * 7}px) translateZ(-100px)`;
+        }
+    });
+}
+
+// Create sound-reactive visual particles
+function createSoundParticle(x, y, frequency) {
+    const particle = document.createElement('div');
+    particle.className = 'sound-particle';
+    particle.style.left = x + 'px';
+    particle.style.top = y + 'px';
+    
+    const size = Math.min(8, frequency / 100);
+    particle.style.width = size + 'px';
+    particle.style.height = size + 'px';
+    
+    const hue = (frequency / 1000) * 360;
+    particle.style.background = `hsl(${hue}, 80%, 60%)`;
+    
+    document.body.appendChild(particle);
+    setTimeout(() => particle.remove(), 1000);
+}
+
+// Initialize 3D globe with grid lines
+function init3DGlobe() {
+    const globe = document.getElementById('webgl-globe');
+    if (globe) {
+        const container = globe.parentElement;
+        // Add grid lines to globe
+        for (let i = 0; i < 5; i++) {
+            const gridline = document.createElement('div');
+            gridline.className = 'globe-gridline';
+            container.appendChild(gridline);
+        }
+    }
+}
+
+// Initialize 3D card interactions that trigger sounds and particles - mobile optimized
+function init3DCardInteractions() {
+    const cards = document.querySelectorAll('.committee-card');
+    const particleCount = isMobile ? 5 : 15; // Fewer particles on mobile
+    
+    const triggerCardEffects = (e) => {
+        if (isMobile) return; // Disable heavy effects on mobile
+        
+        const rect = e.currentTarget.getBoundingClientRect();
+        const centerX = rect.left + rect.width / 2;
+        const centerY = rect.top + rect.height / 2;
+        
+        initSpatialAudio();
+        
+        // Play 3D sound at card location
+        play3DSound(
+            (centerX / window.innerWidth - 0.5) * 10,
+            -(centerY / window.innerHeight - 0.5) * 10,
+            5,
+            520 + Math.random() * 200,
+            0.5
+        );
+        
+        // Create particle burst
+        for (let i = 0; i < particleCount; i++) {
+            setTimeout(() => {
+                createSoundParticle(
+                    centerX + (Math.random() - 0.5) * 200,
+                    centerY + (Math.random() - 0.5) * 200,
+                    400 + Math.random() * 800
+                );
+            }, i * 30);
+        }
+    };
+    
+    cards.forEach(card => {
+        // Desktop events
+        if (!isMobile) {
+            card.addEventListener('mouseenter', triggerCardEffects);
+        }
+        
+        // Mobile touch event - simplified
+        if (isMobile) {
+            card.addEventListener('touchstart', (e) => {
+                // Only add simple scale effect, no heavy particles
+                card.style.transform = 'scale(1.03)';
+                setTimeout(() => {
+                    card.style.transform = 'scale(1)';
+                }, 300);
+            }, { passive: true });
+        }
+    });
+}
+
+// Scroll-triggered depth effects
+function initScrollDepth() {
+    window.addEventListener('scroll', () => {
+        const scrollY = window.scrollY;
+        const depthLayers = document.querySelectorAll('.depth-layer');
+        
+        depthLayers.forEach(layer => {
+            if (layer.classList.contains('layer-far')) {
+                layer.style.transform = `translateY(${scrollY * 0.1}px) translateZ(-100px)`;
+            } else if (layer.classList.contains('layer-mid')) {
+                layer.style.transform = `translateY(${scrollY * 0.3}px)`;
+            } else if (layer.classList.contains('layer-near')) {
+                layer.style.transform = `translateY(${scrollY * 0.5}px) translateZ(100px)`;
+            }
+        });
+    });
+}
+
+// Integrate with your existing mousemove tracking
+const originalMouseMove = (e) => {
+    currentMouseX = e.clientX;
+    currentMouseY = e.clientY;
+    update3DParallax();
+};
+document.addEventListener('mousemove', originalMouseMove);
+
+// Initialize all 3D features when page is ready
+document.addEventListener('DOMContentLoaded', () => {
+    init3DGlobe();
+    init3DCardInteractions();
+    initScrollDepth();
+    initSpatialAudio();
+});
+
+// Initialize spatial audio on first user interaction (works with your existing system)
+document.addEventListener('click', initSpatialAudio, { once: true });
+
+// ===========================================
+// CINEMATIC ANIMATION TRIGGERS & INTERACTIVITY
+// ===========================================
+
+// Intersection Observer for scroll-triggered animations
+const animationObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.classList.add('active', 'animate-in');
+            
+            // Stagger committee cards when they come into view
+            const cards = entry.target.querySelectorAll('.committee-card');
+            cards.forEach((card, index) => {
+                card.classList.add(`stagger-${(index % 6) + 1}`);
+            });
+        }
+    });
+}, { threshold: 0.15, rootMargin: '-50px' });
+
+// Observe all reveal sections and committee cards
+document.querySelectorAll('.reveal, .committee-card').forEach(el => {
+    animationObserver.observe(el);
+});
+
+// Page transition system for navigation links
+function initPageTransitions() {
+    // Add transition overlay to body
+    const transition = document.createElement('div');
+    transition.className = 'page-transition';
+    document.body.appendChild(transition);
+    
+    // Add click handlers to all internal navigation links
+    document.querySelectorAll('a[href^="#"]').forEach(link => {
+        link.addEventListener('click', (e) => {
+            const href = link.getAttribute('href');
+            if (href.startsWith('#') && href.length > 1) {
+                e.preventDefault();
+                transition.classList.add('active');
+                
+                // Play transition sound effect
+                initSpatialAudio();
+                play3DSound(0, 0, 5, 300, 0.8);
+                
+                // Wait for transition to complete before scrolling
+                setTimeout(() => {
+                    const target = document.querySelector(href);
+                    if (target) {
+                        target.scrollIntoView({ behavior: 'smooth' });
+                        setTimeout(() => {
+                            transition.classList.remove('active');
+                            // Play transition out sound
+                            play3DSound(0, 0, 5, 600, 0.5);
+                        }, 500);
+                    }
+                }, 800);
+            }
+        });
+    });
+}
+
+// Countdown number flip animation trigger
+function initCountdownAnimation() {
+    const countdownNumbers = document.querySelectorAll('.countdown-item span');
+    setInterval(() => {
+        countdownNumbers.forEach(num => {
+            num.style.animation = 'none';
+            num.offsetHeight; // Trigger reflow
+            num.style.animation = 'number-flip 0.8s ease';
+        });
+    }, 60000); // Flip every minute
+}
+
+// Hero text wave character animation
+function initHeroTextAnimation() {
+    const heroTitle = document.querySelector('.hero-content h1');
+    if (heroTitle) {
+        const text = heroTitle.textContent;
+        heroTitle.innerHTML = text.split('').map((char, i) => {
+            if (char === ' ') return ' ';
+            return `<span style="animation-delay: ${i * 0.05}s">${char}</span>`;
+        }).join('');
+    }
+}
+
+// 3D image tilt effect on mouse move for all image containers
+function init3DImageTilt() {
+    document.querySelectorAll('.image-3d-container').forEach(container => {
+        container.addEventListener('mousemove', (e) => {
+            const rect = container.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            
+            const centerX = rect.width / 2;
+            const centerY = rect.height / 2;
+            
+            const rotateX = (y - centerY) / 10;
+            const rotateY = (centerX - x) / 10;
+            
+            const img = container.querySelector('img');
+            if (img) {
+                img.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateZ(30px)`;
+            }
+        });
+        
+        container.addEventListener('mouseleave', () => {
+            const img = container.querySelector('img');
+            if (img) {
+                img.style.transform = 'rotateX(0deg) rotateY(0deg) translateZ(0)';
+            }
+        });
+    });
+}
+
+// Mobile detection utility
+function isMobileDevice() {
+    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) 
+           || window.innerWidth <= 768 
+           || navigator.maxTouchPoints > 0;
+}
+
+const isMobile = isMobileDevice();
+
+// Ambient particle generator optimized for mobile
+function initAmbientParticles() {
+    const interval = isMobile ? 2000 : 500; // Less frequent particles on mobile
+    const chance = isMobile ? 0.9 : 0.7; // Fewer particles overall on mobile
+    
+    setInterval(() => {
+        if (Math.random() > chance && !isMobile) {
+            createSoundParticle(
+                Math.random() * window.innerWidth,
+                Math.random() * window.innerHeight,
+                200 + Math.random() * 1000
+            );
+        }
+    }, interval);
+}
+
+// Initialize all cinematic animations
+document.addEventListener('DOMContentLoaded', () => {
+    initPageTransitions();
+    initCountdownAnimation();
+    initHeroTextAnimation();
+    init3DImageTilt();
+    initAmbientParticles();
+    
+    // Trigger initial animations after page loads
+    setTimeout(() => {
+        document.querySelectorAll('.reveal').forEach((section, index) => {
+            setTimeout(() => {
+                section.classList.add('active');
+            }, index * 200);
+        });
+    }, 2000);
+});

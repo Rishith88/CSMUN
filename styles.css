@@ -2131,3 +2131,745 @@ footer p {
 .intro-words .intro-word {
     font-weight: 900;
 }
+
+/* ===========================================
+   FULL 3D CSS EXPERIENCES & IMMERSIVE EFFECTS
+   =========================================== */
+
+/* 3D Scene Perspective Container */
+.scene-3d {
+    perspective: 2000px;
+    perspective-origin: 50% 50%;
+    transform-style: preserve-3d;
+}
+
+/* 3D Parallax City Skyline Background */
+.cityscape-3d {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 60vh;
+    transform-style: preserve-3d;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.skyline-layer {
+    position: absolute;
+    bottom: 0;
+    width: 200%;
+    height: 100%;
+    background-repeat: repeat-x;
+    background-position: bottom center;
+    transform-style: preserve-3d;
+    transition: transform 0.1s ease-out;
+}
+
+.skyline-back {
+    transform: translateZ(-500px) scale(1.5);
+    background: linear-gradient(180deg, transparent 40%, rgba(10, 10, 30, 0.8) 100%);
+    opacity: 0.3;
+}
+
+.skyline-mid {
+    transform: translateZ(-200px) scale(1.2);
+    background: linear-gradient(180deg, transparent 50%, rgba(20, 20, 50, 0.9) 100%);
+    opacity: 0.5;
+}
+
+.skyline-front {
+    transform: translateZ(0px);
+    background: linear-gradient(180deg, transparent 60%, rgba(30, 30, 70, 1) 100%);
+    opacity: 0.8;
+}
+
+/* 3D Holographic Committee Cards - TRUE 3D CSS */
+.committee-card {
+    transform-style: preserve-3d;
+    perspective: 1000px;
+    transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.committee-card:hover {
+    transform: rotateY(15deg) rotateX(5deg) translateZ(50px) scale(1.05);
+    box-shadow: 
+        -30px 30px 60px rgba(0, 0, 0, 0.5),
+        0 0 80px rgba(250, 204, 21, 0.2),
+        inset 0 0 30px rgba(250, 204, 21, 0.1);
+}
+
+.committee-card::before {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    background: linear-gradient(45deg, 
+        #facc15, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4, #facc15);
+    background-size: 400% 400%;
+    animation: holographic-shift 3s ease infinite;
+    filter: blur(10px);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    z-index: -1;
+    border-radius: inherit;
+}
+
+.committee-card:hover::before {
+    opacity: 0.7;
+}
+
+@keyframes holographic-shift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* 3D CSS Globe - Pure CSS 3D Earth Sphere */
+.globe-container {
+    width: 400px;
+    height: 400px;
+    position: relative;
+    transform-style: preserve-3d;
+    animation: globe-spin 60s linear infinite;
+    margin: 4rem auto;
+}
+
+#webgl-globe {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: 
+        radial-gradient(circle at 30% 30%, rgba(69, 183, 209, 0.8), transparent 50%),
+        radial-gradient(circle at 70% 70%, rgba(78, 205, 196, 0.6), transparent 50%),
+        linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+    box-shadow: 
+        inset -50px -50px 100px rgba(0,0,0,0.8),
+        inset 20px 20px 60px rgba(255,255,255,0.1),
+        0 0 100px rgba(69, 183, 209, 0.4),
+        0 0 200px rgba(78, 205, 196, 0.2);
+    transform-style: preserve-3d;
+}
+
+.globe-gridline {
+    position: absolute;
+    border: 1px solid rgba(250, 204, 21, 0.15);
+    border-radius: 50%;
+    transform-style: preserve-3d;
+}
+
+/* 3D Globe Location Markers */
+.globe-marker {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    background: var(--gold);
+    border-radius: 50%;
+    transform-style: preserve-3d;
+    animation: marker-pulse 2s ease-in-out infinite;
+    box-shadow: 0 0 30px var(--gold), 0 0 60px rgba(250, 204, 21, 0.5);
+}
+
+.globe-marker[data-location="newyork"] { top: 35%; left: 25%; }
+.globe-marker[data-location="geneva"] { top: 30%; left: 45%; }
+.globe-marker[data-location="newdelhi"] { top: 40%; left: 75%; }
+
+@keyframes marker-pulse {
+    0%, 100% { transform: translateZ(200px) scale(1); opacity: 1; }
+    50% { transform: translateZ(220px) scale(1.5); opacity: 0.7; }
+}
+
+@keyframes globe-spin {
+    from { transform: rotateY(0deg) rotateX(15deg); }
+    to { transform: rotateY(360deg) rotateX(15deg); }
+}
+
+/* 3D Mouse-tracking Parallax System */
+.parallax-3d {
+    transform-style: preserve-3d;
+    transition: transform 0.05s linear;
+}
+
+/* 3D Floating UN Building Models */
+.building-3d {
+    position: absolute;
+    transform-style: preserve-3d;
+    animation: float-building 20s ease-in-out infinite;
+}
+
+.building-face {
+    position: absolute;
+    background: linear-gradient(135deg, rgba(30,30,60,0.9), rgba(20,20,40,0.95));
+    border: 1px solid rgba(250, 204, 21, 0.2);
+    transform-style: preserve-3d;
+}
+
+.building-front { transform: translateZ(50px); width: 100px; height: 100px; }
+.building-back { transform: rotateY(180deg) translateZ(50px); width: 100px; height: 100px; }
+.building-left { transform: rotateY(-90deg) translateZ(50px); width: 100px; height: 100px; }
+.building-right { transform: rotateY(90deg) translateZ(50px); width: 100px; height: 100px; }
+.building-top { transform: rotateX(90deg) translateZ(50px); width: 100px; height: 100px; }
+.building-bottom { transform: rotateX(-90deg) translateZ(50px); width: 100px; height: 100px; }
+
+@keyframes float-building {
+    0%, 100% { transform: translateY(0) rotateY(0deg); }
+    25% { transform: translateY(-20px) rotateY(90deg); }
+    50% { transform: translateY(0) rotateY(180deg); }
+    75% { transform: translateY(-15px) rotateY(270deg); }
+}
+
+/* 3D Audio Visualizer Particles - React to Sound */
+.sound-particle {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: var(--gold);
+    border-radius: 50%;
+    transform-style: preserve-3d;
+    pointer-events: none;
+    animation: sound-particle-expand 1s ease-out forwards;
+    z-index: 9999;
+}
+
+@keyframes sound-particle-expand {
+    0% { transform: translateZ(0) scale(1); opacity: 1; }
+    100% { transform: translateZ(300px) scale(0); opacity: 0; }
+}
+
+/* 3D Scroll-triggered Depth Effects */
+.depth-layer {
+    transform-style: preserve-3d;
+    will-change: transform;
+}
+
+.layer-near { transform: translateZ(100px); }
+.layer-mid { transform: translateZ(0px); }
+.layer-far { transform: translateZ(-100px); }
+
+/* 3D Interactive Navigation with depth */
+.nav-links a {
+    transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+    transform-style: preserve-3d;
+}
+
+.nav-links a:hover {
+    transform: translateZ(30px) scale(1.1);
+    text-shadow: 0 0 30px var(--gold);
+}
+
+/* 3D Hero Section Enhancement */
+.hero-3d-orbit {
+    transform-style: preserve-3d;
+    perspective: 1000px;
+}
+
+.hero-logo {
+    transform-style: preserve-3d;
+    animation: hero-logo-float 6s ease-in-out infinite;
+}
+
+@keyframes hero-logo-float {
+    0%, 100% { transform: translateZ(0) rotateY(0deg); }
+    50% { transform: translateZ(50px) rotateY(180deg); }
+}
+
+.orbit-text {
+    transform-style: preserve-3d;
+    animation: orbit-text-float 4s ease-in-out infinite;
+}
+
+.orbit-text-1 { animation-delay: 0s; }
+.orbit-text-2 { animation-delay: 1.3s; }
+.orbit-text-3 { animation-delay: 2.6s; }
+
+@keyframes orbit-text-float {
+    0%, 100% { transform: translateZ(0) translateY(0); }
+    50% { transform: translateZ(100px) translateY(-10px); }
+}
+
+/* Responsive 3D adjustments */
+@media (max-width: 768px) {
+    .globe-container {
+        width: 280px;
+        height: 280px;
+    }
+    
+    .committee-card:hover {
+        transform: rotateY(5deg) rotateX(2deg) translateZ(20px) scale(1.02);
+    }
+    
+    .scene-3d {
+        perspective: 1000px;
+    }
+}
+
+/* ===========================================
+   CINEMATIC ANIMATIONS & TRANSITIONS ENHANCEMENTS
+   Amazing entrance, exit, and transition effects
+=========================================== */
+
+/* Page load cinematic sequence */
+@keyframes cinematic-reveal {
+    0% { clip-path: inset(0 100% 0 0); opacity: 0; }
+    100% { clip-path: inset(0 0 0 0); opacity: 1; }
+}
+
+/* Smooth morphing background for hero section */
+@keyframes morph-background {
+    0%, 100% { transform: scale(1) rotate(0deg); filter: hue-rotate(0deg); }
+    25% { transform: scale(1.1) rotate(2deg); filter: hue-rotate(30deg); }
+    50% { transform: scale(1.05) rotate(-1deg); filter: hue-rotate(60deg); }
+    75% { transform: scale(1.15) rotate(1deg); filter: hue-rotate(30deg); }
+}
+
+/* Floating text animation with wave effect */
+@keyframes text-float-wave {
+    0%, 100% { transform: translateY(0) translateZ(0); }
+    25% { transform: translateY(-10px) translateZ(50px); }
+    50% { transform: translateY(-5px) translateZ(30px); }
+    75% { transform: translateY(-15px) translateZ(70px); }
+}
+
+/* Glitch effect for section titles */
+@keyframes title-glitch {
+    0%, 100% { transform: translate(0); text-shadow: none; }
+    10% { transform: translate(-2px, 2px); text-shadow: 2px 0 #ff00ff, -2px 0 #00ffff; }
+    20% { transform: translate(2px, -2px); }
+    30% { transform: translate(-2px, -2px); }
+    40% { transform: translate(2px, 2px); }
+    50% { transform: translate(0); text-shadow: none; }
+}
+
+/* Smooth entrance animation for cards with stagger effect */
+@keyframes card-entrance-bounce {
+    0% { transform: translateY(100px) rotateX(30deg) scale(0.8); opacity: 0; }
+    60% { transform: translateY(-10px) rotateX(-5deg) scale(1.02); }
+    100% { transform: translateY(0) rotateX(0) scale(1); opacity: 1; }
+}
+
+/* Particle explosion animation */
+@keyframes particle-explode {
+    0% { transform: scale(0) translateZ(0); opacity: 1; }
+    50% { transform: scale(1.5) translateZ(100px); opacity: 0.8; }
+    100% { transform: scale(0) translateZ(200px); opacity: 0; }
+}
+
+/* 3D image tilt parallax on mouse move */
+@keyframes image-3d-tilt {
+    0%, 100% { transform: rotateX(0deg) rotateY(0deg); }
+}
+
+/* Gradient border animation for cards */
+@keyframes gradient-border-spin {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* Countdown number flip animation */
+@keyframes number-flip {
+    0% { transform: rotateX(0deg) translateZ(50px); }
+    50% { transform: rotateX(90deg) translateZ(100px); }
+    100% { transform: rotateX(0deg) translateZ(50px); }
+}
+
+/* Navbar 3D slide-in effect */
+@keyframes navbar-slide-in-3d {
+    0% { transform: translateY(-100%) translateZ(-200px) rotateX(45deg); opacity: 0; }
+    100% { transform: translateY(0) translateZ(0) rotateX(0deg); opacity: 1; }
+}
+
+/* Hero content cinematic fly-in */
+@keyframes hero-fly-in-3d {
+    0% { transform: translateZ(-500px) rotateY(-45deg) scale(0.5); opacity: 0; }
+    70% { transform: translateZ(50px) rotateY(5deg) scale(1.1); }
+    100% { transform: translateZ(0) rotateY(0deg) scale(1); opacity: 1; }
+}
+
+/* Stagger animation classes for sequential card loading */
+.stagger-1 { animation-delay: 0.1s; }
+.stagger-2 { animation-delay: 0.2s; }
+.stagger-3 { animation-delay: 0.3s; }
+.stagger-4 { animation-delay: 0.4s; }
+.stagger-5 { animation-delay: 0.5s; }
+.stagger-6 { animation-delay: 0.6s; }
+
+/* Apply animations to page elements */
+.navbar {
+    animation: navbar-slide-in-3d 1.2s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+}
+
+.hero-content {
+    animation: hero-fly-in-3d 1.8s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+}
+
+.section-title {
+    animation: cinematic-reveal 1.5s ease both;
+}
+
+.section-title:hover {
+    animation: title-glitch 1s linear infinite;
+}
+
+.countdown-item span {
+    animation: number-flip 0.8s ease;
+}
+
+/* Morphing background for hero section */
+.hero::before {
+    animation: morph-background 20s ease-in-out infinite;
+}
+
+/* Hero title wave float */
+.hero-content h1 span {
+    display: inline-block;
+    animation: text-float-wave 3s ease-in-out infinite;
+}
+.hero-content h1 span:nth-child(even) {
+    animation-delay: 0.5s;
+}
+.hero-content h1 span:nth-child(3n) {
+    animation-delay: 1s;
+}
+
+/* Committee cards entrance animations */
+.committee-card {
+    animation: card-entrance-bounce 1s cubic-bezier(0.68, -0.55, 0.265, 1.55) both;
+    position: relative;
+}
+
+/* Animate in cards when they come into view */
+.committee-card.animate-in {
+    animation: card-entrance-bounce 1s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
+}
+
+/* Enhanced holographic gradient border on hover */
+.committee-card::before {
+    content: '';
+    position: absolute;
+    inset: -3px;
+    background: linear-gradient(45deg, #facc15, #ff6b6b, #4ecdc4, #45b7d1, #facc15);
+    background-size: 400% 400%;
+    border-radius: inherit;
+    z-index: -1;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    animation: gradient-border-spin 3s linear infinite;
+}
+
+.committee-card:hover::before {
+    opacity: 1;
+}
+
+/* Sound particles explosion animation */
+.sound-particle {
+    animation: particle-explode 1s ease-out forwards;
+}
+
+/* Smooth page transition between navigation */
+.page-transition {
+    position: fixed;
+    inset: 0;
+    background: #0a0a0f;
+    z-index: 99999;
+    transform: translateY(100%);
+    transition: transform 0.8s cubic-bezier(0.77, 0, 0.175, 1);
+}
+
+.page-transition.active {
+    transform: translateY(0);
+}
+
+/* Scroll-triggered reveal animations with 3D */
+.reveal {
+    opacity: 0;
+    transform: translateY(50px) translateZ(-100px) rotateX(20deg);
+    transition: all 1s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.reveal.active {
+    opacity: 1;
+    transform: translateY(0) translateZ(0) rotateX(0deg);
+}
+
+/* Image 3D tilt effect container */
+.image-3d-container {
+    perspective: 1000px;
+    transform-style: preserve-3d;
+}
+
+.image-3d-container img {
+    transition: transform 0.5s ease;
+    transform-style: preserve-3d;
+}
+
+.image-3d-container:hover img {
+    transform: rotateX(15deg) rotateY(-15deg) translateZ(30px);
+    box-shadow: 30px 30px 60px rgba(0,0,0,0.5);
+}
+
+/* Floating UN building enhanced animation */
+.un-building {
+    animation: building-float 8s ease-in-out infinite;
+}
+@keyframes building-float {
+    0%, 100% { transform: translateY(0) translateZ(0) rotateX(0deg); }
+    25% { transform: translateY(-20px) translateZ(50px) rotateX(5deg); }
+    50% { transform: translateY(-10px) translateZ(30px) rotateX(-3deg); }
+    75% { transform: translateY(-30px) translateZ(70px) rotateX(2deg); }
+}
+
+/* Globe enhanced rotation with depth */
+@keyframes globe-spin-enhanced {
+    from { transform: rotateY(0deg) rotateX(15deg) translateZ(0); }
+    50% { transform: rotateY(180deg) rotateX(15deg) translateZ(100px); }
+    to { transform: rotateY(360deg) rotateX(15deg) translateZ(0); }
+}
+.globe-container {
+    animation: globe-spin-enhanced 60s linear infinite;
+}
+
+/* Smooth scrolling with momentum */
+html {
+    scroll-behavior: smooth;
+    scroll-snap-type: y proximity;
+}
+
+section {
+    scroll-snap-align: start;
+}
+
+/* ===========================================
+   MOBILE RESPONSIVE 3D ENHANCEMENTS
+   Optimized for all touchscreen devices
+=========================================== */
+@media (max-width: 768px) {
+    /* Reduce perspective for smaller screens to prevent distortion */
+    .scene-3d {
+        perspective: 800px !important;
+        perspective-origin: 50% 40%;
+    }
+    
+    /* Adjust globe size and disable complex animations on mobile */
+    .globe-container {
+        width: 260px !important;
+        height: 260px !important;
+        margin: 2rem auto !important;
+        animation: globe-spin-simple 45s linear infinite !important;
+    }
+    
+    @keyframes globe-spin-simple {
+        from { transform: rotateY(0deg) rotateX(10deg); }
+        to { transform: rotateY(360deg) rotateX(10deg); }
+    }
+    
+    /* Simplify committee card 3D effects for touchscreens */
+    .committee-card {
+        transform-style: flat !important;
+        animation: mobile-card-fade 0.8s ease both !important;
+    }
+    
+    .committee-card:hover, .committee-card:active {
+        transform: scale(1.03) !important;
+        box-shadow: 0 10px 40px rgba(250, 204, 21, 0.3) !important;
+    }
+    
+    .committee-card::before {
+        inset: -2px !important;
+    }
+    
+    /* Disable complex parallax to prevent performance issues */
+    .cityscape-3d .skyline-layer {
+        transform: none !important;
+        opacity: 0.5 !important;
+    }
+    
+    /* Hero content scaling for mobile */
+    .hero-content {
+        animation: mobile-hero-fade 1.5s ease both !important;
+        padding: 0 1rem;
+    }
+    
+    @keyframes mobile-hero-fade {
+        0% { opacity: 0; transform: translateY(50px); }
+        100% { opacity: 1; transform: translateY(0); }
+    }
+    
+    /* Navbar mobile optimization */
+    .navbar {
+        animation: mobile-navbar-fade 1s ease both !important;
+        backdrop-filter: blur(10px);
+        background: rgba(10, 10, 15, 0.9);
+    }
+    
+    @keyframes mobile-navbar-fade {
+        0% { opacity: 0; transform: translateY(-100%); }
+        100% { opacity: 1; transform: translateY(0); }
+    }
+    
+    /* Section titles mobile optimization */
+    .section-title {
+        font-size: 1.8rem !important;
+        animation: mobile-section-fade 1s ease both !important;
+    }
+    
+    .section-title:hover {
+        animation: none !important; /* Disable glitch on mobile for better performance */
+    }
+    
+    @keyframes mobile-section-fade {
+        0% { opacity: 0; clip-path: inset(0 100% 0 0); }
+        100% { opacity: 1; clip-path: inset(0 0 0 0); }
+    }
+    
+    /* Reduce particle count and size on mobile to save performance */
+    .sound-particle {
+        animation: mobile-particle-fade 0.6s ease-out forwards !important;
+    }
+    
+    @keyframes mobile-particle-fade {
+        0% { transform: scale(1); opacity: 1; }
+        100% { transform: scale(0.5); opacity: 0; }
+    }
+    
+    /* Countdown mobile optimization */
+    .countdown-item {
+        padding: 0.8rem !important;
+        min-width: 70px !important;
+    }
+    
+    .countdown-item span {
+        font-size: 1.5rem !important;
+        animation: mobile-countdown-flip 0.5s ease !important;
+    }
+    
+    @keyframes mobile-countdown-flip {
+        0% { transform: rotateX(90deg); }
+        100% { transform: rotateX(0); }
+    }
+    
+    /* Disable scroll-snap on small mobile screens for better UX */
+    html {
+        scroll-snap-type: none !important;
+    }
+    
+    section {
+        scroll-snap-align: none !important;
+    }
+    
+    /* Reveal animations simplified for mobile */
+    .reveal {
+        transform: translateY(30px) !important;
+        opacity: 0;
+    }
+    
+    .reveal.active {
+        transform: translateY(0) !important;
+        opacity: 1;
+    }
+    
+    /* 3D image tilt disabled on mobile - use simple scale instead */
+    .image-3d-container:hover img {
+        transform: scale(1.05) !important;
+        box-shadow: 0 15px 35px rgba(0,0,0,0.4) !important;
+    }
+    
+    /* UN building animation simplified */
+    .un-building {
+        animation: mobile-building-float 6s ease-in-out infinite !important;
+    }
+    
+    @keyframes mobile-building-float {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-10px); }
+    }
+    
+    /* Reduce ambient particle generation frequency */
+    .page-transition {
+        transition: transform 0.5s ease !important;
+    }
+    
+    /* Touch-friendly button sizes */
+    .btn-primary, .btn-secondary {
+        padding: 0.8rem 1.5rem !important;
+        font-size: 0.9rem !important;
+        min-width: 120px;
+        min-height: 48px; /* WCAG touch target size */
+    }
+    
+    /* Stagger delays reduced for faster mobile rendering */
+    .stagger-1, .stagger-2, .stagger-3, .stagger-4, .stagger-5, .stagger-6 {
+        animation-delay: 0.05s !important;
+    }
+    
+    /* Hero title character animations disabled on mobile to fix layout */
+    .hero-content h1 span {
+        animation: none !important;
+        display: inline;
+    }
+    
+    /* Depth layers simplified for mobile */
+    .depth-layer {
+        transform: none !important;
+    }
+    
+    /* Globe markers smaller on mobile */
+    .globe-marker {
+        width: 8px !important;
+        height: 8px !important;
+    }
+}
+
+/* Extra small devices (phones < 480px) */
+@media (max-width: 480px) {
+    .globe-container {
+        width: 220px !important;
+        height: 220px !important;
+    }
+    
+    .section-title {
+        font-size: 1.5rem !important;
+    }
+    
+    .hero-content h1 {
+        font-size: 2rem !important;
+        line-height: 1.2 !important;
+    }
+    
+    .countdown {
+        gap: 0.5rem !important;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    
+    .committee-card {
+        margin: 0.5rem !important;
+    }
+}
+
+/* Tablet support (769px - 1024px) */
+@media (min-width: 769px) and (max-width: 1024px) {
+    .scene-3d {
+        perspective: 1500px;
+    }
+    
+    .globe-container {
+        width: 320px;
+        height: 320px;
+    }
+    
+    .committee-card:hover {
+        transform: rotateY(8deg) rotateX(3deg) translateZ(30px) scale(1.03);
+    }
+}
+
+/* High DPI and large screen optimizations */
+@media (min-width: 1921px) {
+    .scene-3d {
+        perspective: 3000px;
+    }
+    
+    .globe-container {
+        width: 500px;
+        height: 500px;
+    }
+}

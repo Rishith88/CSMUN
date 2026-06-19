@@ -12,7 +12,20 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&family=Playfair+Display:wght@700;800;900&display=swap" rel="stylesheet">
 </head>
-<body>
+<body class="scene-3d">
+    <!-- 3D Cityscape Background Layers -->
+    <div class="cityscape-3d">
+        <div class="skyline-layer skyline-back"></div>
+        <div class="skyline-layer skyline-mid"></div>
+        <div class="skyline-layer skyline-front"></div>
+    </div>
+    
+    <!-- Audio System for 3D Spatial Sound Effects -->
+    <div id="audio-container" style="display:none;">
+        <audio id="ambient-bg" loop preload="auto">
+            <source src="data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdH2Onp+Xl5eYnJ6am5uffHx8fLy8vP39/P19fX09PT09PT09PT09PT09PT09fX19fX19fX19fX19fX19fX29vb29vb29vb29vb29vb29vb29tbW1tbW1tbW1tbW1tbW1tbW1tbW1paWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaVlZWVlZWVlZWVlZWVlZWVlZWVlZWUlJSUlJSUlJSUlJSUlJSUlJSgoKCgoKCgoKCgoKCgoKCgoKCgoKAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIA==" type="audio/wav">
+        </audio>
+    </div>
 
     <!-- Preloader -->
     <div id="preloader">
@@ -191,6 +204,13 @@
 <section id="committees" class="committees-section reveal">
     <div class="container">
         <h2 class="section-title">Our Committees</h2>
+        <!-- 3D CSS Globe showing committee headquarters locations -->
+        <div class="globe-container depth-layer layer-mid">
+            <div id="webgl-globe"></div>
+            <div class="globe-marker" data-location="newyork" data-committee="UNSC"></div>
+            <div class="globe-marker" data-location="geneva" data-committee="UNHRC"></div>
+            <div class="globe-marker" data-location="newdelhi" data-committee="Lok Sabha"></div>
+        </div>
         <div class="committees-grid">
 
             <div class="committee-card">
