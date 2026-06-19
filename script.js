@@ -10,12 +10,130 @@ console.log('%c🐛 Found something broken? Congrats — you\'re now QA. Fix it 
 // CSMUN 2026 - Optimized Interactions (Performance Edition)
 // ============================================================
 
-// ---- Voice / Audio Effects (lazy, pooled) ----
+// ---- ElevenLabs Configuration ----
+// Get your free API key at https://elevenlabs.io
+const ELEVEN_LABS_API_KEY = ''; // <-- Paste your API key here
+const ELEVEN_VOICE_ID = 'ODq5zmih8GrVes37Dizd'; // Patrick — deep, cinematic male voice
+
+// ---- Cinematic Music + Voice (ElevenLabs) ----
 let audioCtx = null;
 function getAudioCtx() {
     if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
     if (audioCtx.state === 'suspended') audioCtx.resume();
     return audioCtx;
+}
+
+// Synthesized cinematic drone/sting
+let musicNodes = [];
+function stopCinematicMusic() {
+    musicNodes.forEach(n => { try { n.stop(); } catch (_) {} });
+    musicNodes = [];
+}
+
+function playCinematicIntro() {
+    try {
+        const ctx = getAudioCtx();
+        const t = ctx.currentTime;
+
+        // Low orchestral pad — multiple detuned sawtooth oscillators
+        const padGain = ctx.createGain();
+        padGain.gain.setValueAtTime(0, t);
+        padGain.gain.linearRampToValueAtTime(0.06, t + 1.5);
+        padGain.gain.linearRampToValueAtTime(0.04, t + 6);
+        padGain.gain.linearRampToValueAtTime(0.001, t + 13);
+        padGain.connect(ctx.destination);
+
+        [55, 65, 82, 110].forEach((freq, i) => {
+            const osc = ctx.createOscillator();
+            const gain = ctx.createGain();
+            osc.type = 'sawtooth';
+            osc.frequency.setValueAtTime(freq + i * 0.5, t);
+            const filter = ctx.createBiquadFilter();
+            filter.type = 'lowpass';
+            filter.frequency.setValueAtTime(400, t);
+            filter.frequency.linearRampToValueAtTime(800, t + 4);
+            osc.connect(filter);
+            filter.connect(gain);
+            gain.gain.setValueAtTime(0.15 - i * 0.03, t);
+            gain.connect(padGain);
+            osc.start(t);
+            osc.stop(t + 14);
+            musicNodes.push(osc);
+        });
+
+        // Cinematic rise — frequency sweep
+        const riseOsc = ctx.createOscillator();
+        const riseGain = ctx.createGain();
+        riseOsc.type = 'sine';
+        riseOsc.frequency.setValueAtTime(80, t + 1);
+        riseOsc.frequency.exponentialRampToValueAtTime(1200, t + 3.5);
+        riseGain.gain.setValueAtTime(0, t + 1);
+        riseGain.gain.linearRampToValueAtTime(0.08, t + 2.5);
+        riseGain.gain.linearRampToValueAtTime(0, t + 4);
+        riseOsc.connect(riseGain);
+        riseGain.connect(ctx.destination);
+        riseOsc.start(t + 1);
+        riseOsc.stop(t + 4);
+        musicNodes.push(riseOsc);
+
+        // Deep timpani hit at the climax
+        const timpOsc = ctx.createOscillator();
+        const timpGain = ctx.createGain();
+        timpOsc.type = 'triangle';
+        timpOsc.frequency.setValueAtTime(60, t + 3.5);
+        timpOsc.frequency.exponentialRampToValueAtTime(25, t + 4.5);
+        timpGain.gain.setValueAtTime(0.2, t + 3.5);
+        timpGain.gain.exponentialRampToValueAtTime(0.001, t + 5);
+        timpOsc.connect(timpGain);
+        timpGain.connect(ctx.destination);
+        timpOsc.start(t + 3.5);
+        timpOsc.stop(t + 5);
+        musicNodes.push(timpOsc);
+    } catch (_) {}
+}
+
+// Play voice via ElevenLabs API
+function speakEleven(text, delay = 0) {
+    setTimeout(async () => {
+        if (!ELEVEN_LABS_API_KEY) {
+            console.warn('ElevenLabs: no API key set. Voice skipped.');
+            return;
+        }
+        try {
+            const res = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${ELEVEN_VOICE_ID}`, {
+                method: 'POST',
+                headers: {
+                    'xi-api-key': ELEVEN_LABS_API_KEY,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    text,
+                    voice_settings: { stability: 0.4, similarity_boost: 0.85 }
+                })
+            });
+            if (!res.ok) throw new Error(`ElevenLabs API error: ${res.status}`);
+            const blob = await res.blob();
+            const url = URL.createObjectURL(blob);
+            const audio = new Audio(url);
+            audio.addEventListener('ended', () => URL.revokeObjectURL(url));
+            audio.play();
+        } catch (e) {
+            console.warn('ElevenLabs failed, falling back to Web Speech:', e);
+            fallbackSpeak(text);
+        }
+    }, delay);
+}
+
+// Fallback: Web Speech API
+function fallbackSpeak(text) {
+    if (!window.speechSynthesis) return;
+    window.speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(text);
+    u.rate = 0.65; u.pitch = 0.25; u.volume = 1; u.lang = 'en-US';
+    const voices = window.speechSynthesis.getVoices();
+    const deep = voices.find(v => v.name.includes('Daniel') || v.name.includes('James') || v.name.includes('Google UK') || v.name.includes('Male'));
+    if (deep) u.voice = deep;
+    window.speechSynthesis.speak(u);
 }
 
 // Play a short gavel-like "voice" effect (throttled, no per-hover spam)
@@ -257,23 +375,6 @@ if (preloader) {
     }, 2200);
 }
 
-// ---- Voice Narration (Web Speech API) ----
-function speak(text, delay = 0) {
-    setTimeout(() => {
-        if (!window.speechSynthesis) return;
-        window.speechSynthesis.cancel();
-        const utterance = new SpeechSynthesisUtterance(text);
-        utterance.rate = 0.65;
-        utterance.pitch = 0.25;
-        utterance.volume = 1;
-        utterance.lang = 'en-US';
-        const voices = window.speechSynthesis.getVoices();
-        const deep = voices.find(v => v.name.includes('Daniel') || v.name.includes('James') || v.name.includes('Google UK') || v.name.includes('Male'));
-        if (deep) utterance.voice = deep;
-        window.speechSynthesis.speak(utterance);
-    }, delay);
-}
-
 // ---- Dramatic Intro Sequence ----
 function startIntro() {
     const overlay = document.getElementById('introOverlay');
@@ -283,11 +384,14 @@ function startIntro() {
         return;
     }
     
-    // Pre-load voices
+// Pre-load voices for fallback
     if (window.speechSynthesis) window.speechSynthesis.getVoices();
     
     overlay.classList.add('active');
     document.body.style.overflow = 'hidden';
+    
+    // Start cinematic music
+    playCinematicIntro();
     
     // Create particles
     const pc = overlay.querySelector('.intro-particles');
@@ -337,7 +441,7 @@ function startIntro() {
     
     setTimeout(() => {
         if (welcome) welcome.classList.add('show');
-        speak("Welcome to CSMUN. Here we debate with passion, confidence and utmost diplomacy. We believe in Deliberare, Decernere, Perficere which translates to Deliberate, Decide, Deliver.", 500);
+        speakEleven("Welcome to CSMUN. Here we debate with passion, confidence and utmost diplomacy. We believe in Deliberare, Decernere, Perficere which translates to Deliberate, Decide, Deliver.", 500);
     }, 3800);
     
     // Phase 4: Enter prompt
@@ -347,6 +451,7 @@ function startIntro() {
     
     // Click/tap to dismiss
     const dismiss = () => {
+        stopCinematicMusic();
         if (window.speechSynthesis) window.speechSynthesis.cancel();
         overlay.classList.add('fade-out');
         document.body.style.overflow = '';
