@@ -12,6 +12,16 @@
 </head>
 <body>
 
+    <!-- Preloader -->
+    <div id="preloader">
+        <div class="preloader-inner">
+            <img src="images/mun-logo2.png" alt="CSMUN" class="preloader-logo">
+            <div class="preloader-ring"></div>
+            <p class="preloader-text">CSMUN 2026</p>
+            <div class="preloader-bar"><div class="preloader-fill"></div></div>
+        </div>
+    </div>
+
     <!-- Fixed Navigation -->
     <nav id="navbar">
         <div class="nav-container">
@@ -31,9 +41,26 @@
                 <a href="resources.html">Resources</a>
             </div>
 
-            <a href="index.html#register" class="btn-primary">Register Now</a>
+            <div class="nav-actions">
+                <a href="index.html#register" class="btn-primary">Register Now</a>
+                <button class="hamburger" id="hamburger" aria-label="Menu">
+                    <span></span><span></span><span></span>
+                </button>
+            </div>
         </div>
     </nav>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu" id="mobileMenu">
+        <div class="mobile-menu-links">
+            <a href="index.html">Home</a>
+            <a href="index.html#about">About</a>
+            <a href="index.html#committees">Committees</a>
+            <a href="team.html">Team</a>
+            <a href="resources.html">Resources</a>
+            <a href="index.html#register" class="btn-primary">Register Now</a>
+        </div>
+    </div>
 
     <!-- Page Header -->
     <section class="page-header">
@@ -119,6 +146,43 @@
 
         </div>
     </section>
+
+    <!-- FAQ Section -->
+    <section class="faq-section reveal">
+        <div class="container">
+            <h2 class="section-title">Frequently Asked Questions</h2>
+            <div class="faq-list">
+                <div class="faq-item">
+                    <button class="faq-question">Who can participate in CSMUN 2026? <span class="faq-icon">+</span></button>
+                    <div class="faq-answer"><p>CSMUN 2026 is open to all students from recognized schools and colleges. Both experienced delegates and first-time participants are welcome.</p></div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-question">What is the registration fee? <span class="faq-icon">+</span></button>
+                    <div class="faq-answer"><p>Registration fee details will be communicated via the official registration form and confirmation email. Early bird discounts may be available.</p></div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-question">What should I wear? <span class="faq-icon">+</span></button>
+                    <div class="faq-answer"><p>Formal business attire is mandatory. Western formal or Indian traditional attire (for Lok Sabha committee) is permitted.</p></div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-question">Can I request a specific committee or portfolio? <span class="faq-icon">+</span></button>
+                    <div class="faq-answer"><p>Yes, you can indicate your preferences in the registration form. Final allocations are at the discretion of the Secretariat based on experience and availability.</p></div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-question">Will there be training sessions for beginners? <span class="faq-icon">+</span></button>
+                    <div class="faq-answer"><p>Yes, orientation and training sessions will be conducted before and during the conference to help first-time delegates prepare.</p></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Scroll Progress Bar -->
+    <div class="progress-bar" id="progressBar"></div>
+
+    <!-- Back to Top -->
+    <button id="backToTop" class="back-to-top" aria-label="Back to top">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg>
+    </button>
 
     <!-- Footer -->
     <footer>
