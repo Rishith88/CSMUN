@@ -450,7 +450,7 @@ h1, h2, h3, h4 {
     display: flex;
     align-items: center;
     justify-content: center;
-    animation: fadeInUp 0.8s ease both;
+    animation: fadeInUp 0.8s ease both, containerOrbit 25s linear infinite;
 }
 
 .hero-logo {
@@ -532,23 +532,10 @@ h1, h2, h3, h4 {
     animation: wordOrbit3 25s linear infinite;
 }
 
-/* Orbit container spins, words counter-rotate to stay upright */
-.hero-3d-orbit {
-    position: relative;
-    width: 340px;
-    height: 340px;
-    margin: 0 auto 2rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    animation: fadeInUp 0.8s ease both;
-    animation: containerOrbit 25s linear infinite;
-}
-
-/* Container rotates 360deg */
+/* Container rotates 360deg around its center */
 @keyframes containerOrbit {
-    from { transform: translate(-50%, -50%) rotate(0deg); }
-    to { transform: translate(-50%, -50%) rotate(360deg); }
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
 }
 
 /* Words counter-rotate -360deg to stay upright while orbiting */
@@ -1516,7 +1503,7 @@ footer p {
         height: 230px;
     }
     .hero-3d-orbit {
-        animation: containerOrbit 30s linear infinite;
+        animation: fadeInUp 0.8s ease both, containerOrbit 30s linear infinite;
     }
     .orbit-text {
         font-size: 0.9rem;
@@ -2218,7 +2205,7 @@ footer p {
     opacity: 0.8;
 }
 
-/* 3D Clean Committee Cards - Smooth 3D Lift Effect */
+/* 3D Clean Committee Cards - Placard Lift Effect */
 .committee-card {
     transform-style: preserve-3d;
     perspective: 1000px;
@@ -2226,11 +2213,12 @@ footer p {
 }
 
 .committee-card:hover {
-    transform: translateY(-20px) translateZ(30px) scale(1.03);
+    transform: translateY(-28px) translateZ(50px) rotateX(4deg) scale(1.04);
     box-shadow: 
-        0 35px 70px rgba(0, 0, 0, 0.5),
-        0 0 50px rgba(250, 204, 21, 0.15);
-    border-color: rgba(250, 204, 21, 0.4);
+        0 45px 80px rgba(0, 0, 0, 0.6),
+        0 0 60px rgba(250, 204, 21, 0.2),
+        0 -10px 40px rgba(250, 204, 21, 0.08);
+    border-color: rgba(250, 204, 21, 0.5);
 }
 
 /* MUN Themed Committee Orbit - UN Headquarters inspired */
@@ -2426,30 +2414,12 @@ footer p {
 .hero-3d-orbit {
     transform-style: preserve-3d;
     perspective: 1000px;
-}
-
-.hero-logo {
+}.hero-logo {
     transform-style: preserve-3d;
-    animation: hero-logo-float 6s ease-in-out infinite;
-}
-
-@keyframes hero-logo-float {
-    0%, 100% { transform: translateZ(0) rotateY(0deg); }
-    50% { transform: translateZ(50px) rotateY(180deg); }
 }
 
 .orbit-text {
     transform-style: preserve-3d;
-    animation: orbit-text-float 4s ease-in-out infinite;
-}
-
-.orbit-text-1 { animation-delay: 0s; }
-.orbit-text-2 { animation-delay: 1.3s; }
-.orbit-text-3 { animation-delay: 2.6s; }
-
-@keyframes orbit-text-float {
-    0%, 100% { transform: translateZ(0) translateY(0); }
-    50% { transform: translateZ(100px) translateY(-10px); }
 }
 
 /* Responsive 3D adjustments */
@@ -2481,7 +2451,11 @@ footer p {
     }
     
     .committee-card:hover {
-        transform: translateY(-15px) translateZ(20px) scale(1.02);
+        transform: translateY(-18px) translateZ(30px) rotateX(3deg) scale(1.03);
+        box-shadow: 
+            0 30px 60px rgba(0, 0, 0, 0.5),
+            0 0 40px rgba(250, 204, 21, 0.15);
+        border-color: rgba(250, 204, 21, 0.4);
     }
     
     .scene-3d {
@@ -2543,13 +2517,6 @@ footer p {
 /* 3D image tilt parallax on mouse move */
 @keyframes image-3d-tilt {
     0%, 100% { transform: rotateX(0deg) rotateY(0deg); }
-}
-
-/* Gradient border animation for cards */
-@keyframes gradient-border-spin {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
 }
 
 /* Countdown number flip animation */
@@ -2627,24 +2594,6 @@ footer p {
 /* Animate in cards when they come into view */
 .committee-card.animate-in {
     animation: card-entrance-bounce 1s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
-}
-
-/* Enhanced holographic gradient border on hover */
-.committee-card::before {
-    content: '';
-    position: absolute;
-    inset: -3px;
-    background: linear-gradient(45deg, #facc15, #ff6b6b, #4ecdc4, #45b7d1, #facc15);
-    background-size: 400% 400%;
-    border-radius: inherit;
-    z-index: -1;
-    opacity: 0;
-    transition: opacity 0.3s ease;
-    animation: gradient-border-spin 3s linear infinite;
-}
-
-.committee-card:hover::before {
-    opacity: 1;
 }
 
 /* Sound particles explosion animation */
@@ -2766,12 +2715,9 @@ section {
     }
     
     .committee-card:hover, .committee-card:active {
-        transform: scale(1.03) !important;
-        box-shadow: 0 10px 40px rgba(250, 204, 21, 0.3) !important;
-    }
-    
-    .committee-card::before {
-        inset: -2px !important;
+        transform: translateY(-12px) scale(1.03) !important;
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), 0 0 30px rgba(250, 204, 21, 0.2) !important;
+        border-color: rgba(250, 204, 21, 0.4) !important;
     }
     
     /* Disable complex parallax to prevent performance issues */
@@ -2955,7 +2901,11 @@ section {
     }
     
     .committee-card:hover {
-        transform: rotateY(8deg) rotateX(3deg) translateZ(30px) scale(1.03);
+        transform: rotateY(6deg) rotateX(5deg) translateZ(40px) scale(1.04);
+        box-shadow: 
+            0 40px 70px rgba(0, 0, 0, 0.5),
+            0 0 50px rgba(250, 204, 21, 0.2);
+        border-color: rgba(250, 204, 21, 0.5);
     }
 }
 
