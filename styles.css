@@ -458,14 +458,14 @@ h1, h2, h3, h4 {
     height: 160px;
     border-radius: 50%;
     object-fit: cover;
-    border: 4px solid rgba(250, 204, 21, 0.25);
-    box-shadow: 0 0 25px rgba(250, 204, 21, 0.15), 0 0 50px rgba(250, 204, 21, 0.05);
+    border: 4px solid rgba(250, 204, 21, 0.45);
+    box-shadow: 0 0 30px rgba(250, 204, 21, 0.25), 0 0 60px rgba(250, 204, 21, 0.1);
     z-index: 10;
     position: relative;
     /* Logo is STATIC - never rotates */
     animation: heroLogoFloat 3s ease-in-out infinite;
     transform: none !important;
-    filter: brightness(0.6);
+    filter: brightness(0.65);
 }
 
 .hero-logo:hover {
@@ -2238,120 +2238,80 @@ footer p {
     border-color: rgba(250, 204, 21, 0.5);
 }
 
-/* MUN Themed Committee Orbit - UN Headquarters inspired */
-.globe-container {
-    width: 400px;
-    height: 400px;
+/* Diplomacy Visual - Committee Section Hero */
+.diplomacy-visual {
+    width: 100%;
+    max-width: 800px;
+    aspect-ratio: 16/9;
     position: relative;
     margin: 4rem auto;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    border-radius: 1.5rem;
+    overflow: hidden;
+    border: 1px solid rgba(250, 204, 21, 0.2);
+    box-shadow: 0 0 40px rgba(250, 204, 21, 0.1), 0 0 80px rgba(0, 0, 0, 0.5);
 }
 
-/* Central UN Emblem Circle */
-#webgl-globe {
-    width: 140px;
-    height: 140px;
-    border-radius: 50%;
-    background: radial-gradient(circle, #1a365d 0%, #0f172a 100%);
-    border: 3px solid var(--gold);
-    box-shadow: 
-        0 0 40px rgba(250, 204, 21, 0.3),
-        0 0 80px rgba(250, 204, 21, 0.1);
-    position: relative;
-    z-index: 2;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 2rem;
-    content: "🇺🇳";
+.diplomacy-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.8s ease;
 }
 
-#webgl-globe::after {
-    content: "🇺🇳";
+.diplomacy-visual:hover .diplomacy-img {
+    transform: scale(1.05);
 }
 
-/* Orbit rings around central UN emblem */
-.globe-container::before,
-.globe-container::after {
-    content: '';
+.diplomacy-overlay {
     position: absolute;
-    border: 1.5px solid rgba(250, 204, 21, 0.2);
-    border-radius: 50%;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(0,0,0,0.7) 0%, transparent 40%, rgba(0,0,0,0.5) 100%);
     pointer-events: none;
 }
 
-.globe-container::before {
-    width: 340px;
-    height: 340px;
-    animation: orbit-spin 30s linear infinite;
-}
-
-.globe-container::after {
-    width: 260px;
-    height: 260px;
-    border-style: dashed;
-    animation: orbit-spin 25s linear infinite reverse;
-}
-
-/* Committee location markers - MUN themed */
-.globe-marker {
+.diplomacy-content {
     position: absolute;
-    padding: 0.5rem 1rem;
-    background: rgba(15, 23, 42, 0.9);
-    border: 1px solid var(--gold);
-    border-radius: 20px;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 2.5rem;
+    background: linear-gradient(0deg, rgba(0,0,0,0.85) 0%, transparent 100%);
+}
+
+.diplomacy-badge {
+    display: inline-block;
+    background: rgba(250, 204, 21, 0.15);
+    border: 1px solid rgba(250, 204, 21, 0.3);
     color: var(--gold);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    padding: 0.4rem 1rem;
+    border-radius: 2rem;
+    margin-bottom: 0.75rem;
+}
+
+.diplomacy-title {
+    font-family: var(--font-heading);
+    font-size: clamp(1.3rem, 2.5vw, 1.8rem);
+    color: var(--white);
+    margin-bottom: 0.5rem;
+}
+
+.diplomacy-text {
+    color: var(--gray-300);
+    font-size: clamp(0.85rem, 1.5vw, 1rem);
+    line-height: 1.7;
+    font-style: italic;
+    max-width: 600px;
+}
+
+.diplomacy-text em {
+    color: var(--gold);
+    font-style: normal;
     font-weight: 600;
-    font-size: 0.9rem;
-    white-space: nowrap;
-    animation: marker-float 4s ease-in-out infinite;
-    box-shadow: 0 0 20px rgba(250, 204, 21, 0.3);
-}
-
-.globe-marker[data-location="newyork"] { 
-    top: 10%; 
-    left: 50%;
-    transform: translateX(-50%);
-    animation-delay: 0s;
-}
-.globe-marker[data-location="geneva"] { 
-    top: 50%; 
-    right: 5%;
-    transform: translateY(-50%);
-    animation-delay: 1.3s;
-}
-.globe-marker[data-location="newdelhi"] { 
-    bottom: 10%; 
-    left: 50%;
-    transform: translateX(-50%);
-    animation-delay: 2.6s;
-}
-
-@keyframes marker-float {
-    0%, 100% { transform: translateX(-50%) translateY(0); }
-    50% { transform: translateX(-50%) translateY(-10px); }
-}
-
-.globe-marker[data-location="geneva"] {
-    transform: translateY(-50%);
-}
-.globe-marker[data-location="geneva"]:hover {
-    transform: translateY(-50%) scale(1.1);
-}
-.globe-marker[data-location="geneva"]:nth-child(odd) {
-    animation: marker-float-2 4s ease-in-out infinite;
-}
-
-@keyframes marker-float-2 {
-    0%, 100% { transform: translateY(-50%) translateX(0); }
-    50% { transform: translateY(-50%) translateX(10px); }
-}
-
-@keyframes orbit-spin {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
 }
 
 /* 3D Mouse-tracking Parallax System */
@@ -2441,30 +2401,17 @@ footer p {
 
 /* Responsive 3D adjustments */
 @media (max-width: 768px) {
-    .globe-container {
-        width: 320px;
-        height: 320px;
+    .diplomacy-visual {
+        max-width: 600px;
+        margin: 2.5rem auto;
     }
     
-    .globe-container::before {
-        width: 280px;
-        height: 280px;
+    .diplomacy-content {
+        padding: 1.5rem;
     }
     
-    .globe-container::after {
-        width: 220px;
-        height: 220px;
-    }
-    
-    #webgl-globe {
-        width: 100px;
-        height: 100px;
-        font-size: 1.5rem;
-    }
-    
-    .globe-marker {
-        font-size: 0.8rem;
-        padding: 0.4rem 0.8rem;
+    .diplomacy-title {
+        font-size: 1.2rem;
     }
     
     .committee-card:hover {
@@ -2671,15 +2618,7 @@ footer p {
     75% { transform: translateY(-30px) translateZ(70px) rotateX(2deg); }
 }
 
-/* Globe enhanced rotation with depth */
-@keyframes globe-spin-enhanced {
-    from { transform: rotateY(0deg) rotateX(15deg) translateZ(0); }
-    50% { transform: rotateY(180deg) rotateX(15deg) translateZ(100px); }
-    to { transform: rotateY(360deg) rotateX(15deg) translateZ(0); }
-}
-.globe-container {
-    animation: globe-spin-enhanced 60s linear infinite;
-}
+
 
 /* Smooth scrolling with momentum */
 html {
@@ -2702,27 +2641,23 @@ section {
         perspective-origin: 50% 40%;
     }
     
-    /* Adjust globe size and disable complex animations on mobile */
-    .globe-container {
-        width: 280px !important;
-        height: 280px !important;
-        margin: 2rem auto !important;
+    /* Diplomacy visual mobile sizing */
+    .diplomacy-visual {
+        max-width: 100% !important;
+        margin: 2rem 1rem !important;
+        border-radius: 1rem !important;
     }
     
-    .globe-container::before {
-        width: 240px !important;
-        height: 240px !important;
+    .diplomacy-content {
+        padding: 1.25rem !important;
     }
     
-    .globe-container::after {
-        width: 180px !important;
-        height: 180px !important;
+    .diplomacy-title {
+        font-size: 1.1rem !important;
     }
     
-    #webgl-globe {
-        width: 80px !important;
-        height: 80px !important;
-        font-size: 1.2rem !important;
+    .diplomacy-text {
+        font-size: 0.8rem !important;
     }
     
     /* Simplify committee card 3D effects for touchscreens */
@@ -2872,11 +2807,7 @@ section {
         transform: none !important;
     }
     
-    /* Globe markers smaller on mobile */
-    .globe-marker {
-        width: 8px !important;
-        height: 8px !important;
-    }
+
 }
 
 /* Extra small devices (phones < 480px) */
@@ -2912,9 +2843,8 @@ section {
         perspective: 1500px;
     }
     
-    .globe-container {
-        width: 320px;
-        height: 320px;
+    .diplomacy-visual {
+        max-width: 650px;
     }
     
     .committee-card:hover {
@@ -2932,8 +2862,7 @@ section {
         perspective: 3000px;
     }
     
-    .globe-container {
-        width: 500px;
-        height: 500px;
+    .diplomacy-visual {
+        max-width: 900px;
     }
 }
