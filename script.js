@@ -249,15 +249,13 @@ if (!document.getElementById('rippleStyle')) {
 }
 
 // ---- Preloader ----
-window.addEventListener('load', () => {
-    const preloader = document.getElementById('preloader');
-    if (preloader) {
-        setTimeout(() => {
-            preloader.classList.add('hidden');
-            startIntro();
-        }, 2200);
-    }
-});
+const preloader = document.getElementById('preloader');
+if (preloader) {
+    setTimeout(() => {
+        preloader.classList.add('hidden');
+        startIntro();
+    }, 2200);
+}
 
 // ---- Voice Narration (Web Speech API) ----
 function speak(text, delay = 0) {
