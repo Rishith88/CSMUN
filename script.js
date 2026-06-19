@@ -488,29 +488,6 @@ function startIntro() {
     setTimeout(dismiss, 14000);
 }
 
-// ---- Registration Form Handler ----
-const registrationForm = document.getElementById('registrationForm');
-const formStatus = document.getElementById('form-status');
-
-if (registrationForm) {
-    registrationForm.addEventListener('submit', function(e) {
-        e.preventDefault();
-        
-        const formData = new FormData(this);
-        const name = formData.get('fullName');
-        
-        // Simulate form submission
-        formStatus.style.color = 'var(--gold)';
-        formStatus.textContent = 'Submitting...';
-        
-        setTimeout(() => {
-            formStatus.style.color = '#22c55e'; // A nice green
-            formStatus.innerHTML = `Thank you, ${name}! Your registration has been received. We will be in touch shortly.`;
-            this.reset();
-        }, 1500);
-    });
-}
-
 // ---- Easter egg: click "Guide to MUN" title 3 times ----
 let eggClicks = 0;
 const eggTitle = document.getElementById('easterEgg');
