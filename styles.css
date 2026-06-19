@@ -1,8 +1,10 @@
 /* ==================== RESET & VARIABLES ==================== */
+/* I spent way too long tuning these gold shades. Don't touch them. */
 *, *::before, *::after {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    /* sometimes I wonder if *::before is overkill... nah */
 }
 
 :root {
@@ -58,6 +60,40 @@ body {
     line-height: 1.6;
     cursor: none;
     -webkit-font-smoothing: antialiased;
+}
+
+/* Scrolling delegate background */
+.scroll-bg {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    overflow: hidden;
+    opacity: 0;
+    transition: opacity 0.8s ease;
+}
+.scroll-bg.loaded {
+    opacity: 0.7;
+}
+.scroll-bg .bg-layer {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center 20%;
+    will-change: transform, opacity;
+}
+.scroll-bg .bg-layer:nth-child(1) { background-image: url('images/bg1.jpg'); }
+.scroll-bg .bg-layer:nth-child(2) { background-image: url('images/bg2.jpg'); }
+.scroll-bg .bg-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg,
+        rgba(0,0,0,0.85) 0%,
+        rgba(0,0,0,0.4) 15%,
+        rgba(0,0,0,0.3) 50%,
+        rgba(0,0,0,0.4) 85%,
+        rgba(0,0,0,0.85) 100%
+    );
 }
 
 /* ==================== CUSTOM CURSOR ==================== */
@@ -1699,10 +1735,40 @@ footer p {
     opacity: 0;
     visibility: hidden;
 }
+
+/* Intro Photo Slideshow */
+.intro-slides {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    z-index: 0;
+}
+.intro-slide {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+    opacity: 0;
+    transition: opacity 1.5s ease, transform 8s ease;
+    transform: scale(1);
+}
+.intro-slide::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at center, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.85) 100%);
+}
+.intro-slide.active {
+    opacity: 1;
+    transform: scale(1.15);
+}
+
 .intro-bg {
     position: absolute;
     inset: 0;
-    background: var(--black);
+    background: radial-gradient(ellipse at center, transparent 0%, var(--black) 100%);
+    z-index: 1;
+    pointer-events: none;
 }
 .intro-bg::before {
     content: '';

@@ -5,12 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CSMUN 2026 | Cornerstone School Model United Nations</title>
     <meta name="description" content="Cornerstone School Model United Nations - Deliberate. Decide. Deliver.">
+    <meta name="author" content="Rishith & the CSMUN Tech Team">
+    <!-- TODO: Add favicon, OG tags for social media -->
     <link rel="stylesheet" href="styles.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&family=Playfair+Display:wght@700;800;900&display=swap" rel="stylesheet">
 </head>
 <body>
+
+    <!-- Scrolling delegate background -->
+    <div class="scroll-bg" id="scrollBg">
+        <div class="bg-layer"></div>
+        <div class="bg-layer"></div>
+        <div class="bg-overlay"></div>
+    </div>
 
     <!-- Preloader -->
     <div id="preloader">
@@ -24,6 +33,14 @@
 
     <!-- Dramatic Intro (first visit only) -->
     <div id="introOverlay">
+        <div class="intro-slides">
+            <div class="intro-slide active" style="background-image: url('images/committees/unsc.png')"></div>
+            <div class="intro-slide" style="background-image: url('images/committees/unhrc.png')"></div>
+            <div class="intro-slide" style="background-image: url('images/committees/disec.png')"></div>
+            <div class="intro-slide" style="background-image: url('images/committees/loksabha.png')"></div>
+            <div class="intro-slide" style="background-image: url('images/committees/ip.png')"></div>
+            <div class="intro-slide" style="background-image: url('images/committees/ipl.png')"></div>
+        </div>
         <div class="intro-bg"></div>
         <div class="intro-content">
             <div class="intro-line intro-line-1"></div>
@@ -63,6 +80,7 @@
                 <a href="#committees">Committees</a>
                 <a href="team.html">Team</a>
                 <a href="resources.html">Resources</a>
+                <a href="guide.html">Guide</a>
             </div>
 
             <a href="#register" class="btn-primary">Register Now</a>

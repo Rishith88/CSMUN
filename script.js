@@ -1,3 +1,11 @@
+/* ==========================================================
+   CSMUN 2026 — built with ❤️ by Rishith & the CSMUN team.
+   If you're reading this, you're cool. Now go debate.
+   ========================================================== */
+console.log('%c🇺🇳 CSMUN 2026 | Deliberate. Decide. Deliver.', 'font-size:24px;font-weight:bold;color:#facc15;');
+console.log('%cBuilt with ❤️ by Rishith & the CSMUN tech squad', 'font-size:14px;color:#99a1af;');
+console.log('%c🐛 Found something broken? Congrats — you\'re now QA. Fix it or tweet at us.', 'font-size:12px;color:#6b7280;font-style:italic;');
+
 // ============================================================
 // CSMUN 2026 - Optimized Interactions (Performance Edition)
 // ============================================================
@@ -300,6 +308,19 @@ function startIntro() {
     const enter = overlay.querySelector('.intro-enter');
     const line = overlay.querySelector('.intro-line');
     const divider = overlay.querySelector('.intro-divider');
+    const slides = overlay.querySelectorAll('.intro-slide');
+    
+    // Slideshow: cycle through committee photos
+    let slideIndex = 0;
+    const cycleSlides = () => {
+        slides.forEach(s => s.classList.remove('active'));
+        slideIndex = (slideIndex + 1) % slides.length;
+        slides[slideIndex].classList.add('active');
+    };
+    if (slides.length > 1) {
+        slides[0].classList.add('active');
+        setInterval(cycleSlides, 2800);
+    }
     
     // Phase 1: Line draws
     setTimeout(() => { if (line) line.classList.add('expand'); }, 400);
@@ -379,4 +400,60 @@ if (!document.getElementById('burstStyle')) {
         }
     `;
     document.head.appendChild(s);
+}
+
+// ---- Parallax Scroll Background (delegate photos crossfade) ----
+const scrollBg = document.getElementById('scrollBg');
+const bgLayers = scrollBg ? scrollBg.querySelectorAll('.bg-layer') : [];
+
+if (scrollBg && bgLayers.length === 2) {
+    bgLayers[0].style.opacity = '1';
+    bgLayers[1].style.opacity = '0';
+    requestAnimationFrame(() => scrollBg.classList.add('loaded'));
+
+    const parallaxScroll = rafThrottle(() => {
+        const scrollY = window.scrollY;
+        const maxScroll = Math.max(document.documentElement.scrollHeight - window.innerHeight, 1);
+        const progress = scrollY / maxScroll;
+        
+        bgLayers.forEach((layer, i) => {
+            const speed = i === 0 ? 0.25 : 0.45;
+            layer.style.transform = `translateY(${progress * 150 * speed}px)`;
+        });
+        
+        const fadePoint = 0.45;
+        if (progress < fadePoint) {
+            const opacity = progress / fadePoint;
+            bgLayers[0].style.opacity = String(1 - opacity);
+            bgLayers[1].style.opacity = String(opacity);
+        } else {
+            bgLayers[0].style.opacity = '0';
+            bgLayers[1].style.opacity = '1';
+        }
+    });
+    window.addEventListener('scroll', parallaxScroll, { passive: true });
+}
+
+// ---- Easter egg: click "Guide to MUN" title 3 times ----
+let eggClicks = 0;
+const eggTitle = document.getElementById('easterEgg');
+if (eggTitle) {
+    eggTitle.style.cursor = 'pointer';
+    eggTitle.addEventListener('click', () => {
+        eggClicks++;
+        if (eggClicks === 3) {
+            eggClicks = 0;
+            const msgs = [
+                '🕊️ "Diplomacy is the art of letting someone else have your way." — Lester B. Pearson',
+                '🌍 "The UN wasn\'t built to bring us to heaven, but to save us from hell." — Dag Hammarskjöld',
+                '🎤 "In MUN, you don\'t just speak — you represent. That changes how you say things."'
+            ];
+            const msg = msgs[Math.floor(Math.random() * msgs.length)];
+            const el = document.createElement('div');
+            el.style.cssText = `position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,0.95);color:var(--gold, #facc15);padding:1rem 2rem;border-radius:1rem;border:1px solid rgba(250,204,21,0.3);z-index:99999;font-size:1rem;max-width:600px;text-align:center;font-family:'Inter',sans-serif;box-shadow:0 0 40px rgba(250,204,21,0.2);animation:fadeInUp 0.5s ease;`;
+            el.textContent = msg;
+            document.body.appendChild(el);
+            setTimeout(() => { el.style.transition = 'opacity 0.5s'; el.style.opacity = '0'; setTimeout(() => el.remove(), 500); }, 4000);
+        }
+    });
 }
