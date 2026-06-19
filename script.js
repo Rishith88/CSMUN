@@ -265,12 +265,12 @@ function speak(text, delay = 0) {
         if (!window.speechSynthesis) return;
         window.speechSynthesis.cancel();
         const utterance = new SpeechSynthesisUtterance(text);
-        utterance.rate = 0.85;
-        utterance.pitch = 0.9;
+        utterance.rate = 0.65;
+        utterance.pitch = 0.25;
         utterance.volume = 1;
         utterance.lang = 'en-US';
         const voices = window.speechSynthesis.getVoices();
-        const deep = voices.find(v => v.name.includes('Male') || v.name.includes('Daniel') || v.name.includes('James') || v.name.includes('Google UK'));
+        const deep = voices.find(v => v.name.includes('Daniel') || v.name.includes('James') || v.name.includes('Google UK') || v.name.includes('Male'));
         if (deep) utterance.voice = deep;
         window.speechSynthesis.speak(utterance);
     }, delay);
@@ -395,6 +395,29 @@ if (scrollBg && bgLayers.length === 2) {
         }
     });
     window.addEventListener('scroll', parallaxScroll, { passive: true });
+}
+
+// ---- Registration Form Handler ----
+const registrationForm = document.getElementById('registrationForm');
+const formStatus = document.getElementById('form-status');
+
+if (registrationForm) {
+    registrationForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const formData = new FormData(this);
+        const name = formData.get('fullName');
+        
+        // Simulate form submission
+        formStatus.style.color = 'var(--gold)';
+        formStatus.textContent = 'Submitting...';
+        
+        setTimeout(() => {
+            formStatus.style.color = '#22c55e'; // A nice green
+            formStatus.innerHTML = `Thank you, ${name}! Your registration has been received. We will be in touch shortly.`;
+            this.reset();
+        }, 1500);
+    });
 }
 
 // ---- Easter egg: click "Guide to MUN" title 3 times ----
