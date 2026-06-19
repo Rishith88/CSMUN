@@ -811,6 +811,12 @@ img {
 .committees-section {
     padding: 6rem 0;
     position: relative;
+    overflow: hidden;
+}
+
+.committees-section .container {
+    position: relative;
+    z-index: 1;
 }
 
 .committees-grid {
@@ -2238,80 +2244,35 @@ footer p {
     border-color: rgba(250, 204, 21, 0.5);
 }
 
-/* Diplomacy Visual - Committee Section Hero */
-.diplomacy-visual {
+/* Diplomacy Background for Committees Section */
+.diplomacy-bg {
+    position: absolute;
+    inset: 0;
     width: 100%;
-    max-width: 800px;
-    aspect-ratio: 16/9;
-    position: relative;
-    margin: 4rem auto;
-    border-radius: 1.5rem;
+    height: 100%;
     overflow: hidden;
-    border: 1px solid rgba(250, 204, 21, 0.2);
-    box-shadow: 0 0 40px rgba(250, 204, 21, 0.1), 0 0 80px rgba(0, 0, 0, 0.5);
+    z-index: 0;
+    opacity: 0.2;
 }
 
-.diplomacy-img {
+.diplomacy-bg-img {
     width: 100%;
     height: 100%;
     object-fit: cover;
     display: block;
-    transition: transform 0.8s ease;
 }
 
-.diplomacy-visual:hover .diplomacy-img {
-    transform: scale(1.05);
-}
-
-.diplomacy-overlay {
+.diplomacy-bg-overlay {
     position: absolute;
     inset: 0;
-    background: linear-gradient(135deg, rgba(0,0,0,0.7) 0%, transparent 40%, rgba(0,0,0,0.5) 100%);
+    background: linear-gradient(
+        180deg,
+        rgba(0,0,0,0.9) 0%,
+        rgba(0,0,0,0.4) 40%,
+        rgba(0,0,0,0.6) 70%,
+        rgba(0,0,0,0.95) 100%
+    );
     pointer-events: none;
-}
-
-.diplomacy-content {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    padding: 2.5rem;
-    background: linear-gradient(0deg, rgba(0,0,0,0.85) 0%, transparent 100%);
-}
-
-.diplomacy-badge {
-    display: inline-block;
-    background: rgba(250, 204, 21, 0.15);
-    border: 1px solid rgba(250, 204, 21, 0.3);
-    color: var(--gold);
-    font-size: 0.75rem;
-    font-weight: 700;
-    letter-spacing: 0.25em;
-    text-transform: uppercase;
-    padding: 0.4rem 1rem;
-    border-radius: 2rem;
-    margin-bottom: 0.75rem;
-}
-
-.diplomacy-title {
-    font-family: var(--font-heading);
-    font-size: clamp(1.3rem, 2.5vw, 1.8rem);
-    color: var(--white);
-    margin-bottom: 0.5rem;
-}
-
-.diplomacy-text {
-    color: var(--gray-300);
-    font-size: clamp(0.85rem, 1.5vw, 1rem);
-    line-height: 1.7;
-    font-style: italic;
-    max-width: 600px;
-}
-
-.diplomacy-text em {
-    color: var(--gold);
-    font-style: normal;
-    font-weight: 600;
 }
 
 /* 3D Mouse-tracking Parallax System */
@@ -2401,19 +2362,6 @@ footer p {
 
 /* Responsive 3D adjustments */
 @media (max-width: 768px) {
-    .diplomacy-visual {
-        max-width: 600px;
-        margin: 2.5rem auto;
-    }
-    
-    .diplomacy-content {
-        padding: 1.5rem;
-    }
-    
-    .diplomacy-title {
-        font-size: 1.2rem;
-    }
-    
     .committee-card:hover {
         transform: translateY(-18px) translateZ(30px) rotateX(3deg) scale(1.03);
         box-shadow: 
@@ -2641,25 +2589,6 @@ section {
         perspective-origin: 50% 40%;
     }
     
-    /* Diplomacy visual mobile sizing */
-    .diplomacy-visual {
-        max-width: 100% !important;
-        margin: 2rem 1rem !important;
-        border-radius: 1rem !important;
-    }
-    
-    .diplomacy-content {
-        padding: 1.25rem !important;
-    }
-    
-    .diplomacy-title {
-        font-size: 1.1rem !important;
-    }
-    
-    .diplomacy-text {
-        font-size: 0.8rem !important;
-    }
-    
     /* Simplify committee card 3D effects for touchscreens */
     .committee-card {
         transform-style: flat !important;
@@ -2812,11 +2741,6 @@ section {
 
 /* Extra small devices (phones < 480px) */
 @media (max-width: 480px) {
-    .globe-container {
-        width: 220px !important;
-        height: 220px !important;
-    }
-    
     .section-title {
         font-size: 1.5rem !important;
     }
@@ -2843,10 +2767,6 @@ section {
         perspective: 1500px;
     }
     
-    .diplomacy-visual {
-        max-width: 650px;
-    }
-    
     .committee-card:hover {
         transform: rotateY(6deg) rotateX(5deg) translateZ(40px) scale(1.04);
         box-shadow: 
@@ -2860,9 +2780,5 @@ section {
 @media (min-width: 1921px) {
     .scene-3d {
         perspective: 3000px;
-    }
-    
-    .diplomacy-visual {
-        max-width: 900px;
     }
 }
