@@ -488,38 +488,6 @@ function startIntro() {
     setTimeout(dismiss, 14000);
 }
 
-// ---- Parallax Scroll Background (delegate photos crossfade) ----
-const scrollBg = document.getElementById('scrollBg');
-const bgLayers = scrollBg ? scrollBg.querySelectorAll('.bg-layer') : [];
-
-if (scrollBg && bgLayers.length === 2) {
-    bgLayers[0].style.opacity = '1';
-    bgLayers[1].style.opacity = '0';
-    requestAnimationFrame(() => scrollBg.classList.add('loaded'));
-
-    const parallaxScroll = rafThrottle(() => {
-        const scrollY = window.scrollY;
-        const maxScroll = Math.max(document.documentElement.scrollHeight - window.innerHeight, 1);
-        const progress = scrollY / maxScroll;
-        
-        bgLayers.forEach((layer, i) => {
-            const speed = i === 0 ? 0.25 : 0.45;
-            layer.style.transform = `translateY(${progress * 150 * speed}px)`;
-        });
-        
-        const fadePoint = 0.45;
-        if (progress < fadePoint) {
-            const opacity = progress / fadePoint;
-            bgLayers[0].style.opacity = String(1 - opacity);
-            bgLayers[1].style.opacity = String(opacity);
-        } else {
-            bgLayers[0].style.opacity = '0';
-            bgLayers[1].style.opacity = '1';
-        }
-    });
-    window.addEventListener('scroll', parallaxScroll, { passive: true });
-}
-
 // ---- Registration Form Handler ----
 const registrationForm = document.getElementById('registrationForm');
 const formStatus = document.getElementById('form-status');
