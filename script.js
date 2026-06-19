@@ -268,15 +268,21 @@ function updateCountdown() {
     const distance = countdownDate - now;
 
     if (distance <= 0) {
-        document.querySelector('.glass-card').innerHTML = "<h2 style='color: var(--gold);'>🎉 The CS MUN 4.0 2026 IS LIVE! 🎉</h2>";
+        const gc = document.querySelector('.glass-card');
+        if (gc) gc.innerHTML = "<h2 style='color: var(--gold);'>🎉 The CS MUN 4.0 2026 IS LIVE! 🎉</h2>";
         playClickChime();
         return;
     }
 
-    document.getElementById("days").textContent = String(Math.floor(distance / 86400000)).padStart(2, '0');
-    document.getElementById("hours").textContent = String(Math.floor((distance % 86400000) / 3600000)).padStart(2, '0');
-    document.getElementById("minutes").textContent = String(Math.floor((distance % 3600000) / 60000)).padStart(2, '0');
-    document.getElementById("seconds").textContent = String(Math.floor((distance % 60000) / 1000)).padStart(2, '0');
+    const daysEl = document.getElementById("days");
+    const hoursEl = document.getElementById("hours");
+    const minutesEl = document.getElementById("minutes");
+    const secondsEl = document.getElementById("seconds");
+    if (!daysEl || !hoursEl || !minutesEl || !secondsEl) return;
+    daysEl.textContent = String(Math.floor(distance / 86400000)).padStart(2, '0');
+    hoursEl.textContent = String(Math.floor((distance % 86400000) / 3600000)).padStart(2, '0');
+    minutesEl.textContent = String(Math.floor((distance % 3600000) / 60000)).padStart(2, '0');
+    secondsEl.textContent = String(Math.floor((distance % 60000) / 1000)).padStart(2, '0');
 }
 
 updateCountdown();
