@@ -603,3 +603,12 @@ if (eggTitle) {
     document.addEventListener('mousedown', () => ring.classList.add('click'));
     document.addEventListener('mouseup', () => ring.classList.remove('click'));
 })();
+
+// ---- Replace broken team photos with "Coming Soon" placeholder ----
+const placeholderSvg = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200' viewBox='0 0 200 200'%3E%3Crect width='200' height='200' fill='%231a1a2e' rx='12'/%3E%3Ccircle cx='100' cy='80' r='35' fill='none' stroke='%23facc15' stroke-width='2' opacity='0.4'/%3E%3Cpath d='M55 165 Q100 115 145 165' fill='none' stroke='%23facc15' stroke-width='2' opacity='0.4'/%3E%3Ctext x='100' y='155' text-anchor='middle' font-family='Inter,sans-serif' font-size='11' font-weight='700' fill='%23facc15'%3ECOMING%3C/text%3E%3Ctext x='100' y='170' text-anchor='middle' font-family='Inter,sans-serif' font-size='11' font-weight='700' fill='%23facc15'%3ESOON%3C/text%3E%3C/svg%3E";
+(function() {
+    const imgs = document.querySelectorAll('.secretariat-card img, .eb-card img');
+    if (imgs.length > 0) {
+        imgs.forEach(img => { img.src = placeholderSvg; });
+    }
+})();
