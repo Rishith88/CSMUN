@@ -443,11 +443,6 @@ h1, h2, h3, h4 {
 
 
 
-@keyframes heroLogoFloat {
-    0%, 100% { transform: translateY(0px); }
-    50% { transform: translateY(-15px); }
-}
-
 .divider {
     width: 12rem;
     height: 2px;
@@ -1940,104 +1935,11 @@ footer p {
     100% { transform: translateY(-10vh) scale(1); opacity: 0; }
 }
 
-/* ==================== 3D ORBIT TEXT ==================== */
-.hero-3d-orbit {
-    position: relative;
-    width: 200px;
-    height: 200px;
-    margin: 0 auto 1.5rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-.hero-3d-orbit .hero-logo {
-    width: 110px;
-    height: 110px;
-    border-radius: 50%;
-    border: 3px solid rgba(250, 204, 21, 0.3);
-    object-fit: cover;
-    animation: heroLogoFloat 6s ease-in-out infinite;
-    filter: drop-shadow(0 0 30px rgba(250, 204, 21, 0.3));
-    position: relative;
-    z-index: 2;
-}
-
-.orbit-ring {
-    position: absolute;
-    border-radius: 50%;
-    border: 1px solid rgba(250, 204, 21, 0.15);
-    animation: orbitSpin linear infinite;
-    pointer-events: none;
-}
-.orbit-ring-1 {
-    width: 180px;
-    height: 180px;
-    animation-duration: 12s;
-}
-.orbit-ring-2 {
-    width: 160px;
-    height: 160px;
-    animation-duration: 8s;
-    animation-direction: reverse;
-    border-color: rgba(250, 204, 21, 0.08);
-}
-
 @keyframes orbitSpin {
     to { transform: rotate(360deg); }
 }
 
-.orbit-text {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    font-family: var(--font-heading);
-    font-size: 0.9rem;
-    font-weight: 800;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    text-shadow: 0 0 30px rgba(250, 204, 21, 0.6), 0 0 60px rgba(250, 204, 21, 0.2);
-    pointer-events: none;
-    z-index: 3;
-    white-space: nowrap;
-    animation: orbitTextSpin 10s linear infinite;
-    transform-origin: center center;
-}
-.orbit-text-1 { color: var(--gold); animation-delay: 0s; }
-.orbit-text-2 { color: var(--gold-light); animation-delay: -3.333s; }
-.orbit-text-3 { color: var(--white); animation-delay: -6.667s; }
-
-@keyframes orbitTextSpin {
-    0% { transform: rotate(0deg) translateX(95px) rotate(0deg) translate(-50%, -50%); }
-    100% { transform: rotate(360deg) translateX(95px) rotate(-360deg) translate(-50%, -50%); }
-}
-@keyframes orbitTextSpinSm {
-    0% { transform: rotate(0deg) translateX(70px) rotate(0deg) translate(-50%, -50%); }
-    100% { transform: rotate(360deg) translateX(70px) rotate(-360deg) translate(-50%, -50%); }
-}
-
 @media (max-width: 768px) {
-    .hero-3d-orbit {
-        width: 150px;
-        height: 150px;
-    }
-    .hero-3d-orbit .hero-logo {
-        width: 80px;
-        height: 80px;
-    }
-    .orbit-ring-1 {
-        width: 130px;
-        height: 130px;
-    }
-    .orbit-ring-2 {
-        width: 110px;
-        height: 110px;
-    }
-    .orbit-text {
-        font-size: 0.7rem;
-        animation: orbitTextSpinSm 10s linear infinite;
-        animation-delay: calc(var(--i, 0) * -3.333s);
-    }
-
     .intro-word {
         font-size: 3rem;
     }
