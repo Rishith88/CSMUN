@@ -377,10 +377,14 @@ if (!document.getElementById('rippleStyle')) {
 // ---- Preloader ----
 const preloader = document.getElementById('preloader');
 if (preloader) {
-    setTimeout(() => {
+    function hidePreloader() {
+        if (preloader.classList.contains('hidden')) return;
         preloader.classList.add('hidden');
-        startIntro();
-    }, 2200);
+        setTimeout(() => { preloader.style.display = 'none'; }, 700);
+        if (document.getElementById('introOverlay')) startIntro();
+    }
+    setTimeout(hidePreloader, 2200);
+    window.addEventListener('load', hidePreloader);
 }
 
 // ---- Dramatic Intro Sequence ----
