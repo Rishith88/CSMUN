@@ -156,6 +156,49 @@ const statObserver = new IntersectionObserver((entries) => {
 const statsSection = document.querySelector('.stats-section');
 if (statsSection) statObserver.observe(statsSection);
 
+// ---- Hamburger Menu Toggle ----
+const hamburger = document.getElementById('hamburger');
+const navMenu = document.getElementById('navMenu');
+
+if (hamburger && navMenu) {
+    function toggleMenu(forceClose = false) {
+        const isOpen = navMenu.classList.contains('open');
+        if (forceClose && !isOpen) return;
+        
+        hamburger.classList.toggle('active');
+        navMenu.classList.toggle('open');
+        document.body.classList.toggle('menu-open');
+    }
+
+    hamburger.addEventListener('click', (e) => {
+        e.stopPropagation();
+        toggleMenu();
+    });
+
+    // Close menu when a nav link is clicked
+    navMenu.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', () => {
+            toggleMenu(true);
+        });
+    });
+
+    // Close menu on outside click / tap backdrop
+    document.addEventListener('click', (e) => {
+        if (navMenu.classList.contains('open') &&
+            !navMenu.contains(e.target) &&
+            !hamburger.contains(e.target)) {
+            toggleMenu(true);
+        }
+    });
+
+    // Close menu on Escape key
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && navMenu.classList.contains('open')) {
+            toggleMenu(true);
+        }
+    });
+}
+
 // ---- Back to Top Click + chime ----
 if (backToTop) {
     backToTop.addEventListener('click', () => {

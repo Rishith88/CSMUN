@@ -80,6 +80,11 @@ a, button, .btn-primary, .btn-secondary, .btn-download, .btn-matrix-dl, .committ
     cursor: pointer;
 }
 
+/* Offset for fixed navbar on anchor scroll */
+section[id] {
+    scroll-margin-top: 80px;
+}
+
 /* ==================== TYPOGRAPHY ==================== */
 h1, h2, h3, h4 {
     font-family: var(--font-heading);
@@ -159,6 +164,123 @@ h1, h2, h3, h4 {
 @keyframes shimmer {
     0%, 100% { background-position: 200% 0; }
     50% { background-position: -200% 0; }
+}
+
+/* ==================== HAMBURGER MENU BUTTON ==================== */
+.hamburger {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 44px;
+    height: 44px;
+    background: transparent;
+    border: 1px solid rgba(250, 204, 21, 0.2);
+    border-radius: 0.5rem;
+    cursor: pointer;
+    padding: 10px 8px;
+    z-index: 1001;
+    gap: 5px;
+    transition: border-color var(--transition-fast);
+    flex-shrink: 0;
+}
+.hamburger:hover {
+    border-color: rgba(250, 204, 21, 0.5);
+}
+.hamburger span {
+    display: block;
+    width: 22px;
+    height: 2px;
+    background: var(--gold);
+    border-radius: 2px;
+    transition: all 0.3s ease;
+    transform-origin: center;
+}
+.hamburger.active span:nth-child(1) {
+    transform: rotate(45deg) translate(5px, 5px);
+}
+.hamburger.active span:nth-child(2) {
+    opacity: 0;
+    transform: scaleX(0);
+}
+.hamburger.active span:nth-child(3) {
+    transform: rotate(-45deg) translate(5px, -5px);
+}
+
+/* ==================== MOBILE MENU OVERLAY ==================== */
+.nav-menu {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+}
+
+@media (max-width: 768px) {
+    .hamburger {
+        display: flex;
+    }
+    .nav-menu {
+        position: fixed;
+        top: 0;
+        right: -100%;
+        width: 75%;
+        max-width: 300px;
+        height: 100vh;
+        height: 100dvh;
+        background: rgba(3, 17, 36, 0.97);
+        backdrop-filter: blur(24px) saturate(1.5);
+        -webkit-backdrop-filter: blur(24px) saturate(1.5);
+        border-left: 1px solid rgba(250, 204, 21, 0.15);
+        flex-direction: column;
+        justify-content: flex-start;
+        padding: 90px 2rem 2rem;
+        transition: right 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+        z-index: 999;
+        gap: 0.5rem;
+        box-shadow: -10px 0 40px rgba(0, 0, 0, 0.5);
+        overflow-y: auto;
+    }
+    .nav-menu.open {
+        right: 0;
+    }
+    .nav-menu .nav-links {
+        display: flex !important;
+        flex-direction: column;
+        gap: 0.25rem;
+        width: 100%;
+    }
+    .nav-menu .nav-links a {
+        font-size: 1.1rem;
+        padding: 0.75rem 1rem;
+        border-radius: 0.5rem;
+        transition: background var(--transition-fast);
+        display: block;
+    }
+    .nav-menu .nav-links a:hover {
+        background: rgba(250, 204, 21, 0.08);
+    }
+    .nav-menu .nav-links a::after {
+        display: none;
+    }
+    .nav-menu .nav-cta {
+        margin-top: 1.5rem;
+        text-align: center;
+        width: 100%;
+        padding: 0.9rem 1.5rem;
+        font-size: 1rem;
+    }
+
+    /* Mobile overlay backdrop */
+    body.menu-open {
+        overflow: hidden;
+    }
+    body.menu-open::after {
+        content: '';
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 998;
+        animation: fadeIn 0.3s ease;
+    }
 }
 
 /* ==================== NAVIGATION ==================== */
@@ -1505,16 +1627,40 @@ footer p {
         cursor: pointer;
     }
     
+    .container {
+        padding: 0 1.25rem;
+    }
+    
     .hero-title {
-        font-size: 3rem;
+        font-size: 2.5rem;
     }
     
     .hero-tagline {
-        font-size: 1.25rem;
+        font-size: 1.1rem;
+        margin-top: 1.25rem;
     }
     
-    .nav-links {
-        display: none;
+    .hero-subtitle-bottom {
+        font-size: 0.75rem;
+        letter-spacing: 0.2em;
+        margin-top: 1.25rem;
+    }
+    
+    .hero-buttons {
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+        margin-top: 2rem;
+    }
+    .hero-buttons .btn-primary,
+    .hero-buttons .btn-secondary {
+        width: 100%;
+        max-width: 280px;
+        text-align: center;
+    }
+
+    .hero-content {
+        padding: 1rem;
     }
 
     .about-grid {
@@ -1522,7 +1668,10 @@ footer p {
         gap: 2rem;
     }
     .about-text h2 {
-        font-size: 2rem;
+        font-size: 1.75rem;
+    }
+    .about-text p {
+        font-size: 0.95rem;
     }
     .about-image img {
         transform: none;
@@ -1532,39 +1681,97 @@ footer p {
     }
     
     .section-title {
-        font-size: 2rem;
+        font-size: 1.6rem;
+        margin-bottom: 2rem;
+    }
+    
+    .section-intro {
+        font-size: 0.95rem;
+        margin-bottom: 2.5rem;
+        padding: 0 0.5rem;
     }
     
     .committees-grid {
         grid-template-columns: 1fr;
+        gap: 1.25rem;
+    }
+    .committee-card {
+        padding: 1.5rem;
+    }
+    .committee-card h3 {
+        font-size: 1.5rem;
+    }
+    .committee-card h4 {
+        font-size: 1rem;
+    }
+    .committee-card p {
+        font-size: 0.9rem;
+    }
+    .committee-img {
+        width: 90px;
+        height: 90px;
     }
     
     .page-title {
-        font-size: 2.5rem;
+        font-size: 2rem;
     }
     
     .page-subtitle {
-        font-size: 1rem;
+        font-size: 0.9rem;
+    }
+    
+    .page-header {
+        padding: 7rem 0 3rem;
     }
     
     .eb-grid {
         grid-template-columns: 1fr;
     }
+    .committee-eb {
+        padding: 1.5rem;
+    }
+    .committee-eb-title {
+        font-size: 1.3rem;
+    }
     
+    #countdown {
+        gap: 0.75rem;
+    }
     .time-box span {
-        min-width: 70px;
-        font-size: 2.5rem;
+        min-width: 65px;
+        font-size: 2rem;
+        padding: 0.4rem 0.6rem;
+    }
+    .time-box label {
+        font-size: 0.7rem;
+    }
+
+    .glass-card {
+        padding: 2rem 1.25rem;
+    }
+    .glass-card h2 {
+        font-size: 1.5rem;
     }
 
     .stats-grid {
         grid-template-columns: repeat(2, 1fr);
-        gap: 1rem;
+        gap: 0.75rem;
     }
     .stat-card::after {
         display: none;
     }
+    .stat-card {
+        padding: 1.5rem 0.5rem;
+    }
     .stat-number {
-        font-size: 3rem;
+        font-size: 2.5rem;
+    }
+    .stat-plus {
+        font-size: 1.5rem;
+    }
+    .stat-label {
+        font-size: 0.75rem;
+        letter-spacing: 0.12em;
     }
     
     .back-to-top {
@@ -1575,35 +1782,342 @@ footer p {
     }
 
     .hero-3d-orbit {
-        width: 220px;
-        height: 220px;
+        width: 180px;
+        height: 180px;
+        margin-bottom: 1.25rem;
     }
     .hero-logo {
-        width: 100px;
-        height: 100px;
+        width: 80px;
+        height: 80px;
     }
     .orbit-ring-1 {
-        width: 220px;
-        height: 220px;
-    }
-    .orbit-ring-2 {
         width: 180px;
         height: 180px;
     }
+    .orbit-ring-2 {
+        width: 145px;
+        height: 145px;
+    }
     .orbit-text {
-        font-size: 0.85rem;
+        font-size: 0.75rem;
     }
     @keyframes orbitTextPath1 {
-        0%   { transform: rotate(0deg) translateY(-100px) rotate(0deg); }
-        100% { transform: rotate(360deg) translateY(-100px) rotate(-360deg); }
+        0%   { transform: rotate(0deg) translateY(-80px) rotate(0deg); }
+        100% { transform: rotate(360deg) translateY(-80px) rotate(-360deg); }
     }
     @keyframes orbitTextPath2 {
-        0%   { transform: rotate(120deg) translateY(-100px) rotate(-120deg); }
-        100% { transform: rotate(480deg) translateY(-100px) rotate(-480deg); }
+        0%   { transform: rotate(120deg) translateY(-80px) rotate(-120deg); }
+        100% { transform: rotate(480deg) translateY(-80px) rotate(-480deg); }
     }
     @keyframes orbitTextPath3 {
-        0%   { transform: rotate(240deg) translateY(-100px) rotate(-240deg); }
-        100% { transform: rotate(600deg) translateY(-100px) rotate(-600deg); }
+        0%   { transform: rotate(240deg) translateY(-80px) rotate(-240deg); }
+        100% { transform: rotate(600deg) translateY(-80px) rotate(-600deg); }
+    }
+
+    .secretariat-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.5rem;
+    }
+    .secretariat-card img {
+        width: 130px;
+        height: 130px;
+    }
+    .secretariat-card .name {
+        font-size: 1rem;
+    }
+    .secretariat-card .bio {
+        font-size: 0.8rem;
+    }
+
+    .eb-card {
+        padding: 1.25rem;
+    }
+    .eb-card img {
+        width: 120px;
+        height: 120px;
+    }
+
+    .policy-card {
+        padding: 1.25rem;
+    }
+    .policy-card h3 {
+        font-size: 1.2rem;
+    }
+    .policy-card ol,
+    .policy-card ul {
+        font-size: 0.9rem;
+    }
+
+    .faq-question {
+        font-size: 0.95rem;
+        padding: 1rem 1.25rem;
+    }
+    .faq-answer p {
+        font-size: 0.9rem;
+        padding: 0 1.25rem 1rem;
+    }
+
+    .resource-highlight {
+        padding: 2rem 1.25rem;
+    }
+    .resource-highlight h2 {
+        font-size: 1.6rem;
+    }
+    .resource-description {
+        font-size: 0.95rem;
+    }
+    .btn-large {
+        padding: 1rem 1.5rem;
+        font-size: 0.95rem;
+    }
+
+    .footer-content {
+        flex-direction: column;
+        text-align: center;
+        gap: 2rem;
+    }
+    footer h4::after {
+        left: 50%;
+        transform: translateX(-50%);
+    }
+    footer h3, footer h4 {
+        text-align: center;
+    }
+
+    /* Intro overlay mobile */
+    .intro-word {
+        font-size: 2.5rem;
+    }
+    .intro-welcome-title {
+        font-size: 1.3rem;
+    }
+    .intro-welcome-tagline {
+        font-size: 0.85rem;
+        padding: 0 1rem;
+    }
+    .intro-welcome-motto {
+        font-size: 0.8rem;
+    }
+    .intro-logo {
+        width: 80px;
+        height: 80px;
+    }
+
+    /* Preloader mobile */
+    .preloader-logo {
+        width: 90px;
+        height: 90px;
+    }
+    .preloader-ring {
+        width: 100px;
+        height: 100px;
+        margin-left: -50px;
+    }
+    .preloader-text {
+        font-size: 1.5rem;
+    }
+    .preloader-bar {
+        width: 180px;
+    }
+
+    /* Committee quote mobile */
+    .committee-quote-text {
+        font-size: 1.15rem;
+    }
+    .committee-quote {
+        padding: 1rem;
+    }
+
+    /* Itinerary mobile */
+    .itinerary-card {
+        padding: 1rem;
+    }
+    .itinerary-info {
+        padding: 1.25rem;
+    }
+
+    /* Register section mobile */
+    .register-section {
+        padding: 3rem 0;
+    }
+    .register-form {
+        padding: 1.5rem;
+    }
+    .form-group label {
+        font-size: 0.8rem;
+    }
+    .form-group input,
+    .form-group select {
+        padding: 0.6rem 0.75rem;
+        font-size: 0.9rem;
+    }
+
+    /* Resources page mobile */
+    .resource-note {
+        font-size: 0.9rem;
+        padding: 0.75rem;
+    }
+
+    .btn-coming-soon {
+        font-size: 0.8rem;
+        margin-top: 0.75rem;
+    }
+}
+
+/* ==================== VERY SMALL PHONES (<= 480px) ==================== */
+@media (max-width: 480px) {
+    .container {
+        padding: 0 1rem;
+    }
+
+    .hero-title {
+        font-size: 2rem;
+    }
+    .hero-tagline {
+        font-size: 1rem;
+    }
+
+    .hero-3d-orbit {
+        width: 150px;
+        height: 150px;
+    }
+    .hero-logo {
+        width: 68px;
+        height: 68px;
+        border-width: 3px;
+    }
+    .orbit-ring-1 {
+        width: 150px;
+        height: 150px;
+    }
+    .orbit-ring-2 {
+        width: 120px;
+        height: 120px;
+    }
+    .orbit-text {
+        font-size: 0.65rem;
+    }
+    @keyframes orbitTextPath1 {
+        0%   { transform: rotate(0deg) translateY(-65px) rotate(0deg); }
+        100% { transform: rotate(360deg) translateY(-65px) rotate(-360deg); }
+    }
+    @keyframes orbitTextPath2 {
+        0%   { transform: rotate(120deg) translateY(-65px) rotate(-120deg); }
+        100% { transform: rotate(480deg) translateY(-65px) rotate(-480deg); }
+    }
+    @keyframes orbitTextPath3 {
+        0%   { transform: rotate(240deg) translateY(-65px) rotate(-240deg); }
+        100% { transform: rotate(600deg) translateY(-65px) rotate(-600deg); }
+    }
+
+    .section-title {
+        font-size: 1.35rem;
+    }
+    .section-intro {
+        font-size: 0.85rem;
+    }
+
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.5rem;
+    }
+    .stat-number {
+        font-size: 2rem;
+    }
+    .stat-label {
+        font-size: 0.65rem;
+    }
+
+    .secretariat-grid {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+
+    .time-box span {
+        min-width: 55px;
+        font-size: 1.5rem;
+        padding: 0.3rem 0.4rem;
+    }
+    #countdown {
+        gap: 0.4rem;
+    }
+
+    .page-title {
+        font-size: 1.6rem;
+    }
+    .page-subtitle {
+        font-size: 0.8rem;
+    }
+    .page-header {
+        padding: 6rem 0 2.5rem;
+    }
+
+    .committees-grid {
+        gap: 1rem;
+    }
+    .committee-card {
+        padding: 1.25rem;
+    }
+
+    .glass-card {
+        padding: 1.5rem 1rem;
+    }
+    .glass-card h2 {
+        font-size: 1.25rem;
+    }
+
+    .policy-card {
+        padding: 1rem;
+    }
+    .policy-card h3 {
+        font-size: 1.1rem;
+    }
+
+    .nav-menu {
+        width: 85%;
+        padding: 80px 1.25rem 1.5rem;
+    }
+    .nav-menu .nav-links a {
+        font-size: 1rem;
+        padding: 0.65rem 0.75rem;
+    }
+
+    .hero-buttons .btn-primary,
+    .hero-buttons .btn-secondary {
+        max-width: 100%;
+    }
+
+    .logo-img {
+        width: 36px;
+        height: 36px;
+    }
+    .logo-text h1 {
+        font-size: 1.1rem;
+    }
+    .logo-text p {
+        font-size: 0.55rem;
+    }
+
+    #navbar {
+        padding: 0.6rem 0;
+    }
+
+    .intro-word {
+        font-size: 2rem;
+    }
+    .intro-welcome-title {
+        font-size: 1.1rem;
+    }
+
+    .footer-content {
+        gap: 1.5rem;
+    }
+
+    .eb-card {
+        padding: 1rem;
+    }
+    .committee-eb {
+        padding: 1rem;
     }
 }
 
@@ -2096,14 +2610,6 @@ footer p {
     100% { transform: translateY(-10vh) scale(1); opacity: 0; }
 }
 
-@media (max-width: 768px) {
-    .intro-word {
-        font-size: 3rem;
-    }
-    .intro-welcome-title {
-        font-size: 1.5rem;
-    }
-}
 /* ==================== 3D CITYSCAPE BACKGROUND ==================== */
 .cityscape-3d {
  position: fixed;
