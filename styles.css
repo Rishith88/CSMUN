@@ -58,7 +58,6 @@ body {
     color: var(--white);
     overflow-x: hidden;
     line-height: 1.6;
-    cursor: none;
     -webkit-font-smoothing: antialiased;
 }
 
@@ -73,47 +72,6 @@ body {
     z-index: 0;
     background: #000;
     pointer-events: none;
-}
-
-/* ==================== CUSTOM CURSOR ==================== */
-.cursor-dot {
-    position: fixed;
-    width: 8px;
-    height: 8px;
-    background: var(--gold);
-    border-radius: 50%;
-    pointer-events: none;
-    z-index: 99999;
-    transform: translate(-50%, -50%);
-    transition: width 0.2s, height 0.2s, background 0.2s;
-    /* mix-blend-mode removed for performance */
-}
-.cursor-ring {
-    position: fixed;
-    width: 40px;
-    height: 40px;
-    border: 2px solid var(--gold);
-    border-radius: 50%;
-    pointer-events: none;
-    z-index: 99998;
-    transform: translate(-50%, -50%);
-    transition: width 0.3s, height 0.3s, border-color 0.3s, background 0.3s;
-    will-change: transform;
-}
-.cursor-ring.hover {
-    width: 60px;
-    height: 60px;
-    border-color: var(--gold-light);
-    background: rgba(250, 204, 21, 0.1);
-}
-.cursor-ring.click {
-    width: 30px;
-    height: 30px;
-    border-color: var(--white);
-}
-
-a, button, .btn-primary, .btn-secondary, .btn-download, .btn-matrix-dl, .committee-card, nav a {
-    cursor: none;
 }
 
 /* ==================== TYPOGRAPHY ==================== */
@@ -296,7 +254,6 @@ h1, h2, h3, h4 {
 .btn-primary, .btn-secondary, .btn-download, .btn-matrix-dl {
     position: relative;
     overflow: hidden;
-    cursor: none !important;
 }
 
 .btn-primary {
@@ -1593,7 +1550,6 @@ footer p {
     body {
         cursor: auto;
     }
-    .cursor-dot, .cursor-ring { display: none; }
     a, button, .btn-primary, .btn-secondary, .btn-download, .btn-matrix-dl, .committee-card, nav a {
         cursor: pointer;
     }

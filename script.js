@@ -10,12 +10,7 @@ console.log('%c🐛 Found something broken? Congrats — you\'re now QA. Fix it 
 // CSMUN 2026 - Optimized Interactions (Performance Edition)
 // ============================================================
 
-// ---- ElevenLabs Configuration ----
-// Get your free API key at https://elevenlabs.io
-const ELEVEN_LABS_API_KEY = '5a4f2fcc23f20b3299558feff81c6d0537c784fb2bba7e95a23dc8f8d34cfc35'; // <-- Paste your API key here
-const ELEVEN_VOICE_ID = 'ODq5zmih8GrVes37Dizd'; // Patrick — deep, cinematic male voice
-
-// ---- Cinematic Music + Voice (ElevenLabs) ----
+// ---- Cinematic Music ----
 let audioCtx = null;
 function getAudioCtx() {
     if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -90,58 +85,6 @@ function playCinematicIntro() {
         timpOsc.stop(t + 5);
         musicNodes.push(timpOsc);
     } catch (_) {}
-}
-
-// Pre-fetch ElevenLabs audio early so it's ready when needed
-let prefetchedVoice = null;
-function prefetchVoice(text) {
-    return new Promise(resolve => {
-        if (!ELEVEN_LABS_API_KEY) { resolve(null); return; }
-        fetch(`https://api.elevenlabs.io/v1/text-to-speech/${ELEVEN_VOICE_ID}`, {
-            method: 'POST',
-            headers: {
-                'xi-api-key': ELEVEN_LABS_API_KEY,
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                text,
-                voice_settings: { stability: 0.4, similarity_boost: 0.85 }
-            })
-        })
-        .then(res => { if (!res.ok) throw new Error(`API error: ${res.status}`); return res.blob(); })
-        .then(blob => {
-            const url = URL.createObjectURL(blob);
-            const audio = new Audio(url);
-            audio.addEventListener('ended', () => URL.revokeObjectURL(url));
-            prefetchedVoice = audio;
-            resolve(audio);
-        })
-        .catch(e => {
-            console.warn('ElevenLabs prefetch failed:', e);
-            prefetchedVoice = null;
-            resolve(null);
-        });
-    });
-}
-
-function playPrefetchedVoice() {
-    if (prefetchedVoice) {
-        prefetchedVoice.play();
-    } else {
-        fallbackSpeak("Welcome to CSMUN. Here we debate with passion, confidence and utmost diplomacy. We believe in Deliberare, Decernere, Perficere which translates to Deliberate, Decide, Deliver.");
-    }
-}
-
-// Fallback: Web Speech API
-function fallbackSpeak(text) {
-    if (!window.speechSynthesis) return;
-    window.speechSynthesis.cancel();
-    const u = new SpeechSynthesisUtterance(text);
-    u.rate = 0.65; u.pitch = 0.25; u.volume = 1; u.lang = 'en-US';
-    const voices = window.speechSynthesis.getVoices();
-    const deep = voices.find(v => v.name.includes('Daniel') || v.name.includes('James') || v.name.includes('Google UK') || v.name.includes('Male'));
-    if (deep) u.voice = deep;
-    window.speechSynthesis.speak(u);
 }
 
 // Play a short gavel-like "voice" effect (throttled, no per-hover spam)
@@ -445,15 +388,11 @@ function startIntro() {
         return;
     }
     
-// Pre-load voices for fallback
-    if (window.speechSynthesis) window.speechSynthesis.getVoices();
-    
     overlay.classList.add('active');
     document.body.style.overflow = 'hidden';
     
-    // Start cinematic music and pre-fetch voice
+    // Start cinematic music
     playCinematicIntro();
-    prefetchVoice("Welcome to CSMUN. Here we debate with passion, confidence and utmost diplomacy. We believe in Deliberare, Decernere, Perficere which translates to Deliberate, Decide, Deliver.");
     
     // Create particles
     const pc = overlay.querySelector('.intro-particles');
@@ -496,14 +435,13 @@ function startIntro() {
         }, 1000 + i * 800);
     });
     
-    // Phase 3: Divider and welcome message + voice
+    // Phase 3: Divider and welcome message
     setTimeout(() => {
         if (divider) divider.classList.add('expand');
     }, 3400);
     
     setTimeout(() => {
         if (welcome) welcome.classList.add('show');
-        playPrefetchedVoice();
     }, 3800);
     
     // Phase 4: Enter prompt
@@ -514,8 +452,6 @@ function startIntro() {
     // Click/tap to dismiss
     const dismiss = () => {
         stopCinematicMusic();
-        if (prefetchedVoice) { prefetchedVoice.pause(); prefetchedVoice = null; }
-        if (window.speechSynthesis) window.speechSynthesis.cancel();
         overlay.classList.add('fade-out');
         document.body.style.overflow = '';
         setTimeout(() => {
@@ -557,43 +493,6 @@ if (eggTitle) {
         }
     });
 }
-
-// ---- Custom Cursor ----
-(function() {
-    const dot = document.createElement('div');
-    dot.className = 'cursor-dot';
-    const ring = document.createElement('div');
-    ring.className = 'cursor-ring';
-    document.body.appendChild(dot);
-    document.body.appendChild(ring);
-
-    let mouseX = 0, mouseY = 0;
-    let ringX = 0, ringY = 0;
-
-    document.addEventListener('mousemove', e => {
-        mouseX = e.clientX;
-        mouseY = e.clientY;
-        dot.style.left = mouseX + window.scrollX + 'px';
-        dot.style.top = mouseY + window.scrollY + 'px';
-    });
-
-    function smoothRing() {
-        ringX += (mouseX - ringX) * 0.15;
-        ringY += (mouseY - ringY) * 0.15;
-        ring.style.left = ringX + window.scrollX + 'px';
-        ring.style.top = ringY + window.scrollY + 'px';
-        requestAnimationFrame(smoothRing);
-    }
-    smoothRing();
-
-    document.querySelectorAll('a, button, .btn-primary, .btn-secondary, .btn-download, .btn-matrix-dl, .committee-card, nav a').forEach(el => {
-        el.addEventListener('mouseenter', () => ring.classList.add('hover'));
-        el.addEventListener('mouseleave', () => ring.classList.remove('hover'));
-    });
-
-    document.addEventListener('mousedown', () => ring.classList.add('click'));
-    document.addEventListener('mouseup', () => ring.classList.remove('click'));
-})();
 
 // ---- Replace broken team photos with "Coming Soon" placeholder ----
 const placeholderSvg = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200' viewBox='0 0 200 200'%3E%3Crect width='200' height='200' fill='%231a1a2e' rx='12'/%3E%3Ccircle cx='100' cy='80' r='35' fill='none' stroke='%23facc15' stroke-width='2' opacity='0.4'/%3E%3Cpath d='M55 165 Q100 115 145 165' fill='none' stroke='%23facc15' stroke-width='2' opacity='0.4'/%3E%3Ctext x='100' y='155' text-anchor='middle' font-family='Inter,sans-serif' font-size='11' font-weight='700' fill='%23facc15'%3ECOMING%3C/text%3E%3Ctext x='100' y='170' text-anchor='middle' font-family='Inter,sans-serif' font-size='11' font-weight='700' fill='%23facc15'%3ESOON%3C/text%3E%3C/svg%3E";
