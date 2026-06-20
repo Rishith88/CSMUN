@@ -10,126 +10,6 @@ console.log('%c🐛 Found something broken? Congrats — you\'re now QA. Fix it 
 // CSMUN 2026 - Optimized Interactions (Performance Edition)
 // ============================================================
 
-// ---- Cinematic Music ----
-let audioCtx = null;
-function getAudioCtx() {
-    if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-    if (audioCtx.state === 'suspended') audioCtx.resume();
-    return audioCtx;
-}
-
-// Synthesized cinematic drone/sting
-let musicNodes = [];
-function stopCinematicMusic() {
-    musicNodes.forEach(n => { try { n.stop(); } catch (_) {} });
-    musicNodes = [];
-}
-
-function playCinematicIntro() {
-    try {
-        const ctx = getAudioCtx();
-        const t = ctx.currentTime;
-
-        // Low orchestral pad
-        const padGain = ctx.createGain();
-        padGain.gain.setValueAtTime(0, t);
-        padGain.gain.linearRampToValueAtTime(0.06, t + 1.5);
-        padGain.gain.linearRampToValueAtTime(0.04, t + 6);
-        padGain.gain.linearRampToValueAtTime(0.001, t + 13);
-        padGain.connect(ctx.destination);
-
-        [55, 65, 82, 110].forEach((freq, i) => {
-            const osc = ctx.createOscillator();
-            const gain = ctx.createGain();
-            osc.type = 'sawtooth';
-            osc.frequency.setValueAtTime(freq + i * 0.5, t);
-            const filter = ctx.createBiquadFilter();
-            filter.type = 'lowpass';
-            filter.frequency.setValueAtTime(400, t);
-            filter.frequency.linearRampToValueAtTime(800, t + 4);
-            osc.connect(filter);
-            filter.connect(gain);
-            gain.gain.setValueAtTime(0.15 - i * 0.03, t);
-            gain.connect(padGain);
-            osc.start(t);
-            osc.stop(t + 14);
-            musicNodes.push(osc);
-        });
-
-        // Cinematic rise
-        const riseOsc = ctx.createOscillator();
-        const riseGain = ctx.createGain();
-        riseOsc.type = 'sine';
-        riseOsc.frequency.setValueAtTime(80, t + 1);
-        riseOsc.frequency.exponentialRampToValueAtTime(1200, t + 3.5);
-        riseGain.gain.setValueAtTime(0, t + 1);
-        riseGain.gain.linearRampToValueAtTime(0.08, t + 2.5);
-        riseGain.gain.linearRampToValueAtTime(0, t + 4);
-        riseOsc.connect(riseGain);
-        riseGain.connect(ctx.destination);
-        riseOsc.start(t + 1);
-        riseOsc.stop(t + 4);
-        musicNodes.push(riseOsc);
-
-        // Deep timpani hit
-        const timpOsc = ctx.createOscillator();
-        const timpGain = ctx.createGain();
-        timpOsc.type = 'triangle';
-        timpOsc.frequency.setValueAtTime(60, t + 3.5);
-        timpOsc.frequency.exponentialRampToValueAtTime(25, t + 4.5);
-        timpGain.gain.setValueAtTime(0.2, t + 3.5);
-        timpGain.gain.exponentialRampToValueAtTime(0.001, t + 5);
-        timpOsc.connect(timpGain);
-        timpGain.connect(ctx.destination);
-        timpOsc.start(t + 3.5);
-        timpOsc.stop(t + 5);
-        musicNodes.push(timpOsc);
-    } catch (_) {}
-}
-
-// Play a short gavel-like "voice" effect (throttled, no per-hover spam)
-let lastVoiceTime = 0;
-function playVoiceEffect() {
-    const now = Date.now();
-    if (now - lastVoiceTime < 400) return; // throttle: max 2.5/sec
-    lastVoiceTime = now;
-    try {
-        const ctx = getAudioCtx();
-        const t = ctx.currentTime;
-        
-        // Low percussive thump (like a gavel strike)
-        const osc = ctx.createOscillator();
-        const gain = ctx.createGain();
-        osc.connect(gain);
-        gain.connect(ctx.destination);
-        osc.type = 'triangle';
-        osc.frequency.setValueAtTime(180, t);
-        osc.frequency.exponentialRampToValueAtTime(60, t + 0.06);
-        gain.gain.setValueAtTime(0.12, t);
-        gain.gain.exponentialRampToValueAtTime(0.001, t + 0.08);
-        osc.start(t);
-        osc.stop(t + 0.08);
-    } catch (_) {}
-}
-
-function playClickChime() {
-    try {
-        const ctx = getAudioCtx();
-        const t = ctx.currentTime;
-        const osc = ctx.createOscillator();
-        const gain = ctx.createGain();
-        osc.connect(gain);
-        gain.connect(ctx.destination);
-        osc.type = 'sine';
-        osc.frequency.setValueAtTime(660, t);
-        osc.frequency.exponentialRampToValueAtTime(990, t + 0.04);
-        gain.gain.setValueAtTime(0.05, t);
-        gain.gain.exponentialRampToValueAtTime(0.001, t + 0.12);
-        osc.start(t);
-        osc.stop(t + 0.12);
-    } catch (_) {}
-}
-
 // ---- Debounce helper ----
 function debounce(fn, ms) {
     let timer;
@@ -193,17 +73,14 @@ const handleScroll = rafThrottle(() => {
 window.addEventListener('scroll', handleScroll, { passive: true });
 
 // ---- Nav Link Fixes ----
-// Prevent nav links to the current page from reloading
+// Prevent nav links to the current page from reloading, scroll to top instead
 const currentPage = window.location.pathname.split('/').pop() || 'index.html';
 document.querySelectorAll('.nav-links a').forEach(link => {
     const href = link.getAttribute('href');
     if (href && href === currentPage) {
         link.addEventListener('click', e => {
             e.preventDefault();
-            // Scroll to top for Home, or just stay put
-            if (href === 'index.html') {
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-            }
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         });
     }
 });
@@ -407,8 +284,6 @@ function startIntro() {
     overlay.classList.add('active');
     document.body.style.overflow = 'hidden';
     
-    // Start cinematic music
-    playCinematicIntro();
     
     // Create particles
     const pc = overlay.querySelector('.intro-particles');
@@ -467,7 +342,6 @@ function startIntro() {
     
     // Click/tap to dismiss
     const dismiss = () => {
-        stopCinematicMusic();
         overlay.classList.add('fade-out');
         document.body.style.overflow = '';
         setTimeout(() => {
@@ -519,62 +393,15 @@ const placeholderSvg = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/
     }
 })();
 
-// ===========================================
-// 3D IMMERSIVE EXPERIENCE ENHANCEMENTS
-// Works with your existing AudioContext!
-// ===========================================
-
-// 3D Spatial Audio Panner - enhances your existing audio system with true 3D positioning
-let spatializer = null;
-
-function initSpatialAudio() {
-    const ctx = getAudioCtx();
-    if (ctx && !spatializer) {
-        spatializer = ctx.createPanner();
-        spatializer.panningModel = 'HRTF'; // High-quality 3D spatial audio
-        spatializer.distanceModel = 'inverse';
-        spatializer.connect(ctx.destination);
-    }
-}
-
-// Play 3D positional sound at specific coordinates
-function play3DSound(x, y, z, frequency = 440, duration = 0.3) {
-    const ctx = getAudioCtx();
-    if (!ctx || !spatializer) return;
-    
-    const oscillator = ctx.createOscillator();
-    const gainNode = ctx.createGain();
-    
-    oscillator.connect(gainNode);
-    gainNode.connect(spatializer);
-    
-    spatializer.setPosition(x, y, z);
-    oscillator.frequency.value = frequency;
-    oscillator.type = 'sine';
-    
-    gainNode.gain.setValueAtTime(0.2, ctx.currentTime);
-    gainNode.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + duration);
-    
-    oscillator.start(ctx.currentTime);
-    oscillator.stop(ctx.currentTime + duration);
-}
-
-// Mouse-tracking 3D Parallax (integrates with your existing mouse tracking)
+// Mouse-tracking 3D Parallax
 let currentMouseX = 0, currentMouseY = 0;
 
-// Update 3D layers based on mouse position - mobile optimized
 function update3DParallax() {
-    if (isMobile) return; // Disable complex parallax on mobile for better performance
+    if (isMobile) return;
     
     const normalizedX = (currentMouseX / window.innerWidth - 0.5) * 2;
     const normalizedY = (currentMouseY / window.innerHeight - 0.5) * 2;
     
-    // Update spatial audio position with mouse
-    if (spatializer) {
-        spatializer.setPosition(normalizedX * 10, -normalizedY * 10, 5);
-    }
-    
-    // Animate skyline layers with depth
     const skylineLayers = document.querySelectorAll('.skyline-layer');
     skylineLayers.forEach((layer, index) => {
         const depth = index === 0 ? -50 : index === 1 ? -20 : 0;
@@ -583,7 +410,6 @@ function update3DParallax() {
         layer.style.transform = `translateZ(${depth}px) rotateY(${rotateY}deg) rotateX(${rotateX}deg)`;
     });
     
-    // Animate all depth layers
     const depthLayers = document.querySelectorAll('.depth-layer');
     depthLayers.forEach(layer => {
         if (layer.classList.contains('layer-near')) {
@@ -594,24 +420,6 @@ function update3DParallax() {
             layer.style.transform = `translateX(${normalizedX * 7}px) translateY(${normalizedY * 7}px) translateZ(-100px)`;
         }
     });
-}
-
-// Create sound-reactive visual particles
-function createSoundParticle(x, y, frequency) {
-    const particle = document.createElement('div');
-    particle.className = 'sound-particle';
-    particle.style.left = x + 'px';
-    particle.style.top = y + 'px';
-    
-    const size = Math.min(8, frequency / 100);
-    particle.style.width = size + 'px';
-    particle.style.height = size + 'px';
-    
-    const hue = (frequency / 1000) * 360;
-    particle.style.background = `hsl(${hue}, 80%, 60%)`;
-    
-    document.body.appendChild(particle);
-    setTimeout(() => particle.remove(), 1000);
 }
 
 // Initialize 3D globe with grid lines
@@ -628,51 +436,22 @@ function init3DGlobe() {
     }
 }
 
-// Initialize 3D card interactions that trigger sounds and particles - mobile optimized
+// Initialize 3D card interactions
 function init3DCardInteractions() {
     const cards = document.querySelectorAll('.committee-card');
-    const particleCount = isMobile ? 5 : 15; // Fewer particles on mobile
-    
-    const triggerCardEffects = (e) => {
-        if (isMobile) return; // Disable heavy effects on mobile
-        
-        const rect = e.currentTarget.getBoundingClientRect();
-        const centerX = rect.left + rect.width / 2;
-        const centerY = rect.top + rect.height / 2;
-        
-        initSpatialAudio();
-        
-        // Play 3D sound at card location
-        play3DSound(
-            (centerX / window.innerWidth - 0.5) * 10,
-            -(centerY / window.innerHeight - 0.5) * 10,
-            5,
-            520 + Math.random() * 200,
-            0.5
-        );
-        
-        // Create particle burst
-        for (let i = 0; i < particleCount; i++) {
-            setTimeout(() => {
-                createSoundParticle(
-                    centerX + (Math.random() - 0.5) * 200,
-                    centerY + (Math.random() - 0.5) * 200,
-                    400 + Math.random() * 800
-                );
-            }, i * 30);
-        }
-    };
     
     cards.forEach(card => {
-        // Desktop events
         if (!isMobile) {
-            card.addEventListener('mouseenter', triggerCardEffects);
+            card.addEventListener('mouseenter', (e) => {
+                card.style.transform = 'scale(1.03)';
+            });
+            card.addEventListener('mouseleave', (e) => {
+                card.style.transform = 'scale(1)';
+            });
         }
         
-        // Mobile touch event - simplified
         if (isMobile) {
             card.addEventListener('touchstart', (e) => {
-                // Only add simple scale effect, no heavy particles
                 card.style.transform = 'scale(1.03)';
                 setTimeout(() => {
                     card.style.transform = 'scale(1)';
@@ -713,11 +492,7 @@ document.addEventListener('DOMContentLoaded', () => {
     init3DGlobe();
     init3DCardInteractions();
     initScrollDepth();
-    initSpatialAudio();
 });
-
-// Initialize spatial audio on first user interaction (works with your existing system)
-document.addEventListener('click', initSpatialAudio, { once: true });
 
 // ===========================================
 // CINEMATIC ANIMATION TRIGGERS & INTERACTIVITY
@@ -815,18 +590,6 @@ const isMobile = isMobileDevice();
 
 // Ambient particle generator optimized for mobile
 function initAmbientParticles() {
-    const interval = isMobile ? 2000 : 500; // Less frequent particles on mobile
-    const chance = isMobile ? 0.9 : 0.7; // Fewer particles overall on mobile
-    
-    setInterval(() => {
-        if (Math.random() > chance && !isMobile) {
-            createSoundParticle(
-                Math.random() * window.innerWidth,
-                Math.random() * window.innerHeight,
-                200 + Math.random() * 1000
-            );
-        }
-    }, interval);
 }
 
 // Initialize all cinematic animations
