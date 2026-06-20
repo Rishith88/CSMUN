@@ -473,7 +473,7 @@ function startIntro() {
         setTimeout(initTypewriter, 600);
     };
     
-    overlay.addEventListener('click', dismiss);
+    overlay.addEventListener('click', dismiss);    
     if (enter) enter.addEventListener('click', (e) => { e.stopPropagation(); dismiss(); });
     
     // Auto-dismiss
