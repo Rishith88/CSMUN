@@ -390,9 +390,9 @@ function startIntro() {
     if (!overlay) return;
     if (sessionStorage.getItem('csmunIntroShown')) {
         overlay.style.display = 'none';
+        initTypewriter();
         return;
-    }
-    
+    }    
 // Pre-load voices for fallback
     if (window.speechSynthesis) window.speechSynthesis.getVoices();
     
@@ -470,6 +470,7 @@ function startIntro() {
             overlay.style.display = 'none';
         }, 500);
         sessionStorage.setItem('csmunIntroShown', 'true');
+        setTimeout(initTypewriter, 600);
     };
     
     overlay.addEventListener('click', dismiss);

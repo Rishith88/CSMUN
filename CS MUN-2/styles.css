@@ -2355,12 +2355,13 @@ footer p {
 
 /* 3D Interactive Navigation with depth */
 .nav-links a {
-    transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+    flex-shrink: 0;
+    transition: color 0.3s ease, text-shadow 0.3s ease, transform 0.3s ease;
     transform-style: preserve-3d;
 }
 
 .nav-links a:hover {
-    transform: translateZ(30px) scale(1.1);
+    transform: translateZ(30px);
     text-shadow: 0 0 30px var(--gold);
 }
 
