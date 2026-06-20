@@ -192,6 +192,22 @@ const handleScroll = rafThrottle(() => {
 
 window.addEventListener('scroll', handleScroll, { passive: true });
 
+// ---- Nav Link Fixes ----
+// Prevent nav links to the current page from reloading
+const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+document.querySelectorAll('.nav-links a').forEach(link => {
+    const href = link.getAttribute('href');
+    if (href && href === currentPage) {
+        link.addEventListener('click', e => {
+            e.preventDefault();
+            // Scroll to top for Home, or just stay put
+            if (href === 'index.html') {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        });
+    }
+});
+
 // ---- Smooth Scroll ----
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function (e) {
@@ -727,40 +743,12 @@ document.querySelectorAll('.reveal, .committee-card').forEach(el => {
     animationObserver.observe(el);
 });
 
-// Page transition system for navigation links
+// Page transition system for smooth scrolling (no longer intercepts anchor links)
 function initPageTransitions() {
-    // Add transition overlay to body
+    // Add transition overlay to body (kept for potential future use)
     const transition = document.createElement('div');
     transition.className = 'page-transition';
     document.body.appendChild(transition);
-    
-    // Add click handlers to all internal navigation links
-    document.querySelectorAll('a[href^="#"]').forEach(link => {
-        link.addEventListener('click', (e) => {
-            const href = link.getAttribute('href');
-            if (href.startsWith('#') && href.length > 1) {
-                e.preventDefault();
-                transition.classList.add('active');
-                
-                // Play transition sound effect
-                initSpatialAudio();
-                play3DSound(0, 0, 5, 300, 0.8);
-                
-                // Wait for transition to complete before scrolling
-                setTimeout(() => {
-                    const target = document.querySelector(href);
-                    if (target) {
-                        target.scrollIntoView({ behavior: 'smooth' });
-                        setTimeout(() => {
-                            transition.classList.remove('active');
-                            // Play transition out sound
-                            play3DSound(0, 0, 5, 600, 0.5);
-                        }, 500);
-                    }
-                }, 800);
-            }
-        });
-    });
 }
 
 // Countdown number flip animation trigger
