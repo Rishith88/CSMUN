@@ -6,6 +6,25 @@ console.log('%c🐛 Found something broken? Congrats — you\'re now QA. Fix it 
 
 
 
+// ---- 3D TILT CARDS ----
+document.querySelectorAll('.committee-card, .stat-card').forEach(card => {
+    card.addEventListener('mousemove', (e) => {
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        const centerX = rect.width / 2;
+        const centerY = rect.height / 2;
+        const rotateX = ((y - centerY) / centerY) * -10;
+        const rotateY = ((x - centerX) / centerX) * 10;
+        card.style.setProperty('--rotate-x', `${rotateX}deg`);
+        card.style.setProperty('--rotate-y', `${rotateY}deg`);
+    });
+    card.addEventListener('mouseleave', () => {
+        card.style.setProperty('--rotate-x', '0deg');
+        card.style.setProperty('--rotate-y', '0deg');
+    });
+});
+
 // ---- Debounce helper ----
 function debounce(fn, ms) {
     let timer;
@@ -357,6 +376,18 @@ function initTypewriter() {
 
 const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
  || window.innerWidth <= 768;
+
+// ---- CURSOR TRAIL EFFECT ----
+if (!isMobile) {
+    document.addEventListener('mousemove', (e) => {
+        const trail = document.createElement('div');
+        trail.className = 'cursor-trail';
+        trail.style.left = e.clientX + 'px';
+        trail.style.top = e.clientY + 'px';
+        document.body.appendChild(trail);
+        setTimeout(() => trail.remove(), 600);
+    });
+}
 
 let currentMouseX = 0, currentMouseY = 0;
 function update3DParallax() {

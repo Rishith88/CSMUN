@@ -33,7 +33,43 @@
     
     --shadow-gold: 0 0 20px rgba(250, 204, 21, 0.3);
     --shadow-gold-intense: 0 0 40px rgba(250, 204, 21, 0.5);
+    --glass-blur: blur(20px) saturate(180%);
+    --glass-bg-hover: rgba(255, 255, 255, 0.06);
+    --glass-shadow-hover: 0 20px 60px rgba(0, 0, 0, 0.6), 0 0 60px rgba(250, 204, 21, 0.2);
+    --glass-transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
+
+/* ==================== GLASSMORPHISM 2.0 — ULTRA PREMIUM FROSTED GLASS ==================== */
+.glass-card, .committee-card, .policy-card, .eb-card {
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border: 1px solid rgba(250, 204, 21, 0.15);
+    box-shadow: 
+        0 8px 32px rgba(0, 0, 0, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1),
+        0 0 40px rgba(250, 204, 21, 0.08);
+    transition: var(--glass-transition);
+    transform-style: preserve-3d;
+}
+
+.glass-card:hover, .committee-card:hover {
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(250, 204, 21, 0.4);
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 
+        0 20px 60px rgba(0, 0, 0, 0.6),
+        0 0 60px rgba(250, 204, 21, 0.2);
+}
+
+.policy-card:hover, .eb-card:hover {
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(250, 204, 21, 0.4);
+    box-shadow: 
+        0 20px 60px rgba(0, 0, 0, 0.6),
+        0 0 60px rgba(250, 204, 21, 0.2);
+}
+
 
 ::selection {
     background: var(--gold);
@@ -50,6 +86,12 @@
 
 html {
     scroll-behavior: smooth;
+    scroll-snap-type: y proximity;
+}
+
+section {
+    scroll-snap-align: start;
+    scroll-snap-stop: normal;
 }
 
 body {
@@ -108,6 +150,11 @@ h1, h2, h3, h4 {
     display: inline-block;
     left: 50%;
     transform: translateX(-50%);
+    text-shadow: 
+        0 0 10px rgba(250, 204, 21, 0.8),
+        0 0 20px rgba(250, 204, 21, 0.6),
+        0 0 40px rgba(250, 204, 21, 0.4);
+    animation: neonPulse 3s ease-in-out infinite;
 }
 .section-title::after {
     content: '';
@@ -503,7 +550,12 @@ h1, h2, h3, h4 {
     display: flex;
     align-items: center;
     justify-content: center;
-    background: var(--black);
+    background: 
+        linear-gradient(135deg, #000000 0%, #031124 50%, #000000 100%),
+        radial-gradient(ellipse at 20% 50%, rgba(250, 204, 21, 0.1) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 20%, rgba(250, 204, 21, 0.06) 0%, transparent 50%);
+    background-size: 200% 200%, 100% 100%, 100% 100%;
+    animation: gradientShift 15s ease infinite;
     padding-top: 80px;
 }
 .hero::before {
@@ -659,6 +711,12 @@ h1, h2, h3, h4 {
     font-weight: 900;
     line-height: 1;
     letter-spacing: 0.02em;
+    text-shadow: 
+        0 0 10px rgba(250, 204, 21, 0.8),
+        0 0 20px rgba(250, 204, 21, 0.6),
+        0 0 40px rgba(250, 204, 21, 0.4),
+        0 0 80px rgba(250, 204, 21, 0.2);
+    animation: neonPulse 3s ease-in-out infinite;
 }
 .hero-title .line1 {
     display: block;
@@ -813,7 +871,12 @@ h1, h2, h3, h4 {
 /* ==================== ABOUT SECTION ==================== */
 .about-section {
     padding: 6rem 0;
-    background: linear-gradient(180deg, var(--navy) 0%, #020a18 100%);
+    background: 
+        linear-gradient(135deg, #000000 0%, #031124 50%, #000000 100%),
+        radial-gradient(ellipse at 20% 50%, rgba(250, 204, 21, 0.1) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 20%, rgba(250, 204, 21, 0.06) 0%, transparent 50%);
+    background-size: 200% 200%, 100% 100%, 100% 100%;
+    animation: gradientShift 15s ease infinite;
     position: relative;
     overflow: hidden;
 }
@@ -885,6 +948,12 @@ img {
 .committees-section {
     padding: 6rem 0;
     position: relative;
+    background: 
+        linear-gradient(135deg, #000000 0%, #031124 50%, #000000 100%),
+        radial-gradient(ellipse at 20% 50%, rgba(250, 204, 21, 0.08) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 20%, rgba(250, 204, 21, 0.04) 0%, transparent 50%);
+    background-size: 200% 200%, 100% 100%, 100% 100%;
+    animation: gradientShift 15s ease infinite;
 }
 
 .committees-grid {
@@ -899,7 +968,7 @@ img {
     border: 1px solid var(--glass-border);
     border-radius: 1.5rem;
     padding: 2rem;
-    transition: all var(--transition-normal);
+    transition: all 0.4s ease, transform 0.1s ease-out;
     position: relative;
     overflow: hidden;
 }
@@ -1568,6 +1637,73 @@ footer p {
 @keyframes fadeInUp {
     from { opacity: 0; transform: translateY(30px); }
     to { opacity: 1; transform: translateY(0); }
+}
+
+/* ==================== ANIMATED GRADIENT SHIFT ==================== */
+@keyframes gradientShift {
+    0%, 100% { background-position: 0% 50%, 0 0, 0 0; }
+    50% { background-position: 100% 50%, 0 0, 0 0; }
+}
+
+/* ==================== NEON GLOW PULSE ==================== */
+@keyframes neonPulse {
+    0%, 100% { 
+        text-shadow: 
+            0 0 10px rgba(250, 204, 21, 0.8),
+            0 0 20px rgba(250, 204, 21, 0.6),
+            0 0 40px rgba(250, 204, 21, 0.4);
+    }
+    50% { 
+        text-shadow: 
+            0 0 20px rgba(250, 204, 21, 1),
+            0 0 40px rgba(250, 204, 21, 0.8),
+            0 0 80px rgba(250, 204, 21, 0.6),
+            0 0 120px rgba(250, 204, 21, 0.4);
+    }
+}
+
+/* ==================== CURSOR TRAIL ==================== */
+.cursor-trail {
+    position: fixed;
+    width: 10px;
+    height: 10px;
+    background: var(--gold);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 99999;
+    mix-blend-mode: screen;
+    animation: cursorFade 0.6s ease-out forwards;
+}
+
+@keyframes cursorFade {
+    to { transform: scale(3); opacity: 0; }
+}
+
+/* ==================== BUTTON MICRO-INTERACTIONS ==================== */
+.btn-primary::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle, rgba(255,255,255,0.4) 0%, transparent 70%);
+    transform: scale(0);
+    opacity: 0;
+    border-radius: inherit;
+    transition: transform 0.5s, opacity 0.5s;
+}
+
+.btn-primary:active::after {
+    transform: scale(2.5);
+    opacity: 1;
+    transition: 0s;
+}
+
+/* ==================== 3D TILT CARD SUPPORT ==================== */
+.committee-card, .stat-card {
+    transform-style: preserve-3d;
+}
+
+.committee-card:hover {
+    transform: perspective(1000px) rotateX(var(--rotate-x, 0deg)) rotateY(var(--rotate-y, 0deg)) translateZ(20px);
 }
 
 @keyframes fadeIn {
@@ -2239,6 +2375,8 @@ footer p {
     padding: 2rem 1rem;
     position: relative;
     transition: all var(--transition-normal);
+    transform-style: preserve-3d;
+    perspective: 1000px;
 }
 .stat-card:hover {
     transform: translateY(-5px);
