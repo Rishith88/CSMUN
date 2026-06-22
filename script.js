@@ -6,25 +6,6 @@ console.log('%c🐛 Found something broken? Congrats — you\'re now QA. Fix it 
 
 
 
-// ---- 3D TILT CARDS ----
-document.querySelectorAll('.committee-card, .stat-card').forEach(card => {
-    card.addEventListener('mousemove', (e) => {
-        const rect = card.getBoundingClientRect();
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
-        const centerX = rect.width / 2;
-        const centerY = rect.height / 2;
-        const rotateX = ((y - centerY) / centerY) * -10;
-        const rotateY = ((x - centerX) / centerX) * 10;
-        card.style.setProperty('--rotate-x', `${rotateX}deg`);
-        card.style.setProperty('--rotate-y', `${rotateY}deg`);
-    });
-    card.addEventListener('mouseleave', () => {
-        card.style.setProperty('--rotate-x', '0deg');
-        card.style.setProperty('--rotate-y', '0deg');
-    });
-});
-
 // ---- Debounce helper ----
 function debounce(fn, ms) {
     let timer;
@@ -60,16 +41,6 @@ const handleScroll = rafThrottle(() => {
     const scrollY = window.scrollY;
     const docHeight = document.documentElement.scrollHeight - window.innerHeight;
     
-    // Navbar: show after scrolling past the hero section, hide when at top
-    const hero = document.querySelector('.hero');
-    if (hero) {
-        const heroBottom = hero.offsetTop + hero.offsetHeight;
-        navbar.classList.toggle('visible', scrollY > heroBottom - 80);
-    } else {
-        // No hero section on this page (e.g. guide, team, resources) — show navbar immediately
-        navbar.classList.add('visible');
-    }
-    
     // Navbar background
     navbar.classList.toggle('scrolled', scrollY > 50);
     
@@ -96,7 +67,6 @@ const handleScroll = rafThrottle(() => {
 });
 
 window.addEventListener('scroll', handleScroll, { passive: true });
-handleScroll(); // Initialize navbar state on page load
 
 // ---- Smooth Scroll ----
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
@@ -185,49 +155,6 @@ const statObserver = new IntersectionObserver((entries) => {
 
 const statsSection = document.querySelector('.stats-section');
 if (statsSection) statObserver.observe(statsSection);
-
-// ---- Hamburger Menu Toggle ----
-const hamburger = document.getElementById('hamburger');
-const navMenu = document.getElementById('navMenu');
-
-if (hamburger && navMenu) {
-    function toggleMenu(forceClose = false) {
-        const isOpen = navMenu.classList.contains('open');
-        if (forceClose && !isOpen) return;
-        
-        hamburger.classList.toggle('active');
-        navMenu.classList.toggle('open');
-        document.body.classList.toggle('menu-open');
-    }
-
-    hamburger.addEventListener('click', (e) => {
-        e.stopPropagation();
-        toggleMenu();
-    });
-
-    // Close menu when a nav link is clicked
-    navMenu.querySelectorAll('a').forEach(link => {
-        link.addEventListener('click', () => {
-            toggleMenu(true);
-        });
-    });
-
-    // Close menu on outside click / tap backdrop
-    document.addEventListener('click', (e) => {
-        if (navMenu.classList.contains('open') &&
-            !navMenu.contains(e.target) &&
-            !hamburger.contains(e.target)) {
-            toggleMenu(true);
-        }
-    });
-
-    // Close menu on Escape key
-    document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && navMenu.classList.contains('open')) {
-            toggleMenu(true);
-        }
-    });
-}
 
 // ---- Back to Top Click + chime ----
 if (backToTop) {
@@ -380,8 +307,6 @@ function initTypewriter() {
 const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
  || window.innerWidth <= 768;
 
-
-
 let currentMouseX = 0, currentMouseY = 0;
 function update3DParallax() {
  if (isMobile) return;
@@ -403,202 +328,186 @@ if (!isMobile) {
  });
 }
 
+// ===========================================
+// GOATED INTERACTIVE ANIMATIONS — CSMUN 2026
+// ===========================================
 
-// ==================== HORIZONTAL SCROLLING ROADMAP ==================== 
+// ---- 1. Mouse Glow Aura Tracking ----
+const mouseGlow = document.getElementById('mouseGlow');
+const mouseGlowRing = document.getElementById('mouseGlowRing');
 
-const roadmapSection = document.querySelector('.committees-roadmap-section');
-const roadmapWrapper = document.getElementById('roadmapWrapper');
-const roadmapTrack = document.getElementById('roadmapTrack');
-const roadmapCards = document.querySelectorAll('.roadmap-card');
-const roadmapProgress = document.getElementById('roadmapProgress');
-const scrollHint = document.getElementById('scrollHint');
-
-if (roadmapSection && roadmapTrack && roadmapCards.length > 0) {
- const totalCards = roadmapCards.length;
- 
- function updateRoadmap() {
- const sectionTop = roadmapSection.offsetTop;
- const sectionHeight = roadmapSection.offsetHeight;
- const scrollY = window.scrollY;
- 
- // Calculate scroll progress through the section
- const scrollProgress = (scrollY - sectionTop) / sectionHeight;
- const clampedProgress = Math.max(0, Math.min(1, scrollProgress));
- 
- // Update progress bar
- if (roadmapProgress) {
- roadmapProgress.style.width = (clampedProgress * 100) + '%';
- }
- 
- // Hide scroll hint after first scroll
- if (scrollHint && clampedProgress > 0.05) {
- scrollHint.classList.add('hidden');
- }
- 
- // Calculate which card should be active
- const activeIndex = Math.floor(clampedProgress * totalCards);
- const clampedIndex = Math.min(activeIndex, totalCards - 1);
- 
- // Horizontal scroll distance with HAIRPIN BENDS
- // Cards 0-2 move left, card 3 turns back right, cards 4-5 move left again
- let translateX = 0;
- 
- if (clampedIndex === 0) {
- translateX = 0;
- } else if (clampedIndex === 1) {
- translateX = -100; // Move left
- } else if (clampedIndex === 2) {
- translateX = -200; // Continue left
- } else if (clampedIndex === 3) {
- translateX = -150; // HAIRPIN BEND - move back right
- } else if (clampedIndex === 4) {
- translateX = -250; // Move left again
- } else if (clampedIndex === 5) {
- translateX = -350; // Final position
- }
- 
- roadmapTrack.style.transform = `translateX(${translateX}vw)`;
- 
- // Set active card
- roadmapCards.forEach((card, index) => {
- if (index === clampedIndex) {
- card.classList.add('active');
- } else {
- card.classList.remove('active');
- }
- });
- }
- 
- // Throttled scroll handler
- const handleRoadmapScroll = rafThrottle(updateRoadmap);
- window.addEventListener('scroll', handleRoadmapScroll, { passive: true });
- 
- // Initialize on load
- updateRoadmap();
+if (mouseGlow && !isMobile) {
+    const updateMouseGlow = rafThrottle((e) => {
+        mouseGlow.style.left = e.clientX + 'px';
+        mouseGlow.style.top = e.clientY + 'px';
+        if (mouseGlowRing) {
+            mouseGlowRing.style.left = e.clientX + 'px';
+            mouseGlowRing.style.top = e.clientY + 'px';
+        }
+    });
+    document.addEventListener('mousemove', updateMouseGlow);
+    document.addEventListener('mouseenter', () => mouseGlow.classList.remove('hidden'));
+    document.addEventListener('mouseleave', () => mouseGlow.classList.add('hidden'));
 }
 
-function initCommitteeRoad() {
-    const container = document.getElementById('committeesRoad');
-    const svg = document.getElementById('roadSvg');
-    const path = document.getElementById('roadPath');
-    if (!container || !svg || !path) return;
-    const cards = container.querySelectorAll('.road-card');
-    if (!cards.length) return;
-
-    let pathLength = 0;
-
-    function buildPath() {
-        const containerRect = container.getBoundingClientRect();
-        const containerTop = containerRect.top + window.scrollY;
-        const W = containerRect.width;
-        const H = container.offsetHeight;
-
-        svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
-        svg.style.width = '100%';
-        svg.style.height = H + 'px';
-
-        let defs = svg.querySelector('defs');
-        if (!defs) {
-            defs = document.createElementNS('http://www.w3.org/2000/svg', 'defs');
-            defs.innerHTML = `
-                <linearGradient id="roadGradient" x1="0%" y1="0%" x2="0%" y2="100%">
-                    <stop offset="0%"   stop-color="#ffe066" stop-opacity="1"/>
-                    <stop offset="50%"  stop-color="#facc15" stop-opacity="1"/>
-                    <stop offset="100%" stop-color="#e6b800" stop-opacity="0.8"/>
-                </linearGradient>
-                <filter id="roadGlowFilter" x="-50%" y="-50%" width="200%" height="200%">
-                    <feGaussianBlur stdDeviation="6" result="blur"/>
-                    <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
-                </filter>
-            `;
-            svg.insertBefore(defs, svg.firstChild);
-        }
-
-        let glowPath = svg.querySelector('#roadGlow-path');
-        if (!glowPath) {
-            glowPath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-            glowPath.setAttribute('id', 'roadGlow-path');
-            glowPath.setAttribute('fill', 'none');
-            glowPath.setAttribute('stroke', '#facc15');
-            glowPath.setAttribute('stroke-width', '12');
-            glowPath.setAttribute('stroke-linecap', 'round');
-            glowPath.setAttribute('opacity', '0.2');
-            glowPath.setAttribute('filter', 'url(#roadGlowFilter)');
-            svg.insertBefore(glowPath, path);
-        }
-
-        
-const points = [];
-        cards.forEach(card => {
-            const r = card.getBoundingClientRect();
-            const containerLeft = containerRect.left + window.scrollX;
-            // X = center of card relative to container
-            const x = (r.left + window.scrollX) - containerLeft + r.width / 2;
-            // Y = bottom of card so line exits through the bottom naturally
-            const y = (r.top + window.scrollY) - containerTop + r.height - 20;
-            points.push({ x, y });
-        });
-
-        // Catmull-Rom to Bezier — physically cannot make sharp bounces
-        function catmullToBezier(p0, p1, p2, p3) {
-            const tension = 0.5;
-            return {
-                cp1x: p1.x + (p2.x - p0.x) * tension / 3,
-                cp1y: p1.y + (p2.y - p0.y) * tension / 3,
-                cp2x: p2.x - (p3.x - p1.x) * tension / 3,
-                cp2y: p2.y - (p3.y - p1.y) * tension / 3,
-            };
-        }
-
-        let d = `M ${points[0].x} ${points[0].y}`;
-        for (let i = 0; i < points.length - 1; i++) {
-            const p0 = i === 0
-                ? { x: points[0].x - (points[1].x - points[0].x), y: points[0].y - (points[1].y - points[0].y) }
-                : points[i - 1];
-            const p1 = points[i];
-            const p2 = points[i + 1];
-            const p3 = i + 2 >= points.length
-                ? { x: points[points.length-1].x + (points[points.length-1].x - points[points.length-2].x),
-                    y: points[points.length-1].y + (points[points.length-1].y - points[points.length-2].y) }
-                : points[i + 2];
-            const { cp1x, cp1y, cp2x, cp2y } = catmullToBezier(p0, p1, p2, p3);
-            d += ` C ${cp1x} ${cp1y}, ${cp2x} ${cp2y}, ${p2.x} ${p2.y}`;
-        }
-
-        path.setAttribute('d', d);
-        path.setAttribute('stroke', 'url(#roadGradient)');
-        path.setAttribute('filter', 'url(#roadGlowFilter)');
-        glowPath.setAttribute('d', d);
-
-        pathLength = path.getTotalLength();
-        path.style.strokeDasharray = pathLength;
-        path.style.strokeDashoffset = pathLength;
-        glowPath.style.strokeDasharray = pathLength;
-        glowPath.style.strokeDashoffset = pathLength;
+// ---- 2. Ambient Particle Generator ----
+function spawnAmbientParticles() {
+    const container = document.getElementById('ambientParticles');
+    if (!container) return;
+    
+    const count = isMobile ? 15 : 30;
+    for (let i = 0; i < count; i++) {
+        const p = document.createElement('div');
+        p.className = 'ambient-particle' + (Math.random() > 0.8 ? ' glow' : '');
+        p.style.setProperty('--p-x', Math.random() * 100 + '%');
+        p.style.setProperty('--p-size', (Math.random() * 4 + 2) + 'px');
+        p.style.setProperty('--p-duration', (Math.random() * 10 + 8) + 's');
+        p.style.setProperty('--p-delay', (Math.random() * 12) + 's');
+        p.style.setProperty('--p-opacity', (Math.random() * 0.5 + 0.3));
+        p.style.setProperty('--p-drift', (Math.random() - 0.5) * 100 + 'px');
+        p.style.left = Math.random() * 100 + '%';
+        container.appendChild(p);
     }
+}
+spawnAmbientParticles();
 
-    function updateOnScroll() {
-        const rect = container.getBoundingClientRect();
-        const vh = window.innerHeight;
-        // Start drawing when top of container hits bottom of viewport
-        // Finish drawing when bottom of container hits top of viewport
-        const start = vh - rect.top;
-        const total = rect.height + vh;
-        let progress = start / total;
-        progress = Math.max(0, Math.min(1, progress));
-        // Remap so drawing starts at 0.05 and finishes at 0.95 of scroll
-        const remapped = Math.max(0, Math.min(1, (progress - 0.05) / 0.9));
-        const offset = pathLength * (1 - remapped);
-        path.style.strokeDashoffset = offset;
-        const glowPath = document.getElementById('roadGlow-path');
-        if (glowPath) glowPath.style.strokeDashoffset = offset;
+// ---- 3. Magnetic Button Effect (preserves CSS hover transforms) ----
+document.querySelectorAll('.btn-magnetic').forEach(btn => {
+    btn.addEventListener('mousemove', function(e) {
+        if (isMobile) return;
+        const rect = this.getBoundingClientRect();
+        const x = (e.clientX - rect.left - rect.width / 2) * 0.3;
+        const y = (e.clientY - rect.top - rect.height / 2) * 0.3;
+        // Preserve the CSS hover transform (-3px lift + scale) then add magnetic offset
+        this.style.transform = `translate(${x}px, ${y}px) translateY(-3px) scale(1.02)`;
+    });
+    btn.addEventListener('mouseleave', function() {
+        this.style.transform = ''; // CSS hover takes over naturally
+    });
+});
+
+// ---- 4. Click Particle Burst ----
+function createClickParticles(x, y) {
+    const colors = ['#facc15', '#ffe066', '#e6b800', '#ffd700', '#fff4b8'];
+    const count = isMobile ? 8 : 20;
+    for (let i = 0; i < count; i++) {
+        const p = document.createElement('div');
+        p.className = 'click-particle';
+        const size = Math.random() * 6 + 3;
+        p.style.width = size + 'px';
+        p.style.height = size + 'px';
+        p.style.background = colors[Math.floor(Math.random() * colors.length)];
+        p.style.left = x + 'px';
+        p.style.top = y + 'px';
+        p.style.setProperty('--x-dir', Math.random());
+        p.style.setProperty('--y-dir', Math.random());
+        p.style.boxShadow = '0 0 6px ' + colors[0] + ', 0 0 12px rgba(250,204,21,0.3)';
+        document.body.appendChild(p);
+        setTimeout(() => p.remove(), 1000);
     }
-
-    buildPath();
-    updateOnScroll();
-
- window.addEventListener('resize', debounce(() => { buildPath(); updateOnScroll(); }, 200));
-    window.addEventListener('scroll', rafThrottle(updateOnScroll), { passive: true });
 }
 
-window.addEventListener('load', () => setTimeout(initCommitteeRoad, 300));
+document.addEventListener('click', (e) => {
+    if (e.target.closest('a, button, .btn-primary, .btn-secondary, .btn-download, .faq-question, .intro-enter, nav a, .back-to-top')) return;
+    createClickParticles(e.clientX, e.clientY);
+});
+
+// ---- 5. Hero Title Character Animation ----
+function animateHeroTitle() {
+    const title = document.querySelector('.hero-title .line1');
+    if (!title || title.dataset.animated) return;
+    title.dataset.animated = 'true';
+    const text = title.textContent;
+    title.textContent = '';
+    [...text].forEach((char, i) => {
+        const span = document.createElement('span');
+        span.className = 'char';
+        span.textContent = char === ' ' ? '\u00A0' : char;
+        span.style.animationDelay = (0.3 + i * 0.06) + 's';
+        title.appendChild(span);
+    });
+}
+
+// Run hero title animation after preloader
+setTimeout(animateHeroTitle, 2500);
+
+// ---- 6. Countdown Flip Animation ----
+let prevCountdown = { days: '00', hours: '00', minutes: '00', seconds: '00' };
+const origUpdate = updateCountdown;
+updateCountdown = function() {
+    const now = Date.now();
+    const distance = countdownDate - now;
+    if (distance <= 0) {
+        const gc = document.querySelector('.glass-card');
+        if (gc) gc.innerHTML = "<h2 style='color: var(--gold);'>🎉 The CS MUN 4.0 2026 IS LIVE! 🎉</h2>";
+        return;
+    }
+    const val = (t) => String(Math.floor(t)).padStart(2, '0');
+    const days = val(distance / 86400000);
+    const hours = val((distance % 86400000) / 3600000);
+    const minutes = val((distance % 3600000) / 60000);
+    const seconds = val((distance % 60000) / 1000);
+    
+    const ids = { days: 'days', hours: 'hours', minutes: 'minutes', seconds: 'seconds' };
+    Object.entries(ids).forEach(([key, id]) => {
+        const el = document.getElementById(id);
+        if (!el) return;
+        const newVal = { days, hours, minutes, seconds }[key];
+        if (prevCountdown[key] !== newVal && prevCountdown[key] !== '00') {
+            el.classList.remove('flip');
+            void el.offsetWidth;
+            el.classList.add('flip');
+        }
+        el.textContent = newVal;
+        prevCountdown[key] = newVal;
+    });
+};
+
+// ---- 7. 3D Tilt Cards ----
+document.querySelectorAll('.committee-card, .glass-card').forEach(card => {
+    card.addEventListener('mousemove', function(e) {
+        if (isMobile) return;
+        const rect = this.getBoundingClientRect();
+        const x = (e.clientX - rect.left) / rect.width - 0.5;
+        const y = (e.clientY - rect.top) / rect.height - 0.5;
+        // Preserve existing hover lift transform + add tilt
+        this.style.transform = `perspective(800px) rotateY(${x * 12}deg) rotateX(${-y * 12}deg) translateZ(20px)`;
+    });
+    card.addEventListener('mouseleave', function() {
+        this.style.transform = ''; // CSS hover takes over
+    });
+});
+
+// ---- 8. Observer for new reveal classes ----
+const newRevealObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            newRevealObserver.unobserve(entry.target);
+        }
+    });
+}, { threshold: 0.1, rootMargin: '0px 0px -80px 0px' });
+
+document.querySelectorAll('.reveal-clip, .reveal-clip-left, .reveal-clip-right, .reveal-dramatic').forEach(el => {
+    newRevealObserver.observe(el);
+});
+
+// ---- 9. Letterbox bars animation on scroll ----
+const letterbox = document.getElementById('letterboxBars');
+if (letterbox) {
+    let lbTimer;
+    window.addEventListener('scroll', () => {
+        clearTimeout(lbTimer);
+        if (window.scrollY < 100) {
+            letterbox.classList.add('active');
+        } else {
+            letterbox.classList.remove('active');
+        }
+    }, { passive: true });
+    // Activate briefly on page load
+    setTimeout(() => letterbox.classList.add('active'), 500);
+    setTimeout(() => letterbox.classList.remove('active'), 3000);
+}
+
+console.log('%c✨ GOATED animations activated — CSMUN 2026 is CINEMATIC ✨', 'font-size:16px;font-weight:bold;color:#facc15;');
+
