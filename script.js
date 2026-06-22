@@ -545,19 +545,18 @@ function initCommitteeRoad() {
             points.push({ x, y });
         });
 
-        // Build a smooth S-curve with wide sweeping bends between each card
+        // Build deep S-curves — control points swing far past center for dramatic bends
         let d = `M ${points[0].x} ${points[0].y}`;
         for (let i = 0; i < points.length - 1; i++) {
             const p0 = points[i];
             const p1 = points[i + 1];
             const dy = p1.y - p0.y;
-            const midY = p0.y + dy * 0.5;
-            // Pull control points far to the CENTER horizontally to create a wide S-bend
-            const centerX = W / 2;
-            const cp1x = centerX;
-            const cp1y = p0.y + dy * 0.25;
-            const cp2x = centerX;
-            const cp2y = p0.y + dy * 0.75;
+            // Swing control points to the OPPOSITE side of each card for a deep S
+            const swing = W * 0.72;
+            const cp1x = p0.x < W / 2 ? p0.x + swing : p0.x - swing;
+            const cp1y = p0.y + dy * 0.35;
+            const cp2x = p1.x < W / 2 ? p1.x + swing : p1.x - swing;
+            const cp2y = p1.y - dy * 0.35;
             d += ` C ${cp1x} ${cp1y}, ${cp2x} ${cp2y}, ${p1.x} ${p1.y}`;
         }
 
@@ -576,11 +575,15 @@ function initCommitteeRoad() {
     function updateOnScroll() {
         const rect = container.getBoundingClientRect();
         const vh = window.innerHeight;
+        // Start drawing when top of container hits bottom of viewport
+        // Finish drawing when bottom of container hits top of viewport
+        const start = vh - rect.top;
         const total = rect.height + vh;
-        const scrolled = vh - rect.top;
-        let progress = scrolled / total;
+        let progress = start / total;
         progress = Math.max(0, Math.min(1, progress));
-        const offset = pathLength * (1 - progress);
+        // Remap so drawing starts at 0.05 and finishes at 0.95 of scroll
+        const remapped = Math.max(0, Math.min(1, (progress - 0.05) / 0.9));
+        const offset = pathLength * (1 - remapped);
         path.style.strokeDashoffset = offset;
         const glowPath = document.getElementById('roadGlow-path');
         if (glowPath) glowPath.style.strokeDashoffset = offset;
