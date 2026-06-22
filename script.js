@@ -412,25 +412,6 @@ document.addEventListener('click', (e) => {
     createClickParticles(e.clientX, e.clientY);
 });
 
-// ---- 5. Hero Title Character Animation ----
-function animateHeroTitle() {
-    const title = document.querySelector('.hero-title .line1');
-    if (!title || title.dataset.animated) return;
-    title.dataset.animated = 'true';
-    const text = title.textContent;
-    title.textContent = '';
-    [...text].forEach((char, i) => {
-        const span = document.createElement('span');
-        span.className = 'char';
-        span.textContent = char === ' ' ? '\u00A0' : char;
-        span.style.animationDelay = (0.3 + i * 0.06) + 's';
-        title.appendChild(span);
-    });
-}
-
-// Run hero title animation after preloader
-setTimeout(animateHeroTitle, 2500);
-
 // ---- 6. Countdown Flip Animation ----
 let prevCountdown = { days: '00', hours: '00', minutes: '00', seconds: '00' };
 const origUpdate = updateCountdown;
