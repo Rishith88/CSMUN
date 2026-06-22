@@ -540,27 +540,28 @@ function initCommitteeRoad() {
         const points = [];
         cards.forEach(card => {
             const r = card.getBoundingClientRect();
-            // Anchor to the RIGHT edge of left cards, LEFT edge of right cards
             const isLeft = card.classList.contains('road-left');
+            // Anchor to inner edge of each card
             const x = isLeft
-                ? (r.right + window.scrollX) - (containerRect.left + window.scrollX)
-                : (r.left + window.scrollX)  - (containerRect.left + window.scrollX);
-            const y = (r.top + window.scrollY) - containerTop + r.height / 2;
-            points.push({ x, y });
+                ? (r.right + window.scrollX) - (containerRect.left + window.scrollX) - 20
+                : (r.left + window.scrollX)  - (containerRect.left + window.scrollX) + 20;
+            // Anchor to bottom quarter of card so line enters naturally
+            const y = (r.top + window.scrollY) - containerTop + r.height * 0.75;
+            points.push({ x, y, isLeft });
         });
 
-        // Big sweeping arc from edge of one card to edge of the next
         let d = `M ${points[0].x} ${points[0].y}`;
         for (let i = 0; i < points.length - 1; i++) {
             const p0 = points[i];
             const p1 = points[i + 1];
             const dy = p1.y - p0.y;
-            // Control points arc through the center of the container
             const midX = W / 2;
-            const cp1x = midX;
-            const cp1y = p0.y + dy * 0.3;
-            const cp2x = midX;
-            const cp2y = p1.y - dy * 0.3;
+            // cp1 starts going horizontally outward from p0 before curving down
+            // cp2 arrives horizontally into p1 — this removes the sharp kink
+            const cp1x = p0.isLeft ? midX + W * 0.1 : midX - W * 0.1;
+            const cp1y = p0.y + dy * 0.5;
+            const cp2x = p1.isLeft ? midX + W * 0.1 : midX - W * 0.1;
+            const cp2y = p1.y - dy * 0.15;
             d += ` C ${cp1x} ${cp1y}, ${cp2x} ${cp2y}, ${p1.x} ${p1.y}`;
         }
 
