@@ -337,7 +337,7 @@
     <!-- Registration Section -->
  <section id="register" class="register-section reveal">
  <div class="container" style="display:flex;flex-direction:column;align-items:center;">
- <h2 class="section-title" style="display:block;text-align:center;position:relative;left:auto;transform:none;">Register for CSMUN 2026</h2>
+ <h2 class="section-title">Register for CSMUN 2026</h2>
  <p class="section-intro" style="margin-bottom:2rem;">Secure your spot at CSMUN 2026 by filling out the official registration form.</p>
  <a href="https://forms.gle/cBRp1x6ApAcn2PGm6" target="_blank" rel="noopener" class="btn-primary btn-large" style="font-size:1.1rem;">
  Register now for CSMUN 2026
@@ -532,17 +532,16 @@
     </script>
     <script>
     // ==================== GSAP HERO TITLE - ELEGANT REVEAL ====================
-    document.addEventListener('DOMContentLoaded', () => {
+    function animateHeroTitle() {
         const titleEl = document.getElementById('heroTitleSplit');
-        if (!titleEl) return;
-
-        const text = titleEl.textContent;
-        titleEl.textContent = '';
+        if (!titleEl || titleEl.dataset.animated) return;
+        titleEl.dataset.animated = 'true';
         titleEl.style.opacity = '1';
 
-        const chars = text.split('');
+        const chars = titleEl.textContent.split('');
+        titleEl.textContent = '';
         const spans = [];
-        chars.forEach((char, i) => {
+        chars.forEach((char) => {
             const span = document.createElement('span');
             span.textContent = char === ' ' ? '\u00A0' : char;
             span.style.display = 'inline-block';
@@ -552,17 +551,30 @@
             spans.push(span);
         });
 
-        const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
+        const tl = gsap.timeline({ defaults: { ease: 'power2.out' } });
 
         tl.fromTo(spans,
-            { opacity: 0, y: 60, rotateX: -40, filter: 'blur(4px)' },
-            { opacity: 1, y: 0, rotateX: 0, filter: 'blur(0px)', duration: 1, stagger: 0.06, ease: 'power2.out' }
+            { opacity: 0, y: 70, rotateX: -50, filter: 'blur(6px)' },
+            { opacity: 1, y: 0, rotateX: 0, filter: 'blur(0px)', duration: 0.9, stagger: 0.05 }
         )
-        .fromTo('.divider', { scaleX: 0, opacity: 0 }, { scaleX: 1, opacity: 1, duration: 0.8 }, '-=0.3')
-        .fromTo('.typewriter-line', { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.6, stagger: 0.15 }, '-=0.3')
-        .fromTo('.hero-subtitle-bottom', { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.6 }, '-=0.2')
-        .fromTo('.hero-buttons > *', { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.5, stagger: 0.1 }, '-=0.2');
+        .fromTo('.divider', { scaleX: 0, opacity: 0 }, { scaleX: 1, opacity: 1, duration: 0.7 }, '-=0.2');
+    }
+
+    // Split text on DOMContentLoaded but delay animation until preloader hides
+    document.addEventListener('DOMContentLoaded', () => {
+        const titleEl = document.getElementById('heroTitleSplit');
+        if (!titleEl) return;
+        titleEl.textContent = 'CSMUN 2026';
     });
+
+    // Watch for preloader to fully disappear, then fire
+    const preloaderCheck = setInterval(() => {
+        const pl = document.getElementById('preloader');
+        if (!pl || pl.style.display === 'none') {
+            clearInterval(preloaderCheck);
+            setTimeout(animateHeroTitle, 150);
+        }
+    }, 100);
     </script>
     <script src="script.js"></script>
 </body>

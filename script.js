@@ -538,32 +538,39 @@ function initCommitteeRoad() {
         }
 
         const points = [];
+const points = [];
         cards.forEach(card => {
             const r = card.getBoundingClientRect();
-            const isLeft = card.classList.contains('road-left');
-            // Anchor to inner edge of each card
-            const x = isLeft
-                ? (r.right + window.scrollX) - (containerRect.left + window.scrollX) - 20
-                : (r.left + window.scrollX)  - (containerRect.left + window.scrollX) + 20;
-            // Anchor to bottom quarter of card so line enters naturally
-            const y = (r.top + window.scrollY) - containerTop + r.height * 0.5;
-            points.push({ x, y, isLeft });
+            // Always anchor to the CENTER of every card
+            const x = (r.left + window.scrollX) - (containerRect.left + window.scrollX) + r.width / 2;
+            const y = (r.top + window.scrollY) - containerTop + r.height / 2;
+            points.push({ x, y });
         });
 
-        
-let d = `M ${points[0].x} ${points[0].y}`;
+        // Catmull-Rom to Bezier — physically cannot make sharp bounces
+        function catmullToBezier(p0, p1, p2, p3) {
+            const tension = 0.5;
+            return {
+                cp1x: p1.x + (p2.x - p0.x) * tension / 3,
+                cp1y: p1.y + (p2.y - p0.y) * tension / 3,
+                cp2x: p2.x - (p3.x - p1.x) * tension / 3,
+                cp2y: p2.y - (p3.y - p1.y) * tension / 3,
+            };
+        }
+
+        let d = `M ${points[0].x} ${points[0].y}`;
         for (let i = 0; i < points.length - 1; i++) {
-            const p0 = points[i];
-            const p1 = points[i + 1];
-            const dx = p1.x - p0.x;
-            const dy = p1.y - p0.y;
-            // cp1: leave p0 horizontally first, then arc down gently
-            const cp1x = p0.x + dx * 0.6;
-            const cp1y = p0.y + dy * 0.1;
-            // cp2: arrive into p1 from below and same side — no sharp bounce
-            const cp2x = p1.x - dx * 0.1;
-            const cp2y = p1.y - dy * 0.5;
-            d += ` C ${cp1x} ${cp1y}, ${cp2x} ${cp2y}, ${p1.x} ${p1.y}`;
+            const p0 = i === 0
+                ? { x: points[0].x - (points[1].x - points[0].x), y: points[0].y - (points[1].y - points[0].y) }
+                : points[i - 1];
+            const p1 = points[i];
+            const p2 = points[i + 1];
+            const p3 = i + 2 >= points.length
+                ? { x: points[points.length-1].x + (points[points.length-1].x - points[points.length-2].x),
+                    y: points[points.length-1].y + (points[points.length-1].y - points[points.length-2].y) }
+                : points[i + 2];
+            const { cp1x, cp1y, cp2x, cp2y } = catmullToBezier(p0, p1, p2, p3);
+            d += ` C ${cp1x} ${cp1y}, ${cp2x} ${cp2y}, ${p2.x} ${p2.y}`;
         }
 
         path.setAttribute('d', d);
