@@ -487,7 +487,6 @@ if (roadmapSection && roadmapTrack && roadmapCards.length > 0) {
  updateRoadmap();
 }
 
-// ---- Committees Road Path Animation ----
 function initCommitteeRoad() {
     const container = document.getElementById('committeesRoad');
     const svg = document.getElementById('roadSvg');
@@ -501,7 +500,42 @@ function initCommitteeRoad() {
     function buildPath() {
         const containerRect = container.getBoundingClientRect();
         const containerTop = containerRect.top + window.scrollY;
-        svg.setAttribute('viewBox', `0 0 ${containerRect.width} ${container.offsetHeight}`);
+        const W = containerRect.width;
+        const H = container.offsetHeight;
+
+        svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
+
+        // Add gradient and glow defs
+        let defs = svg.querySelector('defs');
+        if (!defs) {
+            defs = document.createElementNS('http://www.w3.org/2000/svg', 'defs');
+            defs.innerHTML = `
+                <linearGradient id="roadGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                    <stop offset="0%"   stop-color="#ffe066" stop-opacity="1"/>
+                    <stop offset="40%"  stop-color="#facc15" stop-opacity="1"/>
+                    <stop offset="100%" stop-color="#e6b800" stop-opacity="0.7"/>
+                </linearGradient>
+                <filter id="roadGlow">
+                    <feGaussianBlur stdDeviation="4" result="blur"/>
+                    <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+                </filter>
+            `;
+            svg.insertBefore(defs, svg.firstChild);
+        }
+
+        // Add a blurred glow path behind the main path
+        let glowPath = svg.querySelector('#roadGlow-path');
+        if (!glowPath) {
+            glowPath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+            glowPath.setAttribute('id', 'roadGlow-path');
+            glowPath.setAttribute('fill', 'none');
+            glowPath.setAttribute('stroke', '#facc15');
+            glowPath.setAttribute('stroke-width', '10');
+            glowPath.setAttribute('stroke-linecap', 'round');
+            glowPath.setAttribute('opacity', '0.25');
+            glowPath.setAttribute('filter', 'url(#roadGlow)');
+            svg.insertBefore(glowPath, path);
+        }
 
         const points = [];
         cards.forEach(card => {
@@ -511,17 +545,30 @@ function initCommitteeRoad() {
             points.push({ x, y });
         });
 
+        // Build a smooth S-curve path with big sweeping bends between each card
         let d = `M ${points[0].x} ${points[0].y}`;
         for (let i = 0; i < points.length - 1; i++) {
             const p0 = points[i];
             const p1 = points[i + 1];
-            const midY = (p0.y + p1.y) / 2;
-            d += ` C ${p0.x} ${midY}, ${p1.x} ${midY}, ${p1.x} ${p1.y}`;
+            const dy = p1.y - p0.y;
+            // Control points: pull strongly outward toward the opposite side for a wide S
+            const cp1x = p0.x;
+            const cp1y = p0.y + dy * 0.45;
+            const cp2x = p1.x;
+            const cp2y = p1.y - dy * 0.45;
+            d += ` C ${cp1x} ${cp1y}, ${cp2x} ${cp2y}, ${p1.x} ${p1.y}`;
         }
+
         path.setAttribute('d', d);
+        path.setAttribute('stroke', 'url(#roadGradient)');
+        path.setAttribute('filter', 'url(#roadGlow)');
+        glowPath.setAttribute('d', d);
+
         pathLength = path.getTotalLength();
         path.style.strokeDasharray = pathLength;
         path.style.strokeDashoffset = pathLength;
+        glowPath.style.strokeDasharray = pathLength;
+        glowPath.style.strokeDashoffset = pathLength;
     }
 
     function updateOnScroll() {
@@ -531,7 +578,10 @@ function initCommitteeRoad() {
         const scrolled = vh - rect.top;
         let progress = scrolled / total;
         progress = Math.max(0, Math.min(1, progress));
-        path.style.strokeDashoffset = pathLength * (1 - progress);
+        const offset = pathLength * (1 - progress);
+        path.style.strokeDashoffset = offset;
+        const glowPath = document.getElementById('roadGlow-path');
+        if (glowPath) glowPath.style.strokeDashoffset = offset;
     }
 
     buildPath();
@@ -540,5 +590,3 @@ function initCommitteeRoad() {
     window.addEventListener('resize', debounce(() => { buildPath(); updateOnScroll(); }, 200));
     window.addEventListener('scroll', rafThrottle(updateOnScroll), { passive: true });
 }
-
-window.addEventListener('load', () => setTimeout(initCommitteeRoad, 300));

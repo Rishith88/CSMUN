@@ -2976,11 +2976,12 @@ body.scene-3d {
 }
 .road-path {
     fill: none;
-    stroke: var(--gold);
-    stroke-width: 3;
+    stroke: url(#roadGradient);
+    stroke-width: 5;
     stroke-linecap: round;
-    opacity: 0.6;
-    filter: drop-shadow(0 0 6px rgba(250,204,21,0.4));
+    stroke-linejoin: round;
+    opacity: 0.85;
+    filter: drop-shadow(0 0 10px rgba(250,204,21,0.6)) drop-shadow(0 0 25px rgba(250,204,21,0.3));
 }
 .road-card {
     position: relative;
