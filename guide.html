@@ -218,9 +218,13 @@
             <h2 class="section-title">Allocation Matrix</h2>
             <div style="text-align:center;">
             <p class="section-intro" style="margin-bottom:2rem;">Download the official CSMUN 2026 allocation matrix to see your committee and country/role assignments.</p>
-            <a href="matrix/allocation-matrix.pdf" download class="btn-primary btn-large" style="font-size:1.1rem;">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display:inline;vertical-align:middle;margin-right:10px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                Download Allocation Matrix
+            <a href="https://docs.google.com/spreadsheets/d/YOUR_SHEET_ID/edit?usp=sharing" target="_blank" rel="noopener" class="btn-primary btn-large" style="font-size:1.1rem;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display:inline;vertical-align:middle;margin-right:10px;">
+                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+                <polyline points="15 3 21 3 21 9"/>
+                <line x1="10" y1="14" x2="21" y2="3"/>
+                </svg>
+                View Allocation Matrix
             </a>
             </div>
         </div>
@@ -602,7 +606,7 @@
                     <p>Phone: +91 XXXXXXXXXX</p>
                 </div>
             </div>
-            <div classbro w="footer-bottom">
+            <div class="footer-bottom">
                 <p>&copy; 2026 CSMUN - Cornerstone School. All Rights Reserved.</p>
             </div>
         </div>
@@ -610,6 +614,7 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script>
+    if (window.innerWidth > 768 && !(/Android|iPhone|iPad|iPod/i.test(navigator.userAgent))) {
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
     const renderer = new THREE.WebGLRenderer({ alpha: true });
@@ -646,6 +651,7 @@
       camera.updateProjectionMatrix();
       renderer.setSize(window.innerWidth, window.innerHeight);
     });
+    }
     </script>
     <script src="script.js"></script>
 </body>

@@ -413,3 +413,77 @@ if (!isMobile) {
  });
 }
 
+
+// ==================== HORIZONTAL SCROLLING ROADMAP ==================== 
+
+const roadmapSection = document.querySelector('.committees-roadmap-section');
+const roadmapWrapper = document.getElementById('roadmapWrapper');
+const roadmapTrack = document.getElementById('roadmapTrack');
+const roadmapCards = document.querySelectorAll('.roadmap-card');
+const roadmapProgress = document.getElementById('roadmapProgress');
+const scrollHint = document.getElementById('scrollHint');
+
+if (roadmapSection && roadmapTrack && roadmapCards.length > 0) {
+ const totalCards = roadmapCards.length;
+ 
+ function updateRoadmap() {
+ const sectionTop = roadmapSection.offsetTop;
+ const sectionHeight = roadmapSection.offsetHeight;
+ const scrollY = window.scrollY;
+ 
+ // Calculate scroll progress through the section
+ const scrollProgress = (scrollY - sectionTop) / sectionHeight;
+ const clampedProgress = Math.max(0, Math.min(1, scrollProgress));
+ 
+ // Update progress bar
+ if (roadmapProgress) {
+ roadmapProgress.style.width = (clampedProgress * 100) + '%';
+ }
+ 
+ // Hide scroll hint after first scroll
+ if (scrollHint && clampedProgress > 0.05) {
+ scrollHint.classList.add('hidden');
+ }
+ 
+ // Calculate which card should be active
+ const activeIndex = Math.floor(clampedProgress * totalCards);
+ const clampedIndex = Math.min(activeIndex, totalCards - 1);
+ 
+ // Horizontal scroll distance with HAIRPIN BENDS
+ // Cards 0-2 move left, card 3 turns back right, cards 4-5 move left again
+ let translateX = 0;
+ 
+ if (clampedIndex === 0) {
+ translateX = 0;
+ } else if (clampedIndex === 1) {
+ translateX = -100; // Move left
+ } else if (clampedIndex === 2) {
+ translateX = -200; // Continue left
+ } else if (clampedIndex === 3) {
+ translateX = -150; // HAIRPIN BEND - move back right
+ } else if (clampedIndex === 4) {
+ translateX = -250; // Move left again
+ } else if (clampedIndex === 5) {
+ translateX = -350; // Final position
+ }
+ 
+ roadmapTrack.style.transform = `translateX(${translateX}vw)`;
+ 
+ // Set active card
+ roadmapCards.forEach((card, index) => {
+ if (index === clampedIndex) {
+ card.classList.add('active');
+ } else {
+ card.classList.remove('active');
+ }
+ });
+ }
+ 
+ // Throttled scroll handler
+ const handleRoadmapScroll = rafThrottle(updateRoadmap);
+ window.addEventListener('scroll', handleRoadmapScroll, { passive: true });
+ 
+ // Initialize on load
+ updateRoadmap();
+}
+

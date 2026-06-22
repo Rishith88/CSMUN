@@ -205,99 +205,145 @@
                     </div>
                 </div>
 
-            </di v>
+            </div>
         </div>
     </section>
 
-    <!-- Committees Section -->
-<section id="committees" class="committees-section reveal">
+<!-- Committees Section with Horizontal Scroll Roadmap -->
+<section id="committees" class="committees-roadmap-section">
  <!-- Diplomacy Visual as section background -->
  <div class="diplomacy-bg">
  <img src="https://images.unsplash.com/photo-1541873676-a18131494184?q=80&w=1200" alt="" class="diplomacy-bg-img" loading="lazy" aria-hidden="true">
  <div class="diplomacy-bg-overlay"></div>
  </div>
+ 
  <div class="container">
  <h2 class="section-title">Our Committees</h2>
  <div class="committee-quote">
  <span class="committee-quote-mark">&ldquo;</span>
  <p class="committee-quote-text">The UN was not created to take mankind to heaven, but to save humanity from hell.</p>
  <span class="committee-quote-attribution">&mdash; Dag Hammarskjöld</span>
- </div>         <div class="committees-grid">
+ </div>
+ </div>
 
-            <div class="committee-card">
-                <img loading="lazy" src="images/committees/unsc.png" alt="UNSC" class="committee-img">
-                <h3>UNSC</h3>
-                <h4>United Nations Security Council</h4>
-                <p><strong>Agenda:</strong> Addressing Emerging Threats to International Peace and Security</p>
-                <p>As one of the six principal organs of the United Nations, the UNSC is entrusted with maintaining global peace and security, addressing international conflicts, and upholding the principles of the UN Charter.</p>
-                <span class="btn-download btn-coming-soon">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline;vertical-align:middle;margin-right:6px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                    Coming Soon
-                </span>
-            </div>
+ <!-- HORIZONTAL SCROLL ROADMAP CONTAINER -->
+ <div class="roadmap-wrapper" id="roadmapWrapper">
+ <div class="roadmap-progress-bar">
+ <div class="roadmap-progress-fill" id="roadmapProgress"></div>
+ </div>
+ 
+ <!-- Scroll Hint -->
+ <div class="scroll-hint" id="scrollHint">
+ <p>Scroll to explore</p>
+ <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+ <polyline points="6 9 12 15 18 9"/>
+ </svg>
+ </div>
 
-            <div class="committee-card">
-                <img loading="lazy" src='images/committees/UNHRC.png' width='120' height='120' viewBox='0 0 120 120'%3E%3Ccircle cx='60' cy='60' r='52' fill='none' stroke='%23facc15' stroke-width='3' opacity='0.3'/%3E%3Ccircle cx='60' cy='60' r='45' fill='rgba(250,204,21,0.08)'/%3E%3Ctext x='60' y='52' text-anchor='middle' font-family='Inter,sans-serif' font-size='20' font-weight='800' fill='%23facc15'%3EUNHRC%3C/text%3E%3Ctext x='60' y='72' text-anchor='middle' font-family='Inter,sans-serif' font-size='7' font-weight='400' fill='%2399a1af'%3EHUMAN RIGHTS%3C/text%3E%3Ctext x='60' y='82' text-anchor='middle' font-family='Inter,sans-serif' font-size='7' font-weight='400' fill='%2399a1af'%3ECOUNCIL%3C/text%3E%3C/svg%3E" alt="UNHRC" class="committee-img">
-                <h3>UNHRC</h3>
-                <h4>United Nations Human Rights Council</h4>
-                <p><strong>Agenda:</strong> Protecting Human Rights in Conflict and Crisis Zones</p>
-                <p>The principal United Nations body dedicated to the promotion and protection of human rights, working to address violations and advance fundamental freedoms.</p>
-                <span class="btn-download btn-coming-soon">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline;vertical-align:middle;margin-right:6px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                    Coming Soon
-                </span>
-            </div>
+ <div class="roadmap-track" id="roadmapTrack">
+ <!-- COMMITTEE 1 - UNSC -->
+ <div class="roadmap-card" data-index="0">
+ <div class="roadmap-card-inner">
+ <img loading="lazy" src="images/committees/unsc.png" alt="UNSC" class="roadmap-img">
+ <div class="roadmap-content">
+ <h3>UNSC</h3>
+ <h4>United Nations Security Council</h4>
+ <p><strong>Agenda:</strong> Addressing Emerging Threats to International Peace and Security</p>
+ <p>The most powerful UN organ, responsible for maintaining international peace.</p>
+ <span class="btn-download btn-coming-soon">
+ <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+ Coming Soon
+ </span>
+ </div>
+ </div>
+ </div>
 
-            <div class="committee-card">
-                <img loading="lazy" src="images/committees/disec.png" alt="DISEC" class="committee-img">
-                <h3>DISEC</h3>
-                <h4>Disarmament and International Security Committee</h4>
-                <p><strong>Agenda:</strong> Regulating Emerging Military Technologies and Autonomous Weapons</p>
-                <p>The First Committee of the UN General Assembly, serving as a global forum for addressing international security, arms control, and disarmament.</p>
-                <span class="btn-download btn-coming-soon">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline;vertical-align:middle;margin-right:6px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                    Coming Soon
-                </span>
-            </div>
+ <!-- COMMITTEE 2 - UNHRC -->
+ <div class="roadmap-card" data-index="1">
+ <div class="roadmap-card-inner">
+ <img loading="lazy" src="images/committees/UNHRC.png" alt="UNHRC" class="roadmap-img">
+ <div class="roadmap-content">
+ <h3>UNHRC</h3>
+ <h4>United Nations Human Rights Council</h4>
+ <p><strong>Agenda:</strong> Protecting Human Rights in Conflict and Crisis Zones</p>
+ <p>Promoting and protecting fundamental freedoms worldwide.</p>
+ <span class="btn-download btn-coming-soon">
+ <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+ Coming Soon
+ </span>
+ </div>
+ </div>
+ </div>
 
-            <div class="committee-card">
-                <img loading="lazy" src="images/committees/loksabha.png" alt="Lok Sabha" class="committee-img">
-                <h3>LOK SABHA</h3>
-                <h4>House of the People</h4>
-                <p><strong>Agenda:</strong> Deliberation on National Security and Internal Governance Reforms</p>
-                <p>The lower house of the Parliament of India, responsible for debating national issues, formulating laws, and shaping public policy.</p>
-                <span class="btn-download btn-coming-soon">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline;vertical-align:middle;margin-right:6px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                    Coming Soon
-                </span>
-            </div>
+ <!-- COMMITTEE 3 - DISEC -->
+ <div class="roadmap-card" data-index="2">
+ <div class="roadmap-card-inner">
+ <img loading="lazy" src="images/committees/disec.png" alt="DISEC" class="roadmap-img">
+ <div class="roadmap-content">
+ <h3>DISEC</h3>
+ <h4>Disarmament and International Security</h4>
+ <p><strong>Agenda:</strong> Regulating Emerging Military Technologies</p>
+ <p>Addressing international security, arms control, and disarmament.</p>
+ <span class="btn-download btn-coming-soon">
+ <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+ Coming Soon
+ </span>
+ </div>
+ </div>
+ </div>
 
-            <div class="committee-card">
-                <img loading="lazy" src="images/committees/ip.png" alt="International Press" class="committee-img">
-                <h3>IP</h3>
-                <h4>International Press</h4>
-                <p><strong>Agenda:</strong> Reporting, Journalism, Photography, and Media Coverage</p>
-                <p>The voice of journalism within the conference, documenting proceedings and fostering transparency through accurate coverage.</p>
-                <span class="btn-download btn-coming-soon">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline;vertical-align:middle;margin-right:6px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                    Coming Soon
-                </span>
-            </div>
+ <!-- COMMITTEE 4 - LOK SABHA -->
+ <div class="roadmap-card" data-index="3">
+ <div class="roadmap-card-inner">
+ <img loading="lazy" src="images/committees/loksabha.png" alt="Lok Sabha" class="roadmap-img">
+ <div class="roadmap-content">
+ <h3>LOK SABHA</h3>
+ <h4>House of the People</h4>
+ <p><strong>Agenda:</strong> National Security and Governance Reforms</p>
+ <p>India's lower house, debating national legislation and policy.</p>
+ <span class="btn-download btn-coming-soon">
+ <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+ Coming Soon
+ </span>
+ </div>
+ </div>
+ </div>
 
-            <div class="committee-card">
-                <img loading="lazy" src="images/committees/ipl.png" alt="IPL" class="committee-img">
-                <h3>IPL</h3>
-                <h4>Indian Premier League Committee</h4>
-                <p><strong>Agenda:</strong> Governance, Sustainability, and Future Development</p>
-                <p>Exploring the intersection of sports, governance, business, and public policy in the world's most celebrated cricket league.</p>
-                <span class="btn-download btn-coming-soon">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline;vertical-align:middle;margin-right:6px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                    Coming Soon
-                </span>
-            </div>
+ <!-- COMMITTEE 5 - IP -->
+ <div class="roadmap-card" data-index="4">
+ <div class="roadmap-card-inner">
+ <img loading="lazy" src="images/committees/ip.png" alt="International Press" class="roadmap-img">
+ <div class="roadmap-content">
+ <h3>IP</h3>
+ <h4>International Press</h4>
+ <p><strong>Agenda:</strong> Journalism, Photography, and Media Coverage</p>
+ <p>Documenting proceedings and fostering transparency.</p>
+ <span class="btn-download btn-coming-soon">
+ <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+ Coming Soon
+ </span>
+ </div>
+ </div>
+ </div>
 
-        </div>
-    </div>
+ <!-- COMMITTEE 6 - IPL -->
+ <div class="roadmap-card" data-index="5">
+ <div class="roadmap-card-inner">
+ <img loading="lazy" src="images/committees/ipl.png" alt="IPL" class="roadmap-img">
+ <div class="roadmap-content">
+ <h3>IPL</h3>
+ <h4>Indian Premier League Committee</h4>
+ <p><strong>Agenda:</strong> Governance, Sustainability, and Future Development</p>
+ <p>Exploring sports, governance, business, and public policy.</p>
+ <span class="btn-download btn-coming-soon">
+ <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+ Coming Soon
+ </span>
+ </div>
+ </div>
+ </div>
+ </div>
+ </div>
 </section>
 
     <!-- Allocation Matrix -->
@@ -306,9 +352,13 @@
             <h2 class="section-title">Allocation Matrix</h2>
             <div style="text-align:center;">
             <p class="section-intro" style="margin-bottom:2rem;">Download the common allocation matrix for all CSMUN 2026 committees.</p>
-            <a href="matrix/allocation-matrix.pdf" download class="btn-primary btn-large" style="font-size:1.1rem;">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display:inline;vertical-align:middle;margin-right:10px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                Download Allocation Matrix
+            <a href="https://docs.google.com/spreadsheets/d/YOUR_SHEET_ID/edit?usp=sharing" target="_blank" rel="noopener" class="btn-primary btn-large" style="font-size:1.1rem;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display:inline;vertical-align:middle;margin-right:10px;">
+                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+                <polyline points="15 3 21 3 21 9"/>
+                <line x1="10" y1="14" x2="21" y2="3"/>
+                </svg>
+                View Allocation Matrix
             </a>
             </div>
         </div>
@@ -372,6 +422,7 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script>
+    if (window.innerWidth > 768 && !(/Android|iPhone|iPad|iPod/i.test(navigator.userAgent))) {
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
     const renderer = new THREE.WebGLRenderer({ alpha: true });
@@ -408,6 +459,7 @@
       camera.updateProjectionMatrix();
       renderer.setSize(window.innerWidth, window.innerHeight);
     });
+    }
     </script>
     <script src="script.js"></script>
 </body>
