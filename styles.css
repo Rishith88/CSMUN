@@ -1179,6 +1179,28 @@ img {
     text-align: center;
     text-transform: uppercase;
     letter-spacing: 0.15em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+}
+
+.committee-eb-logo {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--gold);
+    box-shadow: 0 0 20px rgba(250, 204, 21, 0.3), 0 0 40px rgba(250, 204, 21, 0.1);
+    transition: all var(--transition-normal);
+    flex-shrink: 0;
+    background: var(--navy-light);
+}
+
+.committee-eb-logo:hover {
+    transform: scale(1.12) rotate(5deg);
+    border-color: var(--gold-light);
+    box-shadow: 0 0 30px rgba(250, 204, 21, 0.5), 0 0 60px rgba(250, 204, 21, 0.2);
 }
 
 .eb-grid {
@@ -1885,6 +1907,12 @@ footer p {
     }
     .committee-eb-title {
         font-size: 1.3rem;
+        gap: 0.75rem;
+        flex-wrap: wrap;
+    }
+    .committee-eb-logo {
+        width: 36px;
+        height: 36px;
     }
     
     #countdown {
