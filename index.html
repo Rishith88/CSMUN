@@ -11,6 +11,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&family=Playfair+Display:wght@700;800;900&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 </head>
 <body class="scene-3d">
  <!-- 3D Cityscape Background Layers -->
@@ -118,7 +119,7 @@
                 <img src="images/committees/ipl.png" alt="IPL" class="orbit-img orbit-img-6" loading="lazy">
             </div>
             <div class="divider"></div>
-            <h1 class="hero-title"><span class="line1">CSMUN 2026</span></h1>
+            <h1 class="hero-title"><span class="line1" id="heroTitleSplit">CSMUN 2026</span></h1>
             <div class="hero-tagline">
  <div class="typewriter">
  <span class="typewriter-line" data-text="Negotiating Today's Challenges"></span>
@@ -411,28 +412,28 @@
      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
      renderer.outputEncoding = THREE.sRGBEncoding;
      renderer.toneMapping = THREE.ACESFilmicToneMapping;
-     renderer.toneMappingExposure = 1.5; // Brighter exposure
+      renderer.toneMappingExposure = 0.8;
      container.appendChild(renderer.domElement);
 
      // Enhanced lighting setup for GOLD visibility
-     const ambientLight = new THREE.AmbientLight(0xffffff, 1.2); // Brighter ambient
+      const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
      scene.add(ambientLight);
 
-     const directionalLight1 = new THREE.DirectionalLight(0xffffff, 2);
-     directionalLight1.position.set(5, 5, 5);
-     scene.add(directionalLight1);
+      const directionalLight1 = new THREE.DirectionalLight(0xffffff, 0.8);
+      directionalLight1.position.set(5, 5, 5);
+      scene.add(directionalLight1);
 
-     const directionalLight2 = new THREE.DirectionalLight(0xfacc15, 1.5); // Gold-tinted light
-     directionalLight2.position.set(-5, 3, -5);
-     scene.add(directionalLight2);
+      const directionalLight2 = new THREE.DirectionalLight(0xfacc15, 0.6);
+      directionalLight2.position.set(-5, 3, -5);
+      scene.add(directionalLight2);
 
-     const topLight = new THREE.DirectionalLight(0xffe066, 1.8);
-     topLight.position.set(0, 10, 0);
-     scene.add(topLight);
+      const topLight = new THREE.DirectionalLight(0xffe066, 0.7);
+      topLight.position.set(0, 10, 0);
+      scene.add(topLight);
 
-     const pointLight = new THREE.PointLight(0xfacc15, 2, 100);
-     pointLight.position.set(0, 0, 8);
-     scene.add(pointLight);
+      const pointLight = new THREE.PointLight(0xfacc15, 0.8, 100);
+      pointLight.position.set(0, 0, 8);
+      scene.add(pointLight);
 
      // Load GLB model
      const loader = new THREE.GLTFLoader();
@@ -452,7 +453,7 @@
      metalness: 0.3, // 30% metallic as requested
      roughness: 0.5, // Medium roughness for visible color
      emissive: 0xfacc15, // Gold emission
-     emissiveIntensity: 0.15, // Subtle glow
+      emissiveIntensity: 0.06,
      side: THREE.DoubleSide, // Render both sides
      flatShading: false,
      });
@@ -511,7 +512,7 @@
      }
 
      // Animate lights for shimmer effect
-     pointLight.intensity = 2 + Math.sin(time * 2) * 0.4;
+      pointLight.intensity = 0.8 + Math.sin(time * 2) * 0.2;
      
      renderer.render(scene, camera);
      }
@@ -528,6 +529,88 @@
      });
 
     })();
+    </script>
+    <script>
+    // ==================== GSAP HERO TITLE SPLIT ANIMATION ====================
+    document.addEventListener('DOMContentLoaded', () => {
+        const titleEl = document.getElementById('heroTitleSplit');
+        if (!titleEl) return;
+
+        const text = titleEl.textContent;
+        titleEl.textContent = '';
+        titleEl.style.opacity = '1';
+
+        const chars = text.split('');
+        const spans = [];
+        chars.forEach((char, i) => {
+            const span = document.createElement('span');
+            span.textContent = char === ' ' ? '\u00A0' : char;
+            span.style.display = 'inline-block';
+            span.style.position = 'relative';
+            span.style.willChange = 'transform, opacity';
+            span.dataset.index = i;
+            titleEl.appendChild(span);
+            spans.push(span);
+        });
+
+        const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
+
+        tl.fromTo(spans,
+            {
+                opacity: 0,
+                y: gsap.utils.random(-120, 120, 1),
+                x: gsap.utils.random(-80, 80, 1),
+                rotation: gsap.utils.random(-180, 180, 1),
+                scale: 0.3,
+                filter: 'blur(10px)',
+            },
+            {
+                opacity: 1,
+                y: 0,
+                x: 0,
+                rotation: 0,
+                scale: 1,
+                filter: 'blur(0px)',
+                duration: 1.2,
+                stagger: 0.04,
+                ease: 'back.out(1.7)',
+            }
+        )
+        .to(spans, {
+            textShadow: '0 0 30px rgba(250,204,21,0.8), 0 0 60px rgba(250,204,21,0.4)',
+            duration: 0.4,
+            stagger: 0.02,
+            yoyo: true,
+            repeat: 1,
+            ease: 'power2.inOut',
+        }, '-=0.2')
+        .fromTo('.divider', { scaleX: 0, opacity: 0 }, { scaleX: 1, opacity: 1, duration: 0.8, ease: 'power3.out' }, '-=0.4')
+        .fromTo('.typewriter-line', { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.6, stagger: 0.15, ease: 'power2.out' }, '-=0.3')
+        .fromTo('.hero-subtitle-bottom', { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.6 }, '-=0.2')
+        .fromTo('.hero-buttons > *', { opacity: 0, y: 30, scale: 0.8 }, { opacity: 1, y: 0, scale: 1, duration: 0.5, stagger: 0.1, ease: 'back.out(1.7)' }, '-=0.2');
+
+        // Gold shimmer sweep across the title on loop
+        const shimmer = document.createElement('div');
+        shimmer.style.cssText = 'position:absolute;top:0;left:-20%;width:60%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.25),transparent);pointer-events:none;z-index:2;';
+        titleEl.style.position = 'relative';
+        titleEl.appendChild(shimmer);
+
+        gsap.to(shimmer, {
+            x: '250%',
+            duration: 1.2,
+            delay: 1.8,
+            ease: 'power2.inOut',
+            onComplete: () => {
+                gsap.to(shimmer, {
+                    x: '250%',
+                    duration: 1.5,
+                    repeat: -1,
+                    delay: 3,
+                    ease: 'power2.inOut',
+                });
+            }
+        });
+    });
     </script>
     <script src="script.js"></script>
 </body>
