@@ -412,28 +412,28 @@
      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
      renderer.outputEncoding = THREE.sRGBEncoding;
      renderer.toneMapping = THREE.ACESFilmicToneMapping;
-      renderer.toneMappingExposure = 0.3;
+     renderer.toneMappingExposure = 1.0;
      container.appendChild(renderer.domElement);//hi
 
-     // Enhanced lighting setup for GOLD visibility
-      const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+     // BALANCED lighting for visible GOLD color with 30% metallic
+     const ambientLight = new THREE.AmbientLight(0xffffff, 0.4);
      scene.add(ambientLight);
 
-      const directionalLight1 = new THREE.DirectionalLight(0xffffff, 0.8);
-      directionalLight1.position.set(5, 5, 5);
-      scene.add(directionalLight1);
+     const keyLight = new THREE.DirectionalLight(0xffffff, 0.6);
+     keyLight.position.set(5, 5, 5);
+     scene.add(keyLight);
 
-      const directionalLight2 = new THREE.DirectionalLight(0xfacc15, 0.6);
-      directionalLight2.position.set(-5, 3, -5);
-      scene.add(directionalLight2);
+     const fillLight = new THREE.DirectionalLight(0xfacc15, 0.3);
+     fillLight.position.set(-3, 2, -3);
+     scene.add(fillLight);
 
-      const topLight = new THREE.DirectionalLight(0xffe066, 0.7);
-      topLight.position.set(0, 10, 0);
-      scene.add(topLight);
+     const rimLight = new THREE.DirectionalLight(0xffe066, 0.4);
+     rimLight.position.set(0, -5, -5);
+     scene.add(rimLight);
 
-      const pointLight = new THREE.PointLight(0xfacc15, 0.8, 100);
-      pointLight.position.set(0, 0, 8);
-      scene.add(pointLight);
+     const pointLight = new THREE.PointLight(0xfacc15, 0.5, 100);
+     pointLight.position.set(0, 0, 5);
+     scene.add(pointLight);
 
      // Load GLB model
      const loader = new THREE.GLTFLoader();
@@ -512,7 +512,7 @@
      }
 
      // Animate lights for shimmer effect
-      pointLight.intensity = 0.8 + Math.sin(time * 2) * 0.2;
+     pointLight.intensity = 0.5 + Math.sin(time * 2) * 0.15;
      
      renderer.render(scene, camera);
      }

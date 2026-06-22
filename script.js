@@ -537,7 +537,7 @@ function initCommitteeRoad() {
             svg.insertBefore(glowPath, path);
         }
 
-        const points = [];
+        
 const points = [];
         cards.forEach(card => {
             const r = card.getBoundingClientRect();
