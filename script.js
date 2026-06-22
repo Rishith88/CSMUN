@@ -46,57 +46,46 @@ function rafThrottle(fn) {
             });
         }
     };
-}
-
-// ---- Navbar Scroll Effect (combined with progress + back-to-top) ----
+}// ---- Navbar Scroll Effect (combined with progress + back-to-top) ----
 const navbar = document.getElementById('navbar');
 const backToTop = document.getElementById('backToTop');
 const progressBar = document.getElementById('progressBar');
-const heroContent = document.querySelector('.hero-content');
 const sections = document.querySelectorAll('section[id]');
 const navLinks = document.querySelectorAll('.nav-links a');
 
 const handleScroll = rafThrottle(() => {
-    const scrollY = window.scrollY;
-    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-    
-    // Navbar: show after scrolling past the hero section, hide when at top
-    const hero = document.querySelector('.hero');
-    if (hero) {
-        const heroBottom = hero.offsetTop + hero.offsetHeight;
-        navbar.classList.toggle('visible', scrollY > heroBottom - 80);
-    } else {
-        // No hero section on this page (e.g. guide, team, resources) — show navbar immediately
-        navbar.classList.add('visible');
-    }
-    
-    // Navbar background
-    navbar.classList.toggle('scrolled', scrollY > 50);
-    
-    // Progress bar
-    if (progressBar) {
-        progressBar.style.width = ((scrollY / docHeight) * 100) + '%';
-    }
-    
-    // Back to top button
-    if (backToTop) {
-        backToTop.classList.toggle('show', scrollY > 300);
-    }
-    
-    // Active nav link
-    let current = '';
-    for (const section of sections) {
-        if (scrollY >= section.offsetTop - 200) {
-            current = section.getAttribute('id');
-        }
-    }
-    for (const link of navLinks) {
-        link.classList.toggle('active', link.getAttribute('href') === '#' + current);
-    }
+ const scrollY = window.scrollY;
+ const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+ 
+ // Navbar background — just toggle scrolled state
+ if (navbar) {
+ navbar.classList.toggle('scrolled', scrollY > 50);
+ }
+ 
+ // Progress bar
+ if (progressBar) {
+ progressBar.style.width = ((scrollY / docHeight) * 100) + '%';
+ }
+ 
+ // Back to top button
+ if (backToTop) {
+ backToTop.classList.toggle('show', scrollY > 300);
+ }
+ 
+ // Active nav link
+ let current = '';
+ for (const section of sections) {
+ if (scrollY >= section.offsetTop - 200) {
+ current = section.getAttribute('id');
+ }
+ }
+ for (const link of navLinks) {
+ link.classList.toggle('active', link.getAttribute('href') === '#' + current);
+ }
 });
 
 window.addEventListener('scroll', handleScroll, { passive: true });
-handleScroll(); // Initialize navbar state on page load
+handleScroll(); // Initialize on page load
 
 // ---- Smooth Scroll ----
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
@@ -414,76 +403,4 @@ if (!isMobile) {
 }
 
 
-// ==================== HORIZONTAL SCROLLING ROADMAP ==================== 
-
-const roadmapSection = document.querySelector('.committees-roadmap-section');
-const roadmapWrapper = document.getElementById('roadmapWrapper');
-const roadmapTrack = document.getElementById('roadmapTrack');
-const roadmapCards = document.querySelectorAll('.roadmap-card');
-const roadmapProgress = document.getElementById('roadmapProgress');
-const scrollHint = document.getElementById('scrollHint');
-
-if (roadmapSection && roadmapTrack && roadmapCards.length > 0) {
- const totalCards = roadmapCards.length;
- 
- function updateRoadmap() {
- const sectionTop = roadmapSection.offsetTop;
- const sectionHeight = roadmapSection.offsetHeight;
- const scrollY = window.scrollY;
- 
- // Calculate scroll progress through the section
- const scrollProgress = (scrollY - sectionTop) / sectionHeight;
- const clampedProgress = Math.max(0, Math.min(1, scrollProgress));
- 
- // Update progress bar
- if (roadmapProgress) {
- roadmapProgress.style.width = (clampedProgress * 100) + '%';
- }
- 
- // Hide scroll hint after first scroll
- if (scrollHint && clampedProgress > 0.05) {
- scrollHint.classList.add('hidden');
- }
- 
- // Calculate which card should be active
- const activeIndex = Math.floor(clampedProgress * totalCards);
- const clampedIndex = Math.min(activeIndex, totalCards - 1);
- 
- // Horizontal scroll distance with HAIRPIN BENDS
- // Cards 0-2 move left, card 3 turns back right, cards 4-5 move left again
- let translateX = 0;
- 
- if (clampedIndex === 0) {
- translateX = 0;
- } else if (clampedIndex === 1) {
- translateX = -100; // Move left
- } else if (clampedIndex === 2) {
- translateX = -200; // Continue left
- } else if (clampedIndex === 3) {
- translateX = -150; // HAIRPIN BEND - move back right
- } else if (clampedIndex === 4) {
- translateX = -250; // Move left again
- } else if (clampedIndex === 5) {
- translateX = -350; // Final position
- }
- 
- roadmapTrack.style.transform = `translateX(${translateX}vw)`;
- 
- // Set active card
- roadmapCards.forEach((card, index) => {
- if (index === clampedIndex) {
- card.classList.add('active');
- } else {
- card.classList.remove('active');
- }
- });
- }
- 
- // Throttled scroll handler
- const handleRoadmapScroll = rafThrottle(updateRoadmap);
- window.addEventListener('scroll', handleRoadmapScroll, { passive: true });
- 
- // Initialize on load
- updateRoadmap();
-}
 

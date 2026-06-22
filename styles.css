@@ -322,34 +322,29 @@ h1, h2, h3, h4 {
         z-index: 998;
         animation: fadeIn 0.3s ease;
     }
+}/* ==================== NAVIGATION ==================== */
+#navbar {
+ position: fixed;
+ top: 0;
+ left: 0;
+ width: 100%;
+ background: rgba(3, 17, 36, 0.85);
+ backdrop-filter: blur(16px) saturate(1.4);
+ -webkit-backdrop-filter: blur(16px) saturate(1.4);
+ border-bottom: 1px solid rgba(250, 204, 21, 0.12);
+ z-index: 1000;
+ padding: 0.8rem 0;
+ /* REMOVED transform and visibility — navbar is ALWAYS visible */
+ transition: background var(--transition-normal), box-shadow var(--transition-normal), backdrop-filter var(--transition-normal);
 }
 
-/* ==================== NAVIGATION ==================== */
-#navbar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    background: rgba(3, 17, 36, 0.45);
-    backdrop-filter: blur(16px) saturate(1.4);
-    -webkit-backdrop-filter: blur(16px) saturate(1.4);
-    border-bottom: 1px solid rgba(250, 204, 21, 0.12);
-    z-index: 1000;
-    padding: 0.8rem 0;
-    transform: translateY(-100%);
-    visibility: hidden;
-    transition: transform 0.4s ease, visibility 0.4s ease, background var(--transition-normal), box-shadow var(--transition-normal), backdrop-filter var(--transition-normal);
-}
-#navbar.visible {
-    transform: translateY(0);
-    visibility: visible;
-}
+/* Scrolled state — enhanced blur and shadow */
 #navbar.scrolled {
-    background: rgba(3, 17, 36, 0.65);
-    backdrop-filter: blur(20px) saturate(1.6);
-    -webkit-backdrop-filter: blur(20px) saturate(1.6);
-    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.4), 0 0 40px rgba(250, 204, 21, 0.06), inset 0 1px 0 rgba(250, 204, 21, 0.08);
-    border-bottom-color: rgba(250, 204, 21, 0.2);
+ background: rgba(3, 17, 36, 0.95);
+ backdrop-filter: blur(20px) saturate(1.6);
+ -webkit-backdrop-filter: blur(20px) saturate(1.6);
+ box-shadow: 0 4px 30px rgba(0, 0, 0, 0.4), 0 0 40px rgba(250, 204, 21, 0.06), inset 0 1px 0 rgba(250, 204, 21, 0.08);
+ border-bottom-color: rgba(250, 204, 21, 0.2);
 }
 
 .nav-container {
@@ -537,20 +532,19 @@ h1, h2, h3, h4 {
     box-shadow: var(--shadow-gold);
 }
 
-/* ==================== HERO SECTION ==================== */
-.hero {
-    position: relative;
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: 
-        linear-gradient(135deg, #000000 0%, #031124 50%, #000000 100%),
-        radial-gradient(ellipse at 20% 50%, rgba(250, 204, 21, 0.1) 0%, transparent 50%),
-        radial-gradient(ellipse at 80% 20%, rgba(250, 204, 21, 0.06) 0%, transparent 50%);
-    background-size: 200% 200%, 100% 100%, 100% 100%;
-    animation: gradientShift 15s ease infinite;
-    padding-top: 80px;
+/* ==================== HERO SECTION ==================== */.hero {
+ position: relative;
+ min-height: 100vh;
+ display: flex;
+ align-items: center;
+ justify-content: center;
+ background: 
+ linear-gradient(135deg, #000000 0%, #031124 50%, #000000 100%),
+ radial-gradient(ellipse at 20% 50%, rgba(250, 204, 21, 0.1) 0%, transparent 50%),
+ radial-gradient(ellipse at 80% 20%, rgba(250, 204, 21, 0.06) 0%, transparent 50%);
+ background-size: 200% 200%, 100% 100%, 100% 100%;
+ animation: gradientShift 15s ease infinite;
+ padding-top: 0; /* REMOVE the 80px padding since navbar is always visible */
 }
 .hero::before {
     content: '';
@@ -1574,7 +1568,7 @@ footer p {
 
 /* Content visibility for paint skipping on off-screen sections */
 .countdown-section, .stats-section, .about-section,
-.committees-section, .committees-roadmap-section, .itinerary-section, .register-section,
+.committees-section, .itinerary-section, .register-section,
 .secretariat-section, .eb-section, .policies-section,
 .resources-section, .faq-section {
     content-visibility: auto;
@@ -2964,200 +2958,3 @@ body.scene-3d {
  }
 }
 
-/* ==================== HORIZONTAL SCROLLING COMMITTEE ROADMAP ==================== */
-
-.committees-roadmap-section {
- min-height: 600vh; /* 6 committees × ~100vh each */
- position: relative;
- padding: 0;
- background: 
- linear-gradient(135deg, #000000 0%, #031124 50%, #000000 100%),
- radial-gradient(ellipse at 20% 50%, rgba(250, 204, 21, 0.08) 0%, transparent 50%);
- background-size: 200% 200%, 100% 100%;
- animation: gradientShift 15s ease infinite;
-}
-
-.roadmap-wrapper {
- position: sticky;
- top: 0;
- left: 0;
- width: 100%;
- height: 100vh;
- overflow: hidden;
- display: flex;
- align-items: center;
- justify-content: center;
-}
-
-.roadmap-track {
- display: flex;
- gap: 100vw; /* Each card takes full viewport width */
- position: absolute;
- left: 0;
- transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
- will-change: transform;
-}
-
-/* ROADMAP CARDS */
-.roadmap-card {
- min-width: 100vw;
- height: 100vh;
- display: flex;
- align-items: center;
- justify-content: center;
- padding: 2rem;
- position: relative;
-}
-
-.roadmap-card-inner {
- max-width: 900px;
- width: 100%;
- background: rgba(255, 255, 255, 0.03);
- backdrop-filter: blur(20px) saturate(180%);
- -webkit-backdrop-filter: blur(20px) saturate(180%);
- border: 1px solid rgba(250, 204, 21, 0.15);
- border-radius: 2rem;
- padding: 3rem;
- display: grid;
- grid-template-columns: 200px 1fr;
- gap: 2rem;
- align-items: center;
- box-shadow: 
- 0 20px 60px rgba(0, 0, 0, 0.6),
- 0 0 60px rgba(250, 204, 21, 0.15);
- transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
- opacity: 0;
- transform: scale(0.85) translateY(40px);
-}
-
-.roadmap-card.active .roadmap-card-inner {
- opacity: 1;
- transform: scale(1) translateY(0);
-}
-
-.roadmap-img {
- width: 180px;
- height: 180px;
- border-radius: 50%;
- object-fit: cover;
- border: 4px solid rgba(250, 204, 21, 0.3);
- box-shadow: 0 0 30px rgba(250, 204, 21, 0.4);
- transition: all 0.4s ease;
-}
-
-.roadmap-card.active .roadmap-img {
- border-color: var(--gold);
- box-shadow: 0 0 50px rgba(250, 204, 21, 0.6);
- transform: rotate(360deg);
-}
-
-.roadmap-content h3 {
- color: var(--gold);
- font-size: 2.5rem;
- margin-bottom: 0.5rem;
- text-shadow: 0 0 20px rgba(250, 204, 21, 0.4);
-}
-
-.roadmap-content h4 {
- color: var(--gray-300);
- font-size: 1.25rem;
- font-weight: 400;
- margin-bottom: 1rem;
-}
-
-.roadmap-content p {
- color: var(--gray-400);
- line-height: 1.8;
- margin-bottom: 0.75rem;
-}
-
-/* PROGRESS BAR */
-.roadmap-progress-bar {
- position: fixed;
- bottom: 40px;
- left: 50%;
- transform: translateX(-50%);
- width: 300px;
- height: 4px;
- background: rgba(255, 255, 255, 0.1);
- border-radius: 10px;
- overflow: hidden;
- z-index: 101;
-}
-
-.roadmap-progress-fill {
- height: 100%;
- width: 0%;
- background: linear-gradient(90deg, var(--gold-dark), var(--gold-light));
- border-radius: 10px;
- transition: width 0.3s ease;
- box-shadow: 0 0 10px rgba(250, 204, 21, 0.6);
-}
-
-/* SCROLL HINT */
-.scroll-hint {
- position: fixed;
- bottom: 100px;
- left: 50%;
- transform: translateX(-50%);
- text-align: center;
- color: var(--gold);
- font-size: 0.9rem;
- text-transform: uppercase;
- letter-spacing: 0.2em;
- z-index: 100;
- opacity: 1;
- transition: opacity 0.5s ease;
-}
-
-.scroll-hint.hidden {
- opacity: 0;
- pointer-events: none;
-}
-
-.scroll-hint svg {
- animation: scrollBounce 1.5s ease infinite;
- margin-top: 0.5rem;
-}
-
-@keyframes scrollBounce {
- 0%, 100% { transform: translateY(0); }
- 50% { transform: translateY(8px); }
-}
-
-/* HAIRPIN BEND EFFECT - ALTERNATE DIRECTIONS */
-.roadmap-card:nth-child(odd) .roadmap-card-inner {
- transform-origin: left center;
-}
-
-.roadmap-card:nth-child(even) .roadmap-card-inner {
- transform-origin: right center;
-}
-
-/* MOBILE RESPONSIVE */
-@media (max-width: 768px) {
- .roadmap-card-inner {
- grid-template-columns: 1fr;
- text-align: center;
- padding: 2rem 1.5rem;
- }
- 
- .roadmap-img {
- width: 120px;
- height: 120px;
- margin: 0 auto 1.5rem;
- }
- 
- .roadmap-content h3 {
- font-size: 1.8rem;
- }
- 
- .roadmap-content h4 {
- font-size: 1rem;
- }
- 
- .roadmap-progress-bar {
- width: 80%;
- bottom: 30px;
- }
-}
