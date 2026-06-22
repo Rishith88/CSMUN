@@ -408,23 +408,27 @@
      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
      renderer.outputEncoding = THREE.sRGBEncoding;
      renderer.toneMapping = THREE.ACESFilmicToneMapping;
-     renderer.toneMappingExposure = 1.2;
+     renderer.toneMappingExposure = 1.5; // Brighter exposure
      container.appendChild(renderer.domElement);
 
-     // Lighting setup for GOLD shining effect
-     const ambientLight = new THREE.AmbientLight(0xfacc15, 0.5);
+     // Enhanced lighting setup for GOLD visibility
+     const ambientLight = new THREE.AmbientLight(0xffffff, 1.2); // Brighter ambient
      scene.add(ambientLight);
 
-     const directionalLight = new THREE.DirectionalLight(0xffffff, 1.5);
-     directionalLight.position.set(5, 5, 5);
-     scene.add(directionalLight);
+     const directionalLight1 = new THREE.DirectionalLight(0xffffff, 2);
+     directionalLight1.position.set(5, 5, 5);
+     scene.add(directionalLight1);
 
-     const rimLight = new THREE.DirectionalLight(0xfacc15, 2);
-     rimLight.position.set(-5, 3, -5);
-     scene.add(rimLight);
+     const directionalLight2 = new THREE.DirectionalLight(0xfacc15, 1.5); // Gold-tinted light
+     directionalLight2.position.set(-5, 3, -5);
+     scene.add(directionalLight2);
 
-     const pointLight = new THREE.PointLight(0xffe066, 1, 100);
-     pointLight.position.set(0, 5, 5);
+     const topLight = new THREE.DirectionalLight(0xffe066, 1.8);
+     topLight.position.set(0, 10, 0);
+     scene.add(topLight);
+
+     const pointLight = new THREE.PointLight(0xfacc15, 2, 100);
+     pointLight.position.set(0, 0, 8);
      scene.add(pointLight);
 
      // Load GLB model
@@ -436,18 +440,31 @@
      function(gltf) {
      model = gltf.scene;
      
-     // Apply GOLD material to all meshes
+     // FORCE 30% METALLIC GOLD MATERIAL - BULLETPROOF METHOD
      model.traverse((child) => {
      if (child.isMesh) {
-     child.material = new THREE.MeshStandardMaterial({
-     color: 0xfacc15,
-     metalness: 0.9,
-     roughness: 0.2,
-     emissive: 0xe6b800,
-     emissiveIntensity: 0.3,
+     // Completely replace the material
+     const newMaterial = new THREE.MeshStandardMaterial({
+     color: 0xfacc15, // Gold color
+     metalness: 0.3, // 30% metallic as requested
+     roughness: 0.5, // Medium roughness for visible color
+     emissive: 0xfacc15, // Gold emission
+     emissiveIntensity: 0.15, // Subtle glow
+     side: THREE.DoubleSide, // Render both sides
+     flatShading: false,
      });
+     
+     // Dispose old material to prevent memory leaks
+     if (child.material) {
+     child.material.dispose();
+     }
+     
+     child.material = newMaterial;
      child.castShadow = true;
      child.receiveShadow = true;
+     
+     // Force material update
+     child.material.needsUpdate = true;
      }
      });
 
@@ -462,12 +479,14 @@
      model.scale.setScalar(scale);
 
      scene.add(model);
+     
+     console.log('✅ GLB Model loaded successfully with GOLD material');
      },
      function(xhr) {
-     console.log((xhr.loaded / xhr.total * 100) + '% loaded');
+     console.log('Loading GLB: ' + (xhr.loaded / xhr.total * 100).toFixed(2) + '%');
      },
      function(error) {
-     console.error('Error loading GLB model:', error);
+     console.error('❌ Error loading GLB model:', error);
      // Fallback to SVG logo
      container.innerHTML = '<img src="images/mun-logo.svg" alt="CSMUN" style="width:100%;height:100%;border-radius:50%;border:4px solid rgba(250,204,21,0.4);box-shadow:0 0 40px rgba(250,204,21,0.3);">';
      }
@@ -482,14 +501,14 @@
      if (model) {
      // Slow rotation like Earth (Y-axis primary)
      model.rotation.y += 0.005;
-     model.rotation.x = Math.sin(time * 0.3) * 0.1; // Subtle tilt wobble
+     model.rotation.x = Math.sin(time * 0.3) * 0.05; // Subtle tilt wobble
      
      // Gentle floating animation
-     model.position.y = Math.sin(time * 0.5) * 0.1;
+     model.position.y = Math.sin(time * 0.5) * 0.08;
      }
 
      // Animate lights for shimmer effect
-     pointLight.intensity = 1 + Math.sin(time * 2) * 0.3;
+     pointLight.intensity = 2 + Math.sin(time * 2) * 0.4;
      
      renderer.render(scene, camera);
      }

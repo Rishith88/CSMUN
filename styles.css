@@ -1556,9 +1556,8 @@ footer p {
  box-shadow: none !important;
 }
 
-/* Content visibility for paint skipping on off-screen sections */
 .countdown-section, .stats-section, .about-section,
-.committees-section, .itinerary-section, .register-section,
+.itinerary-section, .register-section,
 .secretariat-section, .eb-section, .policies-section,
 .resources-section, .faq-section {
     content-visibility: auto;
