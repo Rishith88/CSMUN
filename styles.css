@@ -33,43 +33,7 @@
     
     --shadow-gold: 0 0 20px rgba(250, 204, 21, 0.3);
     --shadow-gold-intense: 0 0 40px rgba(250, 204, 21, 0.5);
-    --glass-blur: blur(20px) saturate(180%);
-    --glass-bg-hover: rgba(255, 255, 255, 0.06);
-    --glass-shadow-hover: 0 20px 60px rgba(0, 0, 0, 0.6), 0 0 60px rgba(250, 204, 21, 0.2);
-    --glass-transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
-
-/* ==================== GLASSMORPHISM 2.0 — ULTRA PREMIUM FROSTED GLASS ==================== */
-.glass-card, .committee-card, .policy-card, .eb-card {
-    background: rgba(255, 255, 255, 0.03);
-    backdrop-filter: blur(20px) saturate(180%);
-    -webkit-backdrop-filter: blur(20px) saturate(180%);
-    border: 1px solid rgba(250, 204, 21, 0.15);
-    box-shadow: 
-        0 8px 32px rgba(0, 0, 0, 0.4),
-        inset 0 1px 0 rgba(255, 255, 255, 0.1),
-        0 0 40px rgba(250, 204, 21, 0.08);
-    transition: var(--glass-transition);
-    transform-style: preserve-3d;
-}
-
-.glass-card:hover, .committee-card:hover {
-    background: rgba(255, 255, 255, 0.06);
-    border-color: rgba(250, 204, 21, 0.4);
-    transform: translateY(-8px) scale(1.02);
-    box-shadow: 
-        0 20px 60px rgba(0, 0, 0, 0.6),
-        0 0 60px rgba(250, 204, 21, 0.2);
-}
-
-.policy-card:hover, .eb-card:hover {
-    background: rgba(255, 255, 255, 0.06);
-    border-color: rgba(250, 204, 21, 0.4);
-    box-shadow: 
-        0 20px 60px rgba(0, 0, 0, 0.6),
-        0 0 60px rgba(250, 204, 21, 0.2);
-}
-
 
 ::selection {
     background: var(--gold);
@@ -79,10 +43,10 @@
 ::-webkit-scrollbar { width: 8px; }
 ::-webkit-scrollbar-track { background: var(--black); }
 ::-webkit-scrollbar-thumb {
-    background: var(--gold-dark);
+    background: linear-gradient(180deg, var(--gold), var(--gold-dark));
     border-radius: 10px;
 }
-::-webkit-scrollbar-thumb:hover { background: var(--gold); }
+::-webkit-scrollbar-thumb:hover { background: var(--gold-light); }
 
 html {
     scroll-behavior: smooth;
@@ -116,11 +80,6 @@ a, button, .btn-primary, .btn-secondary, .btn-download, .btn-matrix-dl, .committ
     cursor: pointer;
 }
 
-/* Offset for fixed navbar on anchor scroll */
-section[id] {
-    scroll-margin-top: 80px;
-}
-
 /* ==================== TYPOGRAPHY ==================== */
 h1, h2, h3, h4 {
     font-family: var(--font-heading);
@@ -134,30 +93,26 @@ h1, h2, h3, h4 {
 }
 
 .section-title {
-    font-size: clamp(2.2rem, 5vw + 0.5rem, 3.2rem);
+    font-size: clamp(2rem, 5vw + 1rem, 3rem);
     text-align: center;
-    margin: 0 auto 3rem;
+    color: var(--gold);
+    margin-bottom: 3rem;
     text-transform: uppercase;
-    letter-spacing: 0.25em;
-    font-weight: 700;
-    line-height: 1.2;
-    background: linear-gradient(135deg, #f5e6b8 0%, #d4af37 40%, #f5e6b8 70%, #c9a84c 100%);
-    background-size: 200% 200%;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    letter-spacing: 0.2em;
     position: relative;
-    width: fit-content;
+    display: inline-block;
+    left: 50%;
+    transform: translateX(-50%);
 }
 .section-title::after {
     content: '';
     position: absolute;
-    bottom: -12px;
+    bottom: -10px;
     left: 50%;
     transform: translateX(-50%);
-    width: 70%;
+    width: 60%;
     height: 2px;
-    background: linear-gradient(90deg, transparent, #d4af37, #f5e6b8, #d4af37, transparent);
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
 }
 
 .section-label {
@@ -206,144 +161,26 @@ h1, h2, h3, h4 {
     50% { background-position: -200% 0; }
 }
 
-/* ==================== HAMBURGER MENU BUTTON ==================== */
-.hamburger {
-    display: none;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    width: 44px;
-    height: 44px;
-    background: transparent;
-    border: 1px solid rgba(250, 204, 21, 0.2);
-    border-radius: 0.5rem;
-    cursor: pointer;
-    padding: 10px 8px;
-    z-index: 1001;
-    gap: 5px;
-    transition: border-color var(--transition-fast);
-    flex-shrink: 0;
-}
-.hamburger:hover {
-    border-color: rgba(250, 204, 21, 0.5);
-}
-.hamburger span {
-    display: block;
-    width: 22px;
-    height: 2px;
-    background: var(--gold);
-    border-radius: 2px;
-    transition: all 0.3s ease;
-    transform-origin: center;
-}
-.hamburger.active span:nth-child(1) {
-    transform: rotate(45deg) translate(5px, 5px);
-}
-.hamburger.active span:nth-child(2) {
-    opacity: 0;
-    transform: scaleX(0);
-}
-.hamburger.active span:nth-child(3) {
-    transform: rotate(-45deg) translate(5px, -5px);
-}
-
-/* ==================== MOBILE MENU OVERLAY ==================== */
-.nav-menu {
-    display: flex;
-    align-items: center;
-    gap: 2rem;
-}
-
-@media (max-width: 768px) {
-    .hamburger {
-        display: flex;
-    }
-    .nav-menu {
-        position: fixed;
-        top: 0;
-        right: -100%;
-        width: 75%;
-        max-width: 300px;
-        height: 100vh;
-        height: 100dvh;
-        background: rgba(3, 17, 36, 0.97);
-        backdrop-filter: blur(24px) saturate(1.5);
-        -webkit-backdrop-filter: blur(24px) saturate(1.5);
-        border-left: 1px solid rgba(250, 204, 21, 0.15);
-        flex-direction: column;
-        justify-content: flex-start;
-        padding: 90px 2rem 2rem;
-        transition: right 0.35s cubic-bezier(0.4, 0, 0.2, 1);
-        z-index: 999;
-        gap: 0.5rem;
-        box-shadow: -10px 0 40px rgba(0, 0, 0, 0.5);
-        overflow-y: auto;
-    }
-    .nav-menu.open {
-        right: 0;
-    }
-    .nav-menu .nav-links {
-        display: flex !important;
-        flex-direction: column;
-        gap: 0.25rem;
-        width: 100%;
-    }
-    .nav-menu .nav-links a {
-        font-size: 1.1rem;
-        padding: 0.75rem 1rem;
-        border-radius: 0.5rem;
-        transition: background var(--transition-fast);
-        display: block;
-    }
-    .nav-menu .nav-links a:hover {
-        background: rgba(250, 204, 21, 0.08);
-    }
-    .nav-menu .nav-links a::after {
-        display: none;
-    }
-    .nav-menu .nav-cta {
-        margin-top: 1.5rem;
-        text-align: center;
-        width: 100%;
-        padding: 0.9rem 1.5rem;
-        font-size: 1rem;
-    }
-
-    /* Mobile overlay backdrop */
-    body.menu-open {
-        overflow: hidden;
-    }
-    body.menu-open::after {
-        content: '';
-        position: fixed;
-        inset: 0;
-        background: rgba(0, 0, 0, 0.5);
-        z-index: 998;
-        animation: fadeIn 0.3s ease;
-    }
-}/* ==================== NAVIGATION ==================== */
+/* ==================== NAVIGATION ==================== */
 #navbar {
- position: fixed;
- top: 0;
- left: 0;
- width: 100%;
- background: rgba(3, 17, 36, 0.85);
- backdrop-filter: blur(16px) saturate(1.4);
- -webkit-backdrop-filter: blur(16px) saturate(1.4);
- border-bottom: 1px solid rgba(250, 204, 21, 0.12);
- z-index: 1000;
- padding: 0.8rem 0;
- /* REMOVED transform and visibility — navbar is ALWAYS visible */
- transition: background var(--transition-normal), box-shadow var(--transition-normal), backdrop-filter var(--transition-normal);
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background: rgba(3, 17, 36, 0.45);
+    backdrop-filter: blur(16px) saturate(1.4);
+    -webkit-backdrop-filter: blur(16px) saturate(1.4);
+    border-bottom: 1px solid rgba(250, 204, 21, 0.12);
+    z-index: 1000;
+    padding: 0.8rem 0;
+    transition: background var(--transition-normal), box-shadow var(--transition-normal), backdrop-filter var(--transition-normal);
 }
-
-/* Scrolled state — enhanced blur and shadow */
 #navbar.scrolled {
- background: rgba(3, 17, 36, 0.95);
- backdrop-filter: blur(20px) saturate(1.6);
- -webkit-backdrop-filter: blur(20px) saturate(1.6);
- box-shadow: 0 4px 30px rgba(0, 0, 0, 0.4), 0 0 40px rgba(250, 204, 21, 0.06), inset 0 1px 0 rgba(250, 204, 21, 0.08);
- border-bottom-color: rgba(250, 204, 21, 0.2);
+    background: rgba(3, 17, 36, 0.65);
+    backdrop-filter: blur(20px) saturate(1.6);
+    -webkit-backdrop-filter: blur(20px) saturate(1.6);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.4), 0 0 40px rgba(250, 204, 21, 0.06), inset 0 1px 0 rgba(250, 204, 21, 0.08);
+    border-bottom-color: rgba(250, 204, 21, 0.2);
 }
 
 .nav-container {
@@ -531,19 +368,15 @@ h1, h2, h3, h4 {
     box-shadow: var(--shadow-gold);
 }
 
-/* ==================== HERO SECTION ==================== */.hero {
- position: relative;
- min-height: 100vh;
- display: flex;
- align-items: center;
- justify-content: center;
- background: 
- linear-gradient(135deg, #000000 0%, #031124 50%, #000000 100%),
- radial-gradient(ellipse at 20% 50%, rgba(250, 204, 21, 0.1) 0%, transparent 50%),
- radial-gradient(ellipse at 80% 20%, rgba(250, 204, 21, 0.06) 0%, transparent 50%);
- background-size: 200% 200%, 100% 100%, 100% 100%;
- animation: gradientShift 15s ease infinite;
- padding-top: 0; /* REMOVE the 80px padding since navbar is always visible */
+/* ==================== HERO SECTION ==================== */
+.hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--black);
+    padding-top: 80px;
 }
 .hero::before {
     content: '';
@@ -575,11 +408,11 @@ h1, h2, h3, h4 {
     perspective: 1000px;
 }
 
-/* ==================== HERO 3D GLB MODEL ==================== */
-.hero-3d-model {
+/* ==================== HERO 3D ORBIT ==================== */
+.hero-3d-orbit {
     position: relative;
-    width: 400px;
-    height: 400px;
+    width: 340px;
+    height: 340px;
     margin: 0 auto 2rem;
     display: flex;
     align-items: center;
@@ -587,21 +420,23 @@ h1, h2, h3, h4 {
     animation: fadeInUp 0.8s ease both;
 }
 
-#glbModelContainer {
-    width: 300px;
-    height: 300px;
-    position: relative;
-    z-index: 2;
-}
-
-#glbModelContainer canvas {
-    width: 100% !important;
-    height: 100% !important;
+.hero-logo {
+    width: 160px;
+    height: 160px;
     border-radius: 50%;
-    filter: drop-shadow(0 0 40px rgba(250, 204, 21, 0.5));
+    object-fit: cover;
+    border: 4px solid rgba(250, 204, 21, 0.4);
+    box-shadow: 0 0 40px rgba(250, 204, 21, 0.3), 0 0 80px rgba(250, 204, 21, 0.1);
+    z-index: 2;
+    position: relative;
+    animation: heroLogoFloat 3s ease-in-out infinite;
 }
 
-/* Keep the orbit rings */
+@keyframes heroLogoFloat {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+}
+
 .orbit-ring {
     position: absolute;
     border: 1.5px solid rgba(250, 204, 21, 0.15);
@@ -611,60 +446,61 @@ h1, h2, h3, h4 {
 }
 
 .orbit-ring-1 {
-    width: 400px;
-    height: 400px;
+    width: 340px;
+    height: 340px;
 }
 
 .orbit-ring-2 {
-    width: 340px;
-    height: 340px;
+    width: 280px;
+    height: 280px;
     animation-direction: reverse;
     animation-duration: 15s;
     border-style: dashed;
 }
 
-.orbit-img {
+.orbit-text {
     position: absolute;
-    width: 48px;
-    height: 48px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 2px solid rgba(250, 204, 21, 0.4);
-    box-shadow: 0 0 15px rgba(250, 204, 21, 0.3);
+    font-family: var(--font-heading);
+    font-size: 1.1rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--gold);
+    text-shadow: 0 0 20px rgba(250, 204, 21, 0.4);
     z-index: 3;
-    background: rgba(0,0,0,0.3);
+    animation: orbitSpin 20s linear infinite;
+    transform-origin: center;
+    /* Each word starts at a different angle offset */
 }
 
-.orbit-img-1 { animation: orbitImgPath1 20s linear infinite; }
-.orbit-img-2 { animation: orbitImgPath2 20s linear infinite; }
-.orbit-img-3 { animation: orbitImgPath3 20s linear infinite; }
-.orbit-img-4 { animation: orbitImgPath4 20s linear infinite; }
-.orbit-img-5 { animation: orbitImgPath5 20s linear infinite; }
-.orbit-img-6 { animation: orbitImgPath6 20s linear infinite; }
+.orbit-text-1 {
+    /* Start at top (0deg) */
+    animation: orbitTextPath1 20s linear infinite;
+}
 
-@keyframes orbitImgPath1 {
- 0% { transform: rotate(0deg) translateY(-180px) rotate(0deg); }
- 100% { transform: rotate(360deg) translateY(-180px) rotate(-360deg); }
+.orbit-text-2 {
+    /* Start at 120deg */
+    animation: orbitTextPath2 20s linear infinite;
 }
-@keyframes orbitImgPath2 {
- 0% { transform: rotate(60deg) translateY(-180px) rotate(-60deg); }
- 100% { transform: rotate(420deg) translateY(-180px) rotate(-420deg); }
+
+.orbit-text-3 {
+    /* Start at 240deg */
+    animation: orbitTextPath3 20s linear infinite;
 }
-@keyframes orbitImgPath3 {
- 0% { transform: rotate(120deg) translateY(-180px) rotate(-120deg); }
- 100% { transform: rotate(480deg) translateY(-180px) rotate(-480deg); }
+
+@keyframes orbitTextPath1 {
+    0%   { transform: rotate(0deg) translateY(-150px) rotate(0deg); }
+    100% { transform: rotate(360deg) translateY(-150px) rotate(-360deg); }
 }
-@keyframes orbitImgPath4 {
- 0% { transform: rotate(180deg) translateY(-180px) rotate(-180deg); }
- 100% { transform: rotate(540deg) translateY(-180px) rotate(-540deg); }
+
+@keyframes orbitTextPath2 {
+    0%   { transform: rotate(120deg) translateY(-150px) rotate(-120deg); }
+    100% { transform: rotate(480deg) translateY(-150px) rotate(-480deg); }
 }
-@keyframes orbitImgPath5 {
- 0% { transform: rotate(240deg) translateY(-180px) rotate(-240deg); }
- 100% { transform: rotate(600deg) translateY(-180px) rotate(-600deg); }
-}
-@keyframes orbitImgPath6 {
- 0% { transform: rotate(300deg) translateY(-180px) rotate(-300deg); }
- 100% { transform: rotate(660deg) translateY(-180px) rotate(-660deg); }
+
+@keyframes orbitTextPath3 {
+    0%   { transform: rotate(240deg) translateY(-150px) rotate(-240deg); }
+    100% { transform: rotate(600deg) translateY(-150px) rotate(-600deg); }
 }
 
 @keyframes orbitSpin {
@@ -691,21 +527,14 @@ h1, h2, h3, h4 {
 }
 
 .hero-title {
-    font-size: clamp(3.5rem, 10vw + 0.5rem, 8rem);
-    font-weight: 700;
-    line-height: 1.05;
-    letter-spacing: -0.02em;
-    overflow: hidden;
+    font-size: clamp(3rem, 8vw + 1rem, 7rem);
+    font-weight: 900;
+    line-height: 1;
+    letter-spacing: 0.02em;
 }
 .hero-title .line1 {
     display: block;
-}
-
-#heroTitleSplit span {
-    display: inline-block;
-    position: relative;
-    opacity: 0;
-    background: linear-gradient(135deg, #f5e6b8 0%, #d4af37 40%, #f5e6b8 70%, #c9a84c 100%);
+    background: linear-gradient(135deg, var(--gold) 0%, var(--gold-light) 30%, var(--gold) 60%, var(--gold-dark) 100%);
     background-size: 200% 200%;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -780,15 +609,9 @@ h1, h2, h3, h4 {
 }
 
 .glass-card h2 {
-    font-size: clamp(1.5rem, 3vw + 0.5rem, 2rem);
+    color: var(--gold);
+    font-size: 2rem;
     margin-bottom: 2rem;
-    font-weight: 700;
-    letter-spacing: 0.15em;
-    background: linear-gradient(135deg, #f5e6b8 0%, #d4af37 50%, #f5e6b8 100%);
-    background-size: 200% 200%;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
 }
 
 /* ==================== COUNTDOWN SECTION ==================== */
@@ -862,12 +685,7 @@ h1, h2, h3, h4 {
 /* ==================== ABOUT SECTION ==================== */
 .about-section {
     padding: 6rem 0;
-    background: 
-        linear-gradient(135deg, #000000 0%, #031124 50%, #000000 100%),
-        radial-gradient(ellipse at 20% 50%, rgba(250, 204, 21, 0.1) 0%, transparent 50%),
-        radial-gradient(ellipse at 80% 20%, rgba(250, 204, 21, 0.06) 0%, transparent 50%);
-    background-size: 200% 200%, 100% 100%, 100% 100%;
-    animation: gradientShift 15s ease infinite;
+    background: linear-gradient(180deg, var(--navy) 0%, #020a18 100%);
     position: relative;
     overflow: hidden;
 }
@@ -939,12 +757,6 @@ img {
 .committees-section {
     padding: 6rem 0;
     position: relative;
-    background: 
-        linear-gradient(135deg, #000000 0%, #031124 50%, #000000 100%),
-        radial-gradient(ellipse at 20% 50%, rgba(250, 204, 21, 0.08) 0%, transparent 50%),
-        radial-gradient(ellipse at 80% 20%, rgba(250, 204, 21, 0.04) 0%, transparent 50%);
-    background-size: 200% 200%, 100% 100%, 100% 100%;
-    animation: gradientShift 15s ease infinite;
 }
 
 .committees-grid {
@@ -959,7 +771,7 @@ img {
     border: 1px solid var(--glass-border);
     border-radius: 1.5rem;
     padding: 2rem;
-    transition: all 0.4s ease, transform 0.1s ease-out;
+    transition: all var(--transition-normal);
     position: relative;
     overflow: hidden;
 }
@@ -1179,28 +991,6 @@ img {
     text-align: center;
     text-transform: uppercase;
     letter-spacing: 0.15em;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 1rem;
-}
-
-.committee-eb-logo {
-    width: 48px;
-    height: 48px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 2px solid var(--gold);
-    box-shadow: 0 0 20px rgba(250, 204, 21, 0.3), 0 0 40px rgba(250, 204, 21, 0.1);
-    transition: all var(--transition-normal);
-    flex-shrink: 0;
-    background: var(--navy-light);
-}
-
-.committee-eb-logo:hover {
-    transform: scale(1.12) rotate(5deg);
-    border-color: var(--gold-light);
-    box-shadow: 0 0 30px rgba(250, 204, 21, 0.5), 0 0 60px rgba(250, 204, 21, 0.2);
 }
 
 .eb-grid {
@@ -1591,8 +1381,9 @@ footer p {
  box-shadow: none !important;
 }
 
+/* Content visibility for paint skipping on off-screen sections */
 .countdown-section, .stats-section, .about-section,
-.itinerary-section, .register-section,
+.committees-section, .itinerary-section, .register-section,
 .secretariat-section, .eb-section, .policies-section,
 .resources-section, .faq-section {
     content-visibility: auto;
@@ -1651,78 +1442,6 @@ footer p {
     to { opacity: 1; transform: translateY(0); }
 }
 
-/* ==================== ANIMATED GRADIENT SHIFT ==================== */
-@keyframes gradientShift {
-    0%, 100% { background-position: 0% 50%, 0 0, 0 0; }
-    50% { background-position: 100% 50%, 0 0, 0 0; }
-}
-
-/* ==================== NEON GLOW PULSE ==================== */
-@keyframes neonPulse {
-    0%, 100% { 
-        text-shadow: 
-            0 0 10px rgba(250, 204, 21, 0.8),
-            0 0 20px rgba(250, 204, 21, 0.6),
-            0 0 40px rgba(250, 204, 21, 0.4);
-    }
-    50% { 
-        text-shadow: 
-            0 0 20px rgba(250, 204, 21, 1),
-            0 0 40px rgba(250, 204, 21, 0.8),
-            0 0 80px rgba(250, 204, 21, 0.6),
-            0 0 120px rgba(250, 204, 21, 0.4);
-    }
-}
-
-/* ==================== CURSOR TRAIL ==================== */
-.cursor-trail {
-    position: fixed;
-    width: 10px;
-    height: 10px;
-    background: var(--gold);
-    border-radius: 50%;
-    pointer-events: none;
-    z-index: 99999;
-    mix-blend-mode: screen;
-    animation: cursorFade 0.6s ease-out forwards;
-}
-
-@keyframes cursorFade {
-    to { transform: scale(3); opacity: 0; }
-}
-
-/* ==================== BUTTON MICRO-INTERACTIONS ==================== */
-.btn-primary::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: radial-gradient(circle, rgba(255,255,255,0.4) 0%, transparent 70%);
-    transform: scale(0);
-    opacity: 0;
-    border-radius: inherit;
-    transition: transform 0.5s, opacity 0.5s;
-}
-
-.btn-primary:active::after {
-    transform: scale(2.5);
-    opacity: 1;
-    transition: 0s;
-}
-
-/* ==================== 3D TILT CARD SUPPORT ==================== */
-.committee-card, .stat-card {
-    transform-style: preserve-3d;
-}
-
-.committee-card:hover {
-    transform: perspective(1000px) rotateX(var(--rotate-x, 0deg)) rotateY(var(--rotate-y, 0deg)) translateZ(20px) scale(1.02);
-}
-
-/* RESET TRANSFORM WHEN NOT HOVERING */
-.committee-card {
-    transform: perspective(1000px) rotateX(0deg) rotateY(0deg) translateZ(0px);
-}
-
 @keyframes fadeIn {
     from { opacity: 0; }
     to { opacity: 1; }
@@ -1747,49 +1466,33 @@ footer p {
         font-size: 2.5rem;
     }
     
-    .hero-3d-model {
-        width: 320px;
-        height: 320px;
+    .hero-3d-orbit {
+        width: 280px;
+        height: 280px;
     }
-    #glbModelContainer {
-        width: 240px;
-        height: 240px;
+    .hero-logo {
+        width: 130px;
+        height: 130px;
     }
     .orbit-ring-1 {
-        width: 320px;
-        height: 320px;
+        width: 280px;
+        height: 280px;
     }
     .orbit-ring-2 {
-        width: 270px;
-        height: 270px;
+        width: 230px;
+        height: 230px;
     }
-    .orbit-img {
-        width: 40px;
-        height: 40px;
+    @keyframes orbitTextPath1 {
+        0%   { transform: rotate(0deg) translateY(-125px) rotate(0deg); }
+        100% { transform: rotate(360deg) translateY(-125px) rotate(-360deg); }
     }
-    @keyframes orbitImgPath1 {
-        0% { transform: rotate(0deg) translateY(-150px) rotate(0deg); }
-        100% { transform: rotate(360deg) translateY(-150px) rotate(-360deg); }
+    @keyframes orbitTextPath2 {
+        0%   { transform: rotate(120deg) translateY(-125px) rotate(-120deg); }
+        100% { transform: rotate(480deg) translateY(-125px) rotate(-480deg); }
     }
-    @keyframes orbitImgPath2 {
-        0% { transform: rotate(60deg) translateY(-150px) rotate(-60deg); }
-        100% { transform: rotate(420deg) translateY(-150px) rotate(-420deg); }
-    }
-    @keyframes orbitImgPath3 {
-        0% { transform: rotate(120deg) translateY(-150px) rotate(-120deg); }
-        100% { transform: rotate(480deg) translateY(-150px) rotate(-480deg); }
-    }
-    @keyframes orbitImgPath4 {
-        0% { transform: rotate(180deg) translateY(-150px) rotate(-180deg); }
-        100% { transform: rotate(540deg) translateY(-150px) rotate(-540deg); }
-    }
-    @keyframes orbitImgPath5 {
-        0% { transform: rotate(240deg) translateY(-150px) rotate(-240deg); }
-        100% { transform: rotate(600deg) translateY(-150px) rotate(-600deg); }
-    }
-    @keyframes orbitImgPath6 {
-        0% { transform: rotate(300deg) translateY(-150px) rotate(-300deg); }
-        100% { transform: rotate(660deg) translateY(-150px) rotate(-660deg); }
+    @keyframes orbitTextPath3 {
+        0%   { transform: rotate(240deg) translateY(-125px) rotate(-240deg); }
+        100% { transform: rotate(600deg) translateY(-125px) rotate(-600deg); }
     }
 }
 
@@ -1802,40 +1505,16 @@ footer p {
         cursor: pointer;
     }
     
-    .container {
-        padding: 0 1.25rem;
-    }
-    
     .hero-title {
-        font-size: 2.5rem;
+        font-size: 3rem;
     }
     
     .hero-tagline {
-        font-size: 1.1rem;
-        margin-top: 1.25rem;
+        font-size: 1.25rem;
     }
     
-    .hero-subtitle-bottom {
-        font-size: 0.75rem;
-        letter-spacing: 0.2em;
-        margin-top: 1.25rem;
-    }
-    
-    .hero-buttons {
-        flex-direction: column;
-        align-items: center;
-        gap: 1rem;
-        margin-top: 2rem;
-    }
-    .hero-buttons .btn-primary,
-    .hero-buttons .btn-secondary {
-        width: 100%;
-        max-width: 280px;
-        text-align: center;
-    }
-
-    .hero-content {
-        padding: 1rem;
+    .nav-links {
+        display: none;
     }
 
     .about-grid {
@@ -1843,10 +1522,7 @@ footer p {
         gap: 2rem;
     }
     .about-text h2 {
-        font-size: 1.75rem;
-    }
-    .about-text p {
-        font-size: 0.95rem;
+        font-size: 2rem;
     }
     .about-image img {
         transform: none;
@@ -1856,103 +1532,39 @@ footer p {
     }
     
     .section-title {
-        font-size: 1.6rem;
-        margin-bottom: 2rem;
-    }
-    
-    .section-intro {
-        font-size: 0.95rem;
-        margin-bottom: 2.5rem;
-        padding: 0 0.5rem;
+        font-size: 2rem;
     }
     
     .committees-grid {
         grid-template-columns: 1fr;
-        gap: 1.25rem;
-    }
-    .committee-card {
-        padding: 1.5rem;
-    }
-    .committee-card h3 {
-        font-size: 1.5rem;
-    }
-    .committee-card h4 {
-        font-size: 1rem;
-    }
-    .committee-card p {
-        font-size: 0.9rem;
-    }
-    .committee-img {
-        width: 90px;
-        height: 90px;
     }
     
     .page-title {
-        font-size: 2rem;
+        font-size: 2.5rem;
     }
     
     .page-subtitle {
-        font-size: 0.9rem;
-    }
-    
-    .page-header {
-        padding: 7rem 0 3rem;
+        font-size: 1rem;
     }
     
     .eb-grid {
         grid-template-columns: 1fr;
     }
-    .committee-eb {
-        padding: 1.5rem;
-    }
-    .committee-eb-title {
-        font-size: 1.3rem;
-        gap: 0.75rem;
-        flex-wrap: wrap;
-    }
-    .committee-eb-logo {
-        width: 36px;
-        height: 36px;
-    }
     
-    #countdown {
-        gap: 0.75rem;
-    }
     .time-box span {
-        min-width: 65px;
-        font-size: 2rem;
-        padding: 0.4rem 0.6rem;
-    }
-    .time-box label {
-        font-size: 0.7rem;
-    }
-
-    .glass-card {
-        padding: 2rem 1.25rem;
-    }
-    .glass-card h2 {
-        font-size: 1.5rem;
+        min-width: 70px;
+        font-size: 2.5rem;
     }
 
     .stats-grid {
         grid-template-columns: repeat(2, 1fr);
-        gap: 0.75rem;
+        gap: 1rem;
     }
     .stat-card::after {
         display: none;
     }
-    .stat-card {
-        padding: 1.5rem 0.5rem;
-    }
     .stat-number {
-        font-size: 2.5rem;
-    }
-    .stat-plus {
-        font-size: 1.5rem;
-    }
-    .stat-label {
-        font-size: 0.75rem;
-        letter-spacing: 0.12em;
+        font-size: 3rem;
     }
     
     .back-to-top {
@@ -1962,356 +1574,36 @@ footer p {
         height: 44px;
     }
 
-    .hero-3d-model {
-        width: 220px;
-        height: 220px;
-        margin-bottom: 1.5rem;
-    }
-    #glbModelContainer {
-        width: 160px;
-        height: 160px;
-    }
-    .orbit-ring-1 {
+    .hero-3d-orbit {
         width: 220px;
         height: 220px;
     }
-    .orbit-ring-2 {
-        width: 180px;
-        height: 180px;
-    }
-    .orbit-img {
-        width: 32px;
-        height: 32px;
-        border-width: 1.5px;
-    }
-    @keyframes orbitImgPath1 {
-        0% { transform: rotate(0deg) translateY(-100px) rotate(0deg); }
-        100% { transform: rotate(360deg) translateY(-100px) rotate(-360deg); }
-    }
-    @keyframes orbitImgPath2 {
-        0% { transform: rotate(60deg) translateY(-100px) rotate(-60deg); }
-        100% { transform: rotate(420deg) translateY(-100px) rotate(-420deg); }
-    }
-    @keyframes orbitImgPath3 {
-        0% { transform: rotate(120deg) translateY(-100px) rotate(-120deg); }
-        100% { transform: rotate(480deg) translateY(-100px) rotate(-480deg); }
-    }
-    @keyframes orbitImgPath4 {
-        0% { transform: rotate(180deg) translateY(-100px) rotate(-180deg); }
-        100% { transform: rotate(540deg) translateY(-100px) rotate(-540deg); }
-    }
-    @keyframes orbitImgPath5 {
-        0% { transform: rotate(240deg) translateY(-100px) rotate(-240deg); }
-        100% { transform: rotate(600deg) translateY(-100px) rotate(-600deg); }
-    }
-    @keyframes orbitImgPath6 {
-        0% { transform: rotate(300deg) translateY(-100px) rotate(-300deg); }
-        100% { transform: rotate(660deg) translateY(-100px) rotate(-660deg); }
-    }
-
-    .secretariat-grid {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 1.5rem;
-    }
-    .secretariat-card img {
-        width: 130px;
-        height: 130px;
-    }
-    .secretariat-card .name {
-        font-size: 1rem;
-    }
-    .secretariat-card .bio {
-        font-size: 0.8rem;
-    }
-
-    .eb-card {
-        padding: 1.25rem;
-    }
-    .eb-card img {
-        width: 120px;
-        height: 120px;
-    }
-
-    .policy-card {
-        padding: 1.25rem;
-    }
-    .policy-card h3 {
-        font-size: 1.2rem;
-    }
-    .policy-card ol,
-    .policy-card ul {
-        font-size: 0.9rem;
-    }
-
-    .faq-question {
-        font-size: 0.95rem;
-        padding: 1rem 1.25rem;
-    }
-    .faq-answer p {
-        font-size: 0.9rem;
-        padding: 0 1.25rem 1rem;
-    }
-
-    .resource-highlight {
-        padding: 2rem 1.25rem;
-    }
-    .resource-highlight h2 {
-        font-size: 1.6rem;
-    }
-    .resource-description {
-        font-size: 0.95rem;
-    }
-    .btn-large {
-        padding: 1rem 1.5rem;
-        font-size: 0.95rem;
-    }
-
-    .footer-content {
-        flex-direction: column;
-        text-align: center;
-        gap: 2rem;
-    }
-    footer h4::after {
-        left: 50%;
-        transform: translateX(-50%);
-    }
-    footer h3, footer h4 {
-        text-align: center;
-    }
-
-    /* Intro overlay mobile */
-    .intro-word {
-        font-size: 2.5rem;
-    }
-    .intro-welcome-title {
-        font-size: 1.3rem;
-    }
-    .intro-welcome-tagline {
-        font-size: 0.85rem;
-        padding: 0 1rem;
-    }
-    .intro-welcome-motto {
-        font-size: 0.8rem;
-    }
-    .intro-logo {
-        width: 80px;
-        height: 80px;
-    }
-
-    /* Preloader mobile */
-    .preloader-logo {
-        width: 90px;
-        height: 90px;
-    }
-    .preloader-ring {
+    .hero-logo {
         width: 100px;
         height: 100px;
-        margin-left: -50px;
-    }
-    .preloader-text {
-        font-size: 1.5rem;
-    }
-    .preloader-bar {
-        width: 180px;
-    }
-
-    /* Committee quote mobile */
-    .committee-quote-text {
-        font-size: 1.15rem;
-    }
-    .committee-quote {
-        padding: 1rem;
-    }
-
-    /* Itinerary mobile */
-    .itinerary-card {
-        padding: 1rem;
-    }
-    .itinerary-info {
-        padding: 1.25rem;
-    }
-
-    /* Register section mobile */
-    .register-section {
-        padding: 3rem 0;
-    }
-    .register-form {
-        padding: 1.5rem;
-    }
-    .form-group label {
-        font-size: 0.8rem;
-    }
-    .form-group input,
-    .form-group select {
-        padding: 0.6rem 0.75rem;
-        font-size: 0.9rem;
-    }
-
-    /* Resources page mobile */
-    .resource-note {
-        font-size: 0.9rem;
-        padding: 0.75rem;
-    }
-
-    .btn-coming-soon {
-        font-size: 0.8rem;
-        margin-top: 0.75rem;
-    }
-}
-
-/* ==================== VERY SMALL PHONES (<= 480px) ==================== */
-@media (max-width: 480px) {
-    .container {
-        padding: 0 1rem;
-    }
-
-    .hero-title {
-        font-size: 2rem;
-    }
-    .hero-tagline {
-        font-size: 1rem;
-    }
-
-    .hero-3d-model {
-        width: 180px;
-        height: 180px;
-    }
-    #glbModelContainer {
-        width: 130px;
-        height: 130px;
     }
     .orbit-ring-1 {
+        width: 220px;
+        height: 220px;
+    }
+    .orbit-ring-2 {
         width: 180px;
         height: 180px;
     }
-    .orbit-ring-2 {
-        width: 150px;
-        height: 150px;
-    }
     .orbit-text {
-        font-size: 0.65rem;
-    }
-    @keyframes orbitTextPath1 {
-        0% { transform: rotate(0deg) translateY(-80px) rotate(0deg); }
-        100% { transform: rotate(360deg) translateY(-80px) rotate(-360deg); }
-    }
-    @keyframes orbitTextPath2 {
-        0% { transform: rotate(120deg) translateY(-80px) rotate(-120deg); }
-        100% { transform: rotate(480deg) translateY(-80px) rotate(-480deg); }
-    }
-    @keyframes orbitTextPath3 {
-        0% { transform: rotate(240deg) translateY(-80px) rotate(-240deg); }
-        100% { transform: rotate(600deg) translateY(-80px) rotate(-600deg); }
-    }
-
-    .section-title {
-        font-size: 1.35rem;
-    }
-    .section-intro {
         font-size: 0.85rem;
     }
-
-    .stats-grid {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 0.5rem;
+    @keyframes orbitTextPath1 {
+        0%   { transform: rotate(0deg) translateY(-100px) rotate(0deg); }
+        100% { transform: rotate(360deg) translateY(-100px) rotate(-360deg); }
     }
-    .stat-number {
-        font-size: 2rem;
+    @keyframes orbitTextPath2 {
+        0%   { transform: rotate(120deg) translateY(-100px) rotate(-120deg); }
+        100% { transform: rotate(480deg) translateY(-100px) rotate(-480deg); }
     }
-    .stat-label {
-        font-size: 0.65rem;
-    }
-
-    .secretariat-grid {
-        grid-template-columns: 1fr;
-        gap: 2rem;
-    }
-
-    .time-box span {
-        min-width: 55px;
-        font-size: 1.5rem;
-        padding: 0.3rem 0.4rem;
-    }
-    #countdown {
-        gap: 0.4rem;
-    }
-
-    .page-title {
-        font-size: 1.6rem;
-    }
-    .page-subtitle {
-        font-size: 0.8rem;
-    }
-    .page-header {
-        padding: 6rem 0 2.5rem;
-    }
-
-    .committees-grid {
-        gap: 1rem;
-    }
-    .committee-card {
-        padding: 1.25rem;
-    }
-
-    .glass-card {
-        padding: 1.5rem 1rem;
-    }
-    .glass-card h2 {
-        font-size: 1.25rem;
-    }
-
-    .policy-card {
-        padding: 1rem;
-    }
-    .policy-card h3 {
-        font-size: 1.1rem;
-    }
-
-    .nav-menu {
-        width: 85%;
-        padding: 80px 1.25rem 1.5rem;
-    }
-    .nav-menu .nav-links a {
-        font-size: 1rem;
-        padding: 0.65rem 0.75rem;
-    }
-
-    .hero-buttons .btn-primary,
-    .hero-buttons .btn-secondary {
-        max-width: 100%;
-    }
-
-    .logo-img {
-        width: 36px;
-        height: 36px;
-    }
-    .logo-text h1 {
-        font-size: 1.1rem;
-    }
-    .logo-text p {
-        font-size: 0.55rem;
-    }
-
-    #navbar {
-        padding: 0.6rem 0;
-    }
-
-    .intro-word {
-        font-size: 2rem;
-    }
-    .intro-welcome-title {
-        font-size: 1.1rem;
-    }
-
-    .footer-content {
-        gap: 1.5rem;
-    }
-
-    .eb-card {
-        padding: 1rem;
-    }
-    .committee-eb {
-        padding: 1rem;
+    @keyframes orbitTextPath3 {
+        0%   { transform: rotate(240deg) translateY(-100px) rotate(-240deg); }
+        100% { transform: rotate(600deg) translateY(-100px) rotate(-600deg); }
     }
 }
 
@@ -2427,8 +1719,6 @@ footer p {
     padding: 2rem 1rem;
     position: relative;
     transition: all var(--transition-normal);
-    transform-style: preserve-3d;
-    perspective: 1000px;
 }
 .stat-card:hover {
     transform: translateY(-5px);
@@ -2806,7 +2096,505 @@ footer p {
     100% { transform: translateY(-10vh) scale(1); opacity: 0; }
 }
 
-/* ==================== 3D CITYSCAPE BACKGROUND ==================== */
+@media (max-width: 768px) {
+    .intro-word {
+        font-size: 3rem;
+    }
+    .intro-welcome-title {
+        font-size: 1.5rem;
+    }
+}
+/* ==================== AMBIENT FLOATING GOLD PARTICLES ==================== */
+/* GOATED: Floating gold particles that drift across the entire page */
+.ambient-particles {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 9998;
+    overflow: hidden;
+}
+
+.ambient-particle {
+    position: absolute;
+    width: var(--p-size, 4px);
+    height: var(--p-size, 4px);
+    background: radial-gradient(circle, var(--gold-light), var(--gold));
+    border-radius: 50%;
+    left: var(--p-x, 50%);
+    bottom: -10px;
+    opacity: 0;
+    filter: blur(0.5px);
+    box-shadow: 0 0 6px var(--gold), 0 0 12px rgba(250, 204, 21, 0.3);
+    animation: particleRise var(--p-duration, 8s) var(--p-delay, 0s) linear infinite;
+}
+
+@keyframes particleRise {
+    0% {
+        transform: translateY(0) translateX(0) scale(0);
+        opacity: 0;
+    }
+    10% {
+        opacity: var(--p-opacity, 0.8);
+        transform: translateY(0) translateX(0) scale(1);
+    }
+    90% {
+        opacity: var(--p-opacity, 0.8);
+    }
+    100% {
+        transform: translateY(-110vh) translateX(var(--p-drift, 50px)) scale(0.3);
+        opacity: 0;
+    }
+}
+
+/* Glowing larger particles (special ones) */
+.ambient-particle.glow {
+    width: 8px;
+    height: 8px;
+    box-shadow: 0 0 15px var(--gold), 0 0 30px rgba(250, 204, 21, 0.4), 0 0 60px rgba(250, 204, 21, 0.2);
+    filter: blur(1px);
+}
+
+/* ==================== MOUSE GLOW AURA ==================== */
+/* GOATED: A luminous gold halo that follows your cursor everywhere */
+.mouse-glow {
+    position: fixed;
+    pointer-events: none;
+    z-index: 9997;
+    width: 500px;
+    height: 500px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(250, 204, 21, 0.08) 0%, rgba(250, 204, 21, 0.04) 20%, rgba(250, 204, 21, 0.02) 40%, transparent 70%);
+    transform: translate(-50%, -50%);
+    transition: opacity 0.3s ease;
+    will-change: transform, left, top;
+    mix-blend-mode: screen;
+}
+
+.mouse-glow.hidden {
+    opacity: 0;
+}
+
+/* Secondary smaller glow ring */
+.mouse-glow-ring {
+    position: fixed;
+    pointer-events: none;
+    z-index: 9997;
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    border: 1.5px solid rgba(250, 204, 21, 0.15);
+    transform: translate(-50%, -50%);
+    transition: all 0.15s ease-out;
+    will-change: transform, left, top;
+    box-shadow: 0 0 20px rgba(250, 204, 21, 0.05), inset 0 0 20px rgba(250, 204, 21, 0.03);
+}
+
+/* ==================== ROTATING GRADIENT BORDER ==================== */
+/* GOATED: Cards get a smooth rotating golden border animation */
+.gradient-border {
+    position: relative;
+    isolation: isolate;
+}
+
+.gradient-border::before {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    border-radius: inherit;
+    z-index: -1;
+    background: conic-gradient(
+        from var(--angle, 0deg),
+        transparent,
+        rgba(250, 204, 21, 0.5),
+        rgba(255, 224, 102, 0.7),
+        rgba(250, 204, 21, 0.5),
+        transparent,
+        rgba(250, 204, 21, 0.3),
+        rgba(255, 224, 102, 0.5),
+        rgba(250, 204, 21, 0.3),
+        transparent
+    );
+    animation: rotateBorder 4s linear infinite;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+}
+
+.gradient-border:hover::before {
+    opacity: 1;
+}
+
+@property --angle {
+    syntax: '<angle>';
+    initial-value: 0deg;
+    inherits: false;
+}
+
+@keyframes rotateBorder {
+    to {
+        --angle: 360deg;
+    }
+}
+
+/* ==================== DRAMATIC CLIP-PATH TEXT REVEAL ==================== */
+/* GOATED: Section titles slice in dramatically on scroll */
+.reveal-clip {
+    opacity: 0;
+    clip-path: inset(0 100% 0 0);
+    transition: opacity 0.8s ease, clip-path 1.2s cubic-bezier(0.77, 0, 0.175, 1);
+}
+
+.reveal-clip.visible {
+    opacity: 1;
+    clip-path: inset(0 0 0 0);
+}
+
+.reveal-clip-left {
+    opacity: 0;
+    clip-path: inset(0 100% 0 0);
+    transition: opacity 0.8s ease, clip-path 1.2s cubic-bezier(0.77, 0, 0.175, 1);
+}
+
+.reveal-clip-left.visible {
+    opacity: 1;
+    clip-path: inset(0 0 0 0);
+}
+
+.reveal-clip-right {
+    opacity: 0;
+    clip-path: inset(0 0 0 100%);
+    transition: opacity 0.8s ease, clip-path 1.2s cubic-bezier(0.77, 0, 0.175, 1);
+}
+
+.reveal-clip-right.visible {
+    opacity: 1;
+    clip-path: inset(0 0 0 0);
+}
+
+/* Dramatic scale-up reveal */
+.reveal-dramatic {
+    opacity: 0;
+    transform: scale(0.3) rotateX(40deg) translateY(60px);
+    filter: blur(10px);
+    transition: all 1.2s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.reveal-dramatic.visible {
+    opacity: 1;
+    transform: scale(1) rotateX(0deg) translateY(0);
+    filter: blur(0px);
+}
+
+/* Letter-by-letter stagger for section titles */
+.stagger-letter {
+    display: inline-block;
+    opacity: 0;
+    transform: translateY(40px) rotateX(30deg);
+    animation: letterStaggerIn 0.6s ease forwards;
+}
+
+@keyframes letterStaggerIn {
+    to {
+        opacity: 1;
+        transform: translateY(0) rotateX(0deg);
+    }
+}
+
+/* ==================== ANIMATED GOLDEN WAVE DIVIDERS ==================== */
+/* GOATED: Beautiful animated SVG waves between sections */
+.wave-divider {
+    position: relative;
+    width: 100%;
+    height: 80px;
+    overflow: hidden;
+    line-height: 0;
+}
+
+.wave-divider svg {
+    position: absolute;
+    bottom: 0;
+    width: 200%;
+    height: 100%;
+    animation: waveSlide 8s linear infinite;
+}
+
+.wave-divider svg:nth-child(2) {
+    animation-direction: reverse;
+    animation-duration: 12s;
+    opacity: 0.4;
+}
+
+@keyframes waveSlide {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+}
+
+/* ==================== MAGNETIC BUTTON EFFECT ==================== */
+/* GOATED: Buttons subtly follow your cursor */
+.btn-magnetic {
+    transition: transform 0.2s ease-out;
+    will-change: transform;
+}
+
+/* ==================== COUNTDOWN 3D FLIP ==================== */
+/* GOATED: Each number flips dramatically on change */
+.time-box {
+    perspective: 600px;
+}
+
+.time-box span.flip {
+    animation: numberFlip 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+@keyframes numberFlip {
+    0% {
+        transform: rotateX(0deg) scale(1);
+    }
+    40% {
+        transform: rotateX(-90deg) scale(0.95);
+        box-shadow: 0 0 40px rgba(250, 204, 21, 0.4);
+    }
+    70% {
+        transform: rotateX(-30deg) scale(1.02);
+        box-shadow: 0 0 60px rgba(250, 204, 21, 0.6);
+    }
+    100% {
+        transform: rotateX(0deg) scale(1);
+        box-shadow: 0 0 20px rgba(250, 204, 21, 0.2);
+    }
+}
+
+/* ==================== SCANLINE OVERLAY & HERO MORPH ==================== */
+/* GOATED: Subtle cinematic scanline texture across the page */
+.scanlines {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 9996;
+    background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(0, 0, 0, 0.03) 2px,
+        rgba(0, 0, 0, 0.03) 4px
+    );
+}
+
+/* Cinematic letterbox bars (only on hero) */
+.letterbox-bars {
+    position: fixed;
+    left: 0;
+    right: 0;
+    pointer-events: none;
+    z-index: 9995;
+    background: rgba(0, 0, 0, 0.6);
+    transition: transform 0.6s ease;
+}
+
+.letterbox-top {
+    top: 0;
+    height: 60px;
+    transform: translateY(-100%);
+}
+
+.letterbox-bottom {
+    bottom: 0;
+    height: 60px;
+    transform: translateY(100%);
+}
+
+.letterbox-bars.active .letterbox-top {
+    transform: translateY(0);
+}
+
+.letterbox-bars.active .letterbox-bottom {
+    transform: translateY(0);
+}
+
+/* Hero background dramatic pulsing */
+.hero::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background:
+        radial-gradient(circle at 30% 40%, rgba(250, 204, 21, 0.06) 0%, transparent 50%),
+        radial-gradient(circle at 70% 60%, rgba(250, 204, 21, 0.04) 0%, transparent 50%),
+        radial-gradient(circle at 50% 80%, rgba(250, 204, 21, 0.08) 0%, transparent 40%);
+    animation: heroPulse 6s ease-in-out infinite;
+}
+
+@keyframes heroPulse {
+    0%, 100% {
+        opacity: 0.5;
+        transform: scale(1);
+    }
+    33% {
+        opacity: 0.8;
+        transform: scale(1.05);
+        background:
+            radial-gradient(circle at 40% 30%, rgba(250, 204, 21, 0.08) 0%, transparent 50%),
+            radial-gradient(circle at 60% 70%, rgba(250, 204, 21, 0.06) 0%, transparent 50%),
+            radial-gradient(circle at 30% 60%, rgba(250, 204, 21, 0.1) 0%, transparent 40%);
+    }
+    66% {
+        opacity: 0.6;
+        transform: scale(1.03);
+        background:
+            radial-gradient(circle at 60% 40%, rgba(250, 204, 21, 0.07) 0%, transparent 50%),
+            radial-gradient(circle at 40% 50%, rgba(250, 204, 21, 0.05) 0%, transparent 50%),
+            radial-gradient(circle at 70% 30%, rgba(250, 204, 21, 0.09) 0%, transparent 40%);
+    }
+}
+
+/* ==================== CINEMATIC HERO TEXT REVEAL ==================== */
+/* GOATED: Hero title letters fly in one by one */
+.hero-title .char {
+    display: inline-block;
+    opacity: 0;
+    transform: translateY(80px) rotateX(-40deg);
+    animation: charFlyIn 0.8s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+}
+
+@keyframes charFlyIn {
+    0% {
+        opacity: 0;
+        transform: translateY(80px) rotateX(-40deg);
+        filter: blur(4px);
+    }
+    60% {
+        opacity: 1;
+        transform: translateY(-10px) rotateX(5deg);
+        filter: blur(0px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0) rotateX(0deg);
+        filter: blur(0px);
+    }
+}
+
+/* ==================== INTERACTIVE PARTICLE BURST ==================== */
+/* GOATED: Click anywhere to explode golden particles */
+.click-particle {
+    position: fixed;
+    pointer-events: none;
+    z-index: 10000;
+    border-radius: 50%;
+    animation: clickParticleBurst 1s ease-out forwards;
+}
+
+@keyframes clickParticleBurst {
+    0% {
+        transform: translate(0, 0) scale(1) rotate(0deg);
+        opacity: 1;
+    }
+    100% {
+        transform: translate(
+            calc((var(--x-dir, 0.5) - 0.5) * 300px),
+            calc((var(--y-dir, 0.5) - 0.5) * 300px)
+        ) scale(0) rotate(720deg);
+        opacity: 0;
+    }
+}
+
+/* ==================== 3D TILT CARDS ON MOUSE MOVE ==================== */
+/* GOATED: Cards tilt in 3D space following cursor */
+.tilt-3d {
+    transform-style: preserve-3d;
+    perspective: 800px;
+    transition: transform 0.1s ease-out;
+}
+
+.tilt-3d:hover {
+    /* Tilt angle calculated by JS */
+}
+
+/* ==================== PULSING GOLDEN RINGS FOR STATS ==================== */
+/* GOATED: Stats section has expanding golden rings */
+.stat-card::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    border: 1.5px solid rgba(250, 204, 21, 0.3);
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    animation: statRingExpand 3s ease-out infinite;
+    opacity: 0;
+}
+
+@keyframes statRingExpand {
+    0% {
+        width: 0;
+        height: 0;
+        opacity: 0.6;
+    }
+    100% {
+        width: 300px;
+        height: 300px;
+        opacity: 0;
+    }
+}
+
+.stat-card:nth-child(1)::before { animation-delay: 0s; }
+.stat-card:nth-child(2)::before { animation-delay: 0.7s; }
+.stat-card:nth-child(3)::before { animation-delay: 1.4s; }
+.stat-card:nth-child(4)::before { animation-delay: 2.1s; }
+
+/* Stat card shimmer on hover */
+.stat-card:hover .stat-number {
+    animation: statGoldPulse 1s ease-in-out infinite;
+}
+
+@keyframes statGoldPulse {
+    0%, 100% {
+        filter: brightness(1);
+        text-shadow: 0 0 20px rgba(250, 204, 21, 0.3);
+    }
+    50% {
+        filter: brightness(1.4);
+        text-shadow: 0 0 40px rgba(250, 204, 21, 0.6), 0 0 80px rgba(250, 204, 21, 0.3);
+    }
+}
+
+/* ==================== NAVBAR SHIMMER LINE ==================== */
+/* GOATED: Animated shimmer runs across the navbar bottom border */
+#navbar::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    background: linear-gradient(
+        90deg,
+        transparent 0%,
+        rgba(250, 204, 21, 0) 10%,
+        rgba(250, 204, 21, 0.6) 30%,
+        rgba(255, 224, 102, 0.8) 50%,
+        rgba(250, 204, 21, 0.6) 70%,
+        rgba(250, 204, 21, 0) 90%,
+        transparent 100%
+    );
+    background-size: 200% 100%;
+    animation: navbarShimmer 3s linear infinite;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+}
+
+#navbar.scrolled::after {
+    opacity: 1;
+}
+
+@keyframes navbarShimmer {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+}
+
+/* =================== 3D CITYSCAPE BACKGROUND ==================== */
 .cityscape-3d {
  position: fixed;
  inset: 0;
@@ -2847,10 +2635,18 @@ footer p {
 }
 .typewriter-cursor.idle {
  animation: cursorBlink 1.5s infinite;
+}@keyframes cursorBlink {
+    0%, 49% { opacity: 1; }
+    50%, 100% { opacity: 0; }
 }
-@keyframes cursorBlink {
- 0%, 49% { opacity: 1; }
- 50%, 100% { opacity: 0; }
+
+/* Enhanced typewriter glow */
+.typewriter-line.visible {
+    text-shadow: 0 0 15px rgba(250, 204, 21, 0.2);
+}
+
+.typewriter-cursor {
+    box-shadow: 0 0 8px rgba(250, 204, 21, 0.6), 0 0 16px rgba(250, 204, 21, 0.3);
 }
 
 /* ==================== 3D SOUND PARTICLES ==================== */
@@ -3015,57 +2811,33 @@ body.scene-3d {
  .typewriter-cursor {
  animation-duration: 0.8s;
  }
-}
-/* ==================== COMMITTEES ROAD / JOURNEY LAYOUT ==================== */
-.committees-road {
-    position: relative;
-    max-width: 100%;
-    width: 100%;
-    margin: 0 auto;
-    padding: 2rem 0;
-}
-.road-svg {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    z-index: 0;
-    overflow: visible;
-}
-.road-path {
-    fill: none;
-    stroke: url(#roadGradient);
-    stroke-width: 5;
-    stroke-linecap: round;
-    stroke-linejoin: round;
-    opacity: 0.85;
-    filter: drop-shadow(0 0 10px rgba(250,204,21,0.6)) drop-shadow(0 0 25px rgba(250,204,21,0.3));
-}
-.road-card {
-    position: relative;
-    z-index: 1;
-    max-width: 380px;
-    margin-bottom: 6rem;
-}
-.road-card:last-child {
-    margin-bottom: 0;
-}
-.road-left {
-    margin-right: auto;
-    margin-left: 0;
-}
-.road-right {
-    margin-left: auto;
-    margin-right: 0;
-}
-@media (max-width: 768px) {
-    .road-svg {
-        display: none;
-    }
-    .road-card, .road-left, .road-right {
-        max-width: 100%;
-        margin: 0 auto 3rem;
-    }
+ 
+ /* Reduce heavy animations on mobile */
+ .mouse-glow,
+ .mouse-glow-ring,
+ .scanlines,
+ .letterbox-bars {
+ display: none !important;
+ }
+ 
+ .ambient-particles {
+    opacity: 0.4;
+ }
+ 
+ .gradient-border::before {
+    animation-duration: 6s;
+ }
+ 
+ .stat-card::before {
+    animation: none !important;
+ }
+ 
+ .reveal-dramatic {
+    transform: scale(0.8) translateY(40px);
+    filter: blur(5px);
+ }
+ 
+ .hero::after {
+    animation-duration: 10s;
+ }
 }
