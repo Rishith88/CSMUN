@@ -550,18 +550,19 @@ function initCommitteeRoad() {
             points.push({ x, y, isLeft });
         });
 
-        let d = `M ${points[0].x} ${points[0].y}`;
+        
+let d = `M ${points[0].x} ${points[0].y}`;
         for (let i = 0; i < points.length - 1; i++) {
             const p0 = points[i];
             const p1 = points[i + 1];
+            const dx = p1.x - p0.x;
             const dy = p1.y - p0.y;
-            const midX = W / 2;
-            // cp1 starts going horizontally outward from p0 before curving down
-            // cp2 arrives horizontally into p1 — this removes the sharp kink
-            const cp1x = p0.isLeft ? midX + W * 0.1 : midX - W * 0.1;
-            const cp1y = p0.y + dy * 0.5;
-            const cp2x = p1.isLeft ? midX + W * 0.1 : midX - W * 0.1;
-            const cp2y = p1.y - dy * 0.15;
+            // cp1: leave p0 horizontally first, then arc down gently
+            const cp1x = p0.x + dx * 0.6;
+            const cp1y = p0.y + dy * 0.1;
+            // cp2: arrive into p1 from below and same side — no sharp bounce
+            const cp2x = p1.x - dx * 0.1;
+            const cp2y = p1.y - dy * 0.5;
             d += ` C ${cp1x} ${cp1y}, ${cp2x} ${cp2y}, ${p1.x} ${p1.y}`;
         }
 
